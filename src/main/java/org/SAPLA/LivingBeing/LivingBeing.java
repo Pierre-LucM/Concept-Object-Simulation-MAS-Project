@@ -21,7 +21,7 @@ public abstract class LivingBeing {
         return this._message;
     }
 
-    protected Tile getCurrentTile(){
+    public Tile getCurrentTile(){
         return this._currentTile;
     }
 
@@ -33,7 +33,7 @@ public abstract class LivingBeing {
         return this._energyPoint;
     }
 
-    protected SafeZone getSafeZone(){
+    public SafeZone getSafeZone(){
         return this._safeZone;
     }
 
