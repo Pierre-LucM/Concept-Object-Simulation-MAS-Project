@@ -1,12 +1,12 @@
 package org.SAPLA.Map;
 
 public class SafeZone {
-    private Tile[][] _safeZone;
+    private final Tile[][] _safeZone;
 
     public SafeZone(Tile[][] safeZone) {
         _safeZone = safeZone;
     }
-    public Tile[][] getSafeZone() {
+    public Tile[][] getSafeZoneGrid() {
         return _safeZone;
     }
 }
