@@ -1,4 +1,5 @@
 package org.SAPLA;
+import org.SAPLA.Game.Game;
 
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -9,5 +10,32 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("Hello World");
+
+
+
+
+
+        //Pavé de test Aurélien
+        Game game = new Game();
+
+        game.startAutomatic();
+
+        //Pour le moment, la simulation automatique s'arrête après 5 secondes,
+        //plus tard, il suffira d'appeler la méthode stopAutomatic() pour arrêter la simulation
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        game.stopAutomatic();
+
+        game.remplirTableauIndviduals();
+        game.afficherTableauIndviduals();
+        game.shuffleOrderIndividuals();
+        game.afficherTableauIndviduals();
+        game.shuffleOrderIndividuals();
+        game.afficherTableauIndviduals();
+
+        game.runManual();
     }
 }
