@@ -14,13 +14,5 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     </properties>
-    <dependencies>
-        <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-            <version>7.0.0</version>
-        </dependency>
-    </dependencies>
-
 
 </project>
