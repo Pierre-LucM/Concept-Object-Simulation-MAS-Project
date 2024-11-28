@@ -12,7 +12,7 @@ public enum Direction {
     SOUTHWEST,
     NORTHWEST;
 
-    public Direction getRandomDirection() {
+    public static Direction getRandomDirection() {
         Random random = new Random();
         int index = random.nextInt(Direction.values().length);
         return Direction.values()[index];

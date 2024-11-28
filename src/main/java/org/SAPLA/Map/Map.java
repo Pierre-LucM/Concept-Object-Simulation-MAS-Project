@@ -8,15 +8,21 @@ import java.util.Dictionary;
 public class Map {
 
     private Tile[][] _mapGrid;
+    private static Tile[][] s_mapGrid;
     private int _mapWidth;
     private int _mapHeight;
+    private static int s_mapWidth;
+    private static int s_mapHeight;
 
     private Dictionary<String, SafeZone> _safeZones;
 
     public Map(int mapWidth, int mapHeight) {
         _mapWidth = mapWidth;
         _mapHeight = mapHeight;
+        s_mapWidth = mapWidth;
+        s_mapHeight = mapHeight;
         _mapGrid = new Tile[_mapWidth][_mapHeight];
+        s_mapGrid = new Tile[_mapWidth][_mapHeight];
         _safeZones = new java.util.Hashtable<>();
     }
 
@@ -39,6 +45,7 @@ public class Map {
         assignSafeZone("faction2", 0, _mapHeight - safeZoneHeight, safeZoneWidth, safeZoneHeight);     // Top-right
         assignSafeZone("faction3", _mapWidth - safeZoneWidth, 0, safeZoneWidth, safeZoneHeight);       // Bottom-left
         assignSafeZone("faction4", _mapWidth - safeZoneWidth, _mapHeight - safeZoneHeight, safeZoneWidth, safeZoneHeight); // Bottom-right
+        s_mapGrid = _mapGrid;
     }
 
     private void assignSafeZone(String faction, int startX, int startY, int width, int height) {
@@ -64,11 +71,11 @@ public class Map {
         }
     }
 
-    public int tileAvailableAroundAGivenTile(Tile tile){
+    public int tileAvailableAroundAGivenTile(Tile tile) {
         return 0;
     }
 
-    public Direction directionToReachSafeZone(LivingBeing livingBeing) {
+    public static Direction directionToReachSafeZone(LivingBeing livingBeing) {
         Tile currentTile = livingBeing.getCurrentTile();
         SafeZone safeZone = livingBeing.getSafeZone();
         Tile[][] safeZoneGrid = safeZone.getSafeZoneGrid();
@@ -119,12 +126,12 @@ public class Map {
         return _mapGrid[position.getX()][position.getY()];
     }
 
-    public Tile[][] getMapGrid() {
-        return _mapGrid;
+    public static Tile[][] getMapGrid() {
+        return s_mapGrid;
     }
 
     public void DisplayMap() {
-        final String[] SAFE_ZONE_COLORS = { "\033[0;101m", "\033[0;102m", "\033[0;103m", "\033[0;104m" };
+        final String[] SAFE_ZONE_COLORS = {"\033[0;101m", "\033[0;102m", "\033[0;103m", "\033[0;104m"};
         final String RESET_COLOR = "\u001B[0m";
         final String DEFAULT_COLOR = "\033[0;107m";
         final int PADDING = (3 - 1) / 2;
@@ -147,6 +154,14 @@ public class Map {
             }
             System.out.println();
         }
+    }
+
+    public static int getMapWidth() {
+        return s_mapWidth;
+    }
+
+    public static int getMapHeight() {
+        return s_mapHeight;
     }
 
 }
