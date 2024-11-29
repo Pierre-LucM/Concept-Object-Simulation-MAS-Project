@@ -1,7 +1,6 @@
 package org.SAPLA.MouvementType.TowerMouv;
 
 import org.SAPLA.Enum.Direction;
-import org.SAPLA.Map.Map;
 import org.SAPLA.Map.Tile;
 import org.SAPLA.MouvementType.MouvementType;
 import org.SAPLA.Result.Result;
@@ -9,310 +8,49 @@ import org.SAPLA.Result.Result;
 import java.util.Random;
 
 import static org.SAPLA.Map.Map.*;
-import static org.SAPLA.Map.Map.getMapHeight;
 
 public class TowerMouv extends MouvementType {
-
     @Override
-    public Tile moveNorth(Tile currentTile) {
-        Tile bufferNextTile = getMapGrid()[currentTile.getPosition().getX()][ currentTile.getPosition().getY() + 1];
-        char bufferTileContent = bufferNextTile.getTileContent();
-
-        if (bufferTileContent == ' ') {
-            return bufferNextTile;
-        }
-        return currentTile;
+    public Tile moveStep (Tile currentTile,Direction direction) {
+        return switch (direction) {
+            case NORTH, NORTHWEST -> moveNorth(currentTile);
+            case EAST, NORTHEAST -> moveEast(currentTile);
+            case SOUTH, SOUTHEAST -> moveSouth(currentTile);
+            case WEST, SOUTHWEST -> moveWest(currentTile);
+        };
     }
 
     @Override
-    public Tile moveEast(Tile currentTile) {
-        Tile bufferNextTile = getMapGrid()[currentTile.getPosition().getX() + 1][ currentTile.getPosition().getY()];
-        char bufferTileContent = bufferNextTile.getTileContent();
-
-        if (bufferTileContent == ' ') {
-            return bufferNextTile;
+    public Result nextTile(Tile currentTile, int energyPoint, Direction targetDirection) {
+        if (energyPoint < 5) { // Pas assez d'énergie pour un mouvement complet
+            return new Result(currentTile, energyPoint);
         }
-        return currentTile;
-    }
 
-    @Override
-    public Tile moveSouth(Tile currentTile) {
-        Tile bufferNextTile = getMapGrid()[currentTile.getPosition().getX()][ currentTile.getPosition().getY() - 1];
-        char bufferTileContent = bufferNextTile.getTileContent();
+        int numberMouv = new Random().nextInt(4);
+        numberMouv = numberMouv + 1;
+        Tile nextTile = currentTile, previousTile = currentTile;
 
-        if (bufferTileContent == ' ') {
-            return bufferNextTile;
+        for (int i = 0; i < numberMouv; i++) {
+            nextTile = moveStep(previousTile, targetDirection);
+            if (nextTile == previousTile) {
+                break;
+            }
+            energyPoint--;
+            previousTile = nextTile;
         }
-        return currentTile;
-    }
 
-    @Override
-    public Tile moveWest(Tile currentTile) {
-        Tile bufferNextTile = getMapGrid()[currentTile.getPosition().getX() - 1][ currentTile.getPosition().getY()];
-        char bufferTileContent = bufferNextTile.getTileContent();
-
-        if (bufferTileContent == ' ') {
-            return bufferNextTile;
-        }
-        return currentTile;
+        return new Result(nextTile, energyPoint);
     }
 
     public Result towerMov(Tile currentTile, int energyPoint, int maxEnergy) {
-        if (energyPoint > (maxEnergy * 0.2)) {
-            Direction randomDirection = Direction.getRandomDirection();
-
-            if (randomDirection == Direction.NORTH && randomDirection == Direction.NORTHEAST) {
-
-                int numberMouv = new Random().nextInt(4);
-                numberMouv = numberMouv + 1;
-                Tile targetTile = getMapGrid()[currentTile.getPosition().getX()][currentTile.getPosition().getY() + numberMouv];
-
-                if (targetTile.getPosition().getY() > getMapHeight()){
-                    targetTile = getMapGrid()[targetTile.getPosition().getX()][getMapHeight() -1];
-                }
-
-                Tile previousTile = currentTile;
-                Tile nextTile = currentTile;
-
-                while(true){
-                    nextTile = moveNorth(nextTile);
-
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
-                    }
-
-                    if (nextTile == targetTile) {
-                        break;
-                    }
-                }
-                Result result = new Result(nextTile, energyPoint);
-                return result;
-            }
-
-            if (randomDirection == Direction.EAST && randomDirection == Direction.SOUTHEAST) {
-
-                int numberMouv = new Random().nextInt(4);
-                numberMouv = numberMouv + 1;
-                Tile targetTile = getMapGrid()[currentTile.getPosition().getX() + numberMouv][currentTile.getPosition().getY()];
-
-                if (targetTile.getPosition().getX() > getMapWidth()){
-                    targetTile = getMapGrid()[getMapWidth() -1][targetTile.getPosition().getY()];
-                }
-
-                Tile previousTile = currentTile;
-                Tile nextTile = currentTile;
-
-                while(true){
-                    nextTile = moveEast(nextTile);
-
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
-                    }
-
-                    if (nextTile == targetTile) {
-                        break;
-                    }
-                }
-                Result result = new Result(nextTile, energyPoint);
-                return result;
-            }
-
-            if (randomDirection == Direction.SOUTH && randomDirection == Direction.SOUTHWEST) {
-
-                int numberMouv = new Random().nextInt(4);
-                numberMouv = numberMouv + 1;
-                Tile targetTile = getMapGrid()[currentTile.getPosition().getX()][currentTile.getPosition().getY() - numberMouv];
-
-                if (targetTile.getPosition().getY() < 0){
-                    targetTile = getMapGrid()[targetTile.getPosition().getX()][getMapHeight() -1];
-                }
-
-                Tile previousTile = currentTile;
-                Tile nextTile = currentTile;
-
-                while(true){
-                    nextTile = moveSouth(nextTile);
-
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
-                    }
-
-                    if (nextTile == targetTile) {
-                        break;
-                    }
-                }
-                Result result = new Result(nextTile, energyPoint);
-                return result;
-            }
-
-            if (randomDirection == Direction.WEST && randomDirection == Direction.NORTHWEST) {
-
-                int numberMouv = new Random().nextInt(4);
-                numberMouv = numberMouv + 1;
-                Tile targetTile = getMapGrid()[currentTile.getPosition().getX() - numberMouv][currentTile.getPosition().getY()];
-
-                if (targetTile.getPosition().getX() < 0){
-                    targetTile = getMapGrid()[getMapWidth() -1][targetTile.getPosition().getY()];
-                }
-
-                Tile previousTile = currentTile;
-                Tile nextTile = currentTile;
-
-                while(true){
-                    nextTile = moveWest(nextTile);
-
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
-                    }
-
-                    if (nextTile == targetTile) {
-                        break;
-                    }
-                }
-                Result result = new Result(nextTile, energyPoint);
-                return result;
-            }
+        // Si l'énergie est inférieure à 20 %, se diriger vers la zone sécurisée
+        if (energyPoint <= (maxEnergy * 0.2)) {
+            Direction safeZoneDirection = directionToReachSafeZone(super._livingBeing);
+            return nextTile(currentTile, energyPoint, safeZoneDirection);
         }
 
-        Direction directionToSafeZone = Map.directionToReachSafeZone(super._livingBeing);
-
-        if (directionToSafeZone == Direction.NORTH && directionToSafeZone == Direction.NORTHEAST) {
-
-            int numberMouv = new Random().nextInt(4);
-            numberMouv = numberMouv + 1;
-            Tile targetTile = getMapGrid()[currentTile.getPosition().getX()][currentTile.getPosition().getY() + numberMouv];
-
-            if (targetTile.getPosition().getY() > getMapHeight()){
-                targetTile = getMapGrid()[targetTile.getPosition().getX()][getMapHeight() -1];
-            }
-
-            Tile previousTile = currentTile;
-            Tile nextTile = currentTile;
-
-            while(true){
-                nextTile = moveNorth(nextTile);
-
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
-                }
-
-                if (nextTile == targetTile) {
-                    break;
-                }
-            }
-            Result result = new Result(nextTile, energyPoint);
-            return result;
-        }
-
-        if (directionToSafeZone == Direction.EAST && directionToSafeZone == Direction.SOUTHEAST) {
-
-            int numberMouv = new Random().nextInt(4);
-            numberMouv = numberMouv + 1;
-            Tile targetTile = getMapGrid()[currentTile.getPosition().getX() + numberMouv][currentTile.getPosition().getY()];
-
-            if (targetTile.getPosition().getX() > getMapWidth()){
-                targetTile = getMapGrid()[getMapWidth() -1][targetTile.getPosition().getY()];
-            }
-
-            Tile previousTile = currentTile;
-            Tile nextTile = currentTile;
-
-            while(true){
-                nextTile = moveEast(nextTile);
-
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
-                }
-
-                if (nextTile == targetTile) {
-                    break;
-                }
-            }
-            Result result = new Result(nextTile, energyPoint);
-            return result;
-        }
-
-        if (directionToSafeZone == Direction.SOUTH && directionToSafeZone == Direction.SOUTHWEST) {
-
-            int numberMouv = new Random().nextInt(4);
-            numberMouv = numberMouv + 1;
-            Tile targetTile = getMapGrid()[currentTile.getPosition().getX()][currentTile.getPosition().getY() - numberMouv];
-
-            if (targetTile.getPosition().getY() < 0){
-                targetTile = getMapGrid()[targetTile.getPosition().getX()][getMapHeight() -1];
-            }
-
-            Tile previousTile = currentTile;
-            Tile nextTile = currentTile;
-
-            while(true){
-                nextTile = moveSouth(nextTile);
-
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
-                }
-
-                if (nextTile == targetTile) {
-                    break;
-                }
-            }
-            Result result = new Result(nextTile, energyPoint);
-            return result;
-        }
-
-        if (directionToSafeZone == Direction.WEST && directionToSafeZone == Direction.NORTHWEST) {
-
-            int numberMouv = new Random().nextInt(4);
-            numberMouv = numberMouv + 1;
-            Tile targetTile = getMapGrid()[currentTile.getPosition().getX() - numberMouv][currentTile.getPosition().getY()];
-
-            if (targetTile.getPosition().getX() < 0){
-                targetTile = getMapGrid()[getMapWidth() -1][targetTile.getPosition().getY()];
-            }
-
-            Tile previousTile = currentTile;
-            Tile nextTile = currentTile;
-
-            while(true){
-                nextTile = moveWest(nextTile);
-
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
-                }
-
-                if (nextTile == targetTile) {
-                    break;
-                }
-            }
-            Result result = new Result(nextTile, energyPoint);
-            return result;
-        }
-
-        Result result = new Result(currentTile, energyPoint);
-        return result;
+        // Sinon, choisir une direction aléatoire
+        Direction randomDirection = Direction.getRandomDirection();
+        return nextTile(currentTile, energyPoint, randomDirection);
     }
 }
