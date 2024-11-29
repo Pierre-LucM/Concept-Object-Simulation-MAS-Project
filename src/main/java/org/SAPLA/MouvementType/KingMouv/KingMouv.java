@@ -57,15 +57,14 @@ public class KingMouv extends MouvementType {
     }
 
     public Result kingMov(Tile currentTile, int energyPoint) {
-        if (energyPoint > 20) {
+        if (energyPoint > (100 * 0.2)) {
             Direction randomDirection = Direction.getRandomDirection();
 
             if (randomDirection == Direction.NORTH) {
 
                 Tile targetTile = getMapGrid()[currentTile.getPosition().getX()][currentTile.getPosition().getY() + 1];
                 if (targetTile.getPosition().getY() > getMapHeight()){
-                    int maxTargetY = targetTile.getPosition().getY() - getMapHeight();
-                    targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                    targetTile = getMapGrid()[targetTile.getPosition().getX()][getMapHeight() -1];
                 }
 
                 Tile previousTile = currentTile;
@@ -94,12 +93,10 @@ public class KingMouv extends MouvementType {
                 Tile targetTile = getMapGrid()[currentTile.getPosition().getX() + 1][currentTile.getPosition().getY() + 1];
 
                 if (targetTile.getPosition().getX() > getMapWidth()){
-                    int maxTargetX = targetTile.getPosition().getX() - getMapWidth();
-                    targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                    targetTile = getMapGrid()[getMapWidth() -1][targetTile.getPosition().getY()];
                 }
                 if (targetTile.getPosition().getY() > getMapHeight()){
-                    int maxTargetY = targetTile.getPosition().getY() - getMapHeight();
-                    targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                    targetTile = getMapGrid()[targetTile.getPosition().getX()][getMapHeight() -1];
                 }
 
                 Tile previousTile = currentTile;
@@ -136,8 +133,7 @@ public class KingMouv extends MouvementType {
                 Tile targetTile = getMapGrid()[currentTile.getPosition().getX() + 1][currentTile.getPosition().getY()];
 
                 if (targetTile.getPosition().getX() > getMapWidth()){
-                    int maxTargetX = targetTile.getPosition().getX() - getMapWidth();
-                    targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                    targetTile = getMapGrid()[getMapWidth() -1][targetTile.getPosition().getY()];
                 }
 
                 Tile previousTile = currentTile;
@@ -165,12 +161,10 @@ public class KingMouv extends MouvementType {
                 Tile targetTile = getMapGrid()[currentTile.getPosition().getX() + 1][currentTile.getPosition().getY() - 1];
 
                 if (targetTile.getPosition().getX() > getMapWidth()){
-                    int maxTargetX = targetTile.getPosition().getX() - getMapWidth();
-                    targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                    targetTile = getMapGrid()[getMapWidth() -1][targetTile.getPosition().getY()];
                 }
                 if (targetTile.getPosition().getY() < 0){
-                    int maxTargetY = targetTile.getPosition().getY() + getMapHeight();
-                    targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                    targetTile = getMapGrid()[targetTile.getPosition().getX()][1];
                 }
 
                 Tile previousTile = currentTile;
@@ -207,8 +201,7 @@ public class KingMouv extends MouvementType {
                 Tile targetTile = getMapGrid()[currentTile.getPosition().getX()][currentTile.getPosition().getY() - 1];
 
                 if (targetTile.getPosition().getY() < 0){
-                    int maxTargetY = targetTile.getPosition().getY() + getMapHeight();
-                    targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                    targetTile = getMapGrid()[targetTile.getPosition().getX()][1];
                 }
 
                 Tile previousTile = currentTile;
@@ -236,12 +229,10 @@ public class KingMouv extends MouvementType {
                 Tile targetTile = getMapGrid()[currentTile.getPosition().getX() - 1][currentTile.getPosition().getY() - 1];
 
                 if (targetTile.getPosition().getX() < 0){
-                    int maxTargetX = targetTile.getPosition().getX() + getMapWidth();
-                    targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                    targetTile = getMapGrid()[1][targetTile.getPosition().getY()];
                 }
                 if (targetTile.getPosition().getY() < 0){
-                    int maxTargetY = targetTile.getPosition().getY() + getMapHeight();
-                    targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                    targetTile = getMapGrid()[targetTile.getPosition().getX()][1];
                 }
 
                 Tile previousTile = currentTile;
@@ -276,10 +267,8 @@ public class KingMouv extends MouvementType {
 
             if (randomDirection == Direction.WEST) {
                 Tile targetTile = getMapGrid()[currentTile.getPosition().getX() - 1][currentTile.getPosition().getY()];
-
                 if (targetTile.getPosition().getX() < 0){
-                    int maxTargetX = targetTile.getPosition().getX() + getMapWidth();
-                    targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                    targetTile = getMapGrid()[1][targetTile.getPosition().getY()];
                 }
 
                 Tile previousTile = currentTile;
@@ -308,13 +297,11 @@ public class KingMouv extends MouvementType {
 
                 Tile targetTile = getMapGrid()[currentTile.getPosition().getX() - 1][currentTile.getPosition().getY() + 1];
 
-                if (targetTile.getPosition().getX() < getMapWidth()){
-                    int maxTargetX = targetTile.getPosition().getX() + getMapWidth();
-                    targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                if (targetTile.getPosition().getX() < 0){
+                    targetTile = getMapGrid()[1][targetTile.getPosition().getY()];
                 }
                 if (targetTile.getPosition().getY() > getMapHeight()){
-                    int maxTargetY = targetTile.getPosition().getY() - getMapHeight();
-                    targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                    targetTile = getMapGrid()[targetTile.getPosition().getX()][getMapHeight() -1];
                 }
 
                 Tile previousTile = currentTile;
@@ -353,8 +340,7 @@ public class KingMouv extends MouvementType {
 
             Tile targetTile = getMapGrid()[currentTile.getPosition().getX()][currentTile.getPosition().getY() + 1];
             if (targetTile.getPosition().getY() > getMapHeight()){
-                int maxTargetY = targetTile.getPosition().getY() - getMapHeight();
-                targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                targetTile = getMapGrid()[targetTile.getPosition().getX()][getMapHeight() -1];
             }
 
             Tile previousTile = currentTile;
@@ -383,12 +369,10 @@ public class KingMouv extends MouvementType {
             Tile targetTile = getMapGrid()[currentTile.getPosition().getX() + 1][currentTile.getPosition().getY() + 1];
 
             if (targetTile.getPosition().getX() > getMapWidth()){
-                int maxTargetX = targetTile.getPosition().getX() - getMapWidth();
-                targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                targetTile = getMapGrid()[getMapWidth() -1][targetTile.getPosition().getY()];
             }
             if (targetTile.getPosition().getY() > getMapHeight()){
-                int maxTargetY = targetTile.getPosition().getY() - getMapHeight();
-                targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                targetTile = getMapGrid()[targetTile.getPosition().getX()][getMapHeight() -1];
             }
 
             Tile previousTile = currentTile;
@@ -425,8 +409,7 @@ public class KingMouv extends MouvementType {
             Tile targetTile = getMapGrid()[currentTile.getPosition().getX() + 1][currentTile.getPosition().getY()];
 
             if (targetTile.getPosition().getX() > getMapWidth()){
-                int maxTargetX = targetTile.getPosition().getX() - getMapWidth();
-                targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                targetTile = getMapGrid()[getMapWidth() -1][targetTile.getPosition().getY()];
             }
 
             Tile previousTile = currentTile;
@@ -454,12 +437,10 @@ public class KingMouv extends MouvementType {
             Tile targetTile = getMapGrid()[currentTile.getPosition().getX() + 1][currentTile.getPosition().getY() - 1];
 
             if (targetTile.getPosition().getX() > getMapWidth()){
-                int maxTargetX = targetTile.getPosition().getX() - getMapWidth();
-                targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                targetTile = getMapGrid()[getMapWidth() -1][targetTile.getPosition().getY()];
             }
             if (targetTile.getPosition().getY() < 0){
-                int maxTargetY = targetTile.getPosition().getY() + getMapHeight();
-                targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                targetTile = getMapGrid()[targetTile.getPosition().getX()][1];
             }
 
             Tile previousTile = currentTile;
@@ -496,8 +477,7 @@ public class KingMouv extends MouvementType {
             Tile targetTile = getMapGrid()[currentTile.getPosition().getX()][currentTile.getPosition().getY() - 1];
 
             if (targetTile.getPosition().getY() < 0){
-                int maxTargetY = targetTile.getPosition().getY() + getMapHeight();
-                targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                targetTile = getMapGrid()[targetTile.getPosition().getX()][1];
             }
 
             Tile previousTile = currentTile;
@@ -525,12 +505,10 @@ public class KingMouv extends MouvementType {
             Tile targetTile = getMapGrid()[currentTile.getPosition().getX() - 1][currentTile.getPosition().getY() - 1];
 
             if (targetTile.getPosition().getX() < 0){
-                int maxTargetX = targetTile.getPosition().getX() + getMapWidth();
-                targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                targetTile = getMapGrid()[1][targetTile.getPosition().getY()];
             }
             if (targetTile.getPosition().getY() < 0){
-                int maxTargetY = targetTile.getPosition().getY() + getMapHeight();
-                targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                targetTile = getMapGrid()[targetTile.getPosition().getX()][1];
             }
 
             Tile previousTile = currentTile;
@@ -565,10 +543,8 @@ public class KingMouv extends MouvementType {
 
         if (directionToSafeZone == Direction.WEST) {
             Tile targetTile = getMapGrid()[currentTile.getPosition().getX() - 1][currentTile.getPosition().getY()];
-
             if (targetTile.getPosition().getX() < 0){
-                int maxTargetX = targetTile.getPosition().getX() + getMapWidth();
-                targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                targetTile = getMapGrid()[1][targetTile.getPosition().getY()];
             }
 
             Tile previousTile = currentTile;
@@ -597,13 +573,11 @@ public class KingMouv extends MouvementType {
 
             Tile targetTile = getMapGrid()[currentTile.getPosition().getX() - 1][currentTile.getPosition().getY() + 1];
 
-            if (targetTile.getPosition().getX() < getMapWidth()){
-                int maxTargetX = targetTile.getPosition().getX() + getMapWidth();
-                targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+            if (targetTile.getPosition().getX() < 0){
+                targetTile = getMapGrid()[1][targetTile.getPosition().getY()];
             }
             if (targetTile.getPosition().getY() > getMapHeight()){
-                int maxTargetY = targetTile.getPosition().getY() - getMapHeight();
-                targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                targetTile = getMapGrid()[targetTile.getPosition().getX()][getMapHeight() -1];
             }
 
             Tile previousTile = currentTile;

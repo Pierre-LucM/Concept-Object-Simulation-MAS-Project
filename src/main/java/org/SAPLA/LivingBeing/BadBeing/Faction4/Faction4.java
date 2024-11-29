@@ -3,7 +3,6 @@ import org.SAPLA.Enum.Direction;
 import org.SAPLA.LivingBeing.BadBeing.BadBeing;
 import org.SAPLA.Map.Tile;
 import org.SAPLA.MouvementType.CavalerMouv.CavalerMouv;
-import org.SAPLA.MouvementType.DiagonalMouv.DiagonalMouv;
 import org.SAPLA.Result.Result;
 
 import java.util.List;
@@ -21,9 +20,9 @@ public class Faction4 <T extends CavalerMouv> extends BadBeing {
     @Override
     public void move() {
         if (getEnergyPoint() > 0) {
-            Result result = _mouvementCavaler.cavalerMov(getCurrentTile(), getEnergyPoint());
-            setCurrentTile(result.getTile());
-            setEnergyPoint(result.getEnergyPoint());
+            Result result = _mouvementCavaler.cavalerMov(super.getCurrentTile(), super.getEnergyPoint());
+            super.setCurrentTile(result.getTile());
+            super.setEnergyPoint(result.getEnergyPoint());
         }
     }
 

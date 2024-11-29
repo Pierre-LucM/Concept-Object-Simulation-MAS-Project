@@ -4,7 +4,6 @@ import org.SAPLA.LivingBeing.BadBeing.BadBeing;
 import org.SAPLA.Map.Tile;
 import org.SAPLA.Enum.Direction;
 import org.SAPLA.MouvementType.DiagonalMouv.DiagonalMouv;
-import org.SAPLA.MouvementType.MouvementType;
 import org.SAPLA.Result.Result;
 
 public class Faction3 <T extends DiagonalMouv> extends BadBeing{
@@ -19,9 +18,9 @@ public class Faction3 <T extends DiagonalMouv> extends BadBeing{
     @Override
     public void move() {
         if (getEnergyPoint() > 0) {
-            Result result = _mouvementDiagonal.diagMove(getCurrentTile(), getEnergyPoint());
-            setCurrentTile(result.getTile());
-            setEnergyPoint(result.getEnergyPoint());
+            Result result = _mouvementDiagonal.diagMove(super.getCurrentTile(),super.getEnergyPoint());
+            super.setCurrentTile(result.getTile());
+            super.setEnergyPoint(result.getEnergyPoint());
         }
     }
 

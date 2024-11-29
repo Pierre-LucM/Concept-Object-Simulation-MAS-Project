@@ -18,9 +18,9 @@ public class Faction1 <T extends KingMouv> extends GoodBeing {
     @Override
     public void move() {
         if (getEnergyPoint() > 0) {
-            Result result = _mouvementKing.kingMov(getCurrentTile(), getEnergyPoint());
-            setCurrentTile(result.getTile());
-            setEnergyPoint(result.getEnergyPoint());
+            Result result = _mouvementKing.kingMov(super.getCurrentTile(), super.getEnergyPoint());
+            super.setCurrentTile(result.getTile());
+            super.setEnergyPoint(result.getEnergyPoint());
         }
     }
 

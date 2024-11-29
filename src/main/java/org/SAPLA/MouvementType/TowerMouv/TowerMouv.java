@@ -58,7 +58,7 @@ public class TowerMouv extends MouvementType {
     }
 
     public Result towerMov(Tile currentTile, int energyPoint) {
-        if (energyPoint > 20) {
+        if (energyPoint > (100 * 0.2)) {
             Direction randomDirection = Direction.getRandomDirection();
 
             if (randomDirection == Direction.NORTH && randomDirection == Direction.NORTHEAST) {
@@ -68,8 +68,7 @@ public class TowerMouv extends MouvementType {
                 Tile targetTile = getMapGrid()[currentTile.getPosition().getX()][currentTile.getPosition().getY() + numberMouv];
 
                 if (targetTile.getPosition().getY() > getMapHeight()){
-                    int maxTargetY = targetTile.getPosition().getY() - getMapHeight();
-                    targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                    targetTile = getMapGrid()[targetTile.getPosition().getX()][getMapHeight() -1];
                 }
 
                 Tile previousTile = currentTile;
@@ -100,8 +99,7 @@ public class TowerMouv extends MouvementType {
                 Tile targetTile = getMapGrid()[currentTile.getPosition().getX() + numberMouv][currentTile.getPosition().getY()];
 
                 if (targetTile.getPosition().getX() > getMapWidth()){
-                    int maxTargetX = targetTile.getPosition().getX() - getMapWidth();
-                    targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                    targetTile = getMapGrid()[getMapWidth() -1][targetTile.getPosition().getY()];
                 }
 
                 Tile previousTile = currentTile;
@@ -132,8 +130,7 @@ public class TowerMouv extends MouvementType {
                 Tile targetTile = getMapGrid()[currentTile.getPosition().getX()][currentTile.getPosition().getY() - numberMouv];
 
                 if (targetTile.getPosition().getY() < 0){
-                    int maxTargetY = targetTile.getPosition().getY() + getMapHeight();
-                    targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                    targetTile = getMapGrid()[targetTile.getPosition().getX()][getMapHeight() -1];
                 }
 
                 Tile previousTile = currentTile;
@@ -164,8 +161,7 @@ public class TowerMouv extends MouvementType {
                 Tile targetTile = getMapGrid()[currentTile.getPosition().getX() - numberMouv][currentTile.getPosition().getY()];
 
                 if (targetTile.getPosition().getX() < 0){
-                    int maxTargetX = targetTile.getPosition().getX() + getMapWidth();
-                    targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                    targetTile = getMapGrid()[getMapWidth() -1][targetTile.getPosition().getY()];
                 }
 
                 Tile previousTile = currentTile;
@@ -199,8 +195,7 @@ public class TowerMouv extends MouvementType {
             Tile targetTile = getMapGrid()[currentTile.getPosition().getX()][currentTile.getPosition().getY() + numberMouv];
 
             if (targetTile.getPosition().getY() > getMapHeight()){
-                int maxTargetY = targetTile.getPosition().getY() - getMapHeight();
-                targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                targetTile = getMapGrid()[targetTile.getPosition().getX()][getMapHeight() -1];
             }
 
             Tile previousTile = currentTile;
@@ -231,8 +226,7 @@ public class TowerMouv extends MouvementType {
             Tile targetTile = getMapGrid()[currentTile.getPosition().getX() + numberMouv][currentTile.getPosition().getY()];
 
             if (targetTile.getPosition().getX() > getMapWidth()){
-                int maxTargetX = targetTile.getPosition().getX() - getMapWidth();
-                targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                targetTile = getMapGrid()[getMapWidth() -1][targetTile.getPosition().getY()];
             }
 
             Tile previousTile = currentTile;
@@ -263,8 +257,7 @@ public class TowerMouv extends MouvementType {
             Tile targetTile = getMapGrid()[currentTile.getPosition().getX()][currentTile.getPosition().getY() - numberMouv];
 
             if (targetTile.getPosition().getY() < 0){
-                int maxTargetY = targetTile.getPosition().getY() + getMapHeight();
-                targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                targetTile = getMapGrid()[targetTile.getPosition().getX()][getMapHeight() -1];
             }
 
             Tile previousTile = currentTile;
@@ -295,8 +288,7 @@ public class TowerMouv extends MouvementType {
             Tile targetTile = getMapGrid()[currentTile.getPosition().getX() - numberMouv][currentTile.getPosition().getY()];
 
             if (targetTile.getPosition().getX() < 0){
-                int maxTargetX = targetTile.getPosition().getX() + getMapWidth();
-                targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                targetTile = getMapGrid()[getMapWidth() -1][targetTile.getPosition().getY()];
             }
 
             Tile previousTile = currentTile;

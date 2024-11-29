@@ -20,9 +20,9 @@ public class Faction2 <T extends TowerMouv> extends GoodBeing {
     @Override
     public void move() {
         if (getEnergyPoint() > 0){
-            Result result = _mouvementTower.towerMov(getCurrentTile(), getEnergyPoint());
-            setCurrentTile(result.getTile());
-            setEnergyPoint(result.getEnergyPoint());
+            Result result = _mouvementTower.towerMov(super.getCurrentTile(), super.getEnergyPoint());
+            super.setCurrentTile(result.getTile());
+            super.setEnergyPoint(result.getEnergyPoint());
         }
     }
 

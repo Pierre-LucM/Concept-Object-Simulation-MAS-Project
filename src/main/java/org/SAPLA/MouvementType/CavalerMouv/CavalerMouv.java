@@ -6,8 +6,6 @@ import org.SAPLA.Map.Tile;
 import org.SAPLA.MouvementType.MouvementType;
 import org.SAPLA.Result.Result;
 
-import java.util.Random;
-
 import static org.SAPLA.Map.Map.*;
 import static org.SAPLA.Map.Map.getMapHeight;
 
@@ -58,7 +56,7 @@ public class CavalerMouv extends MouvementType {
 
     public Result cavalerMov(Tile currentTile, int energyPoint) {
 
-        if (energyPoint > 20) {
+        if (energyPoint > (100 * 0.2)) {
             Direction randomDirection = Direction.getRandomDirection();
 
             if (randomDirection == Direction.NORTH) {
@@ -66,61 +64,45 @@ public class CavalerMouv extends MouvementType {
                 Tile targetTile = getMapGrid()[currentTile.getPosition().getX() + 2][currentTile.getPosition().getY() + 3];
 
                 if (targetTile.getPosition().getX() > getMapWidth()){
-                    int maxTargetX = targetTile.getPosition().getX() - getMapWidth();
-                    targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                    targetTile = getMapGrid()[getMapWidth() -1][targetTile.getPosition().getY()];
                 }
                 if (targetTile.getPosition().getY() > getMapHeight()){
-                    int maxTargetY = targetTile.getPosition().getY() - getMapHeight();
-                    targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                    targetTile = getMapGrid()[targetTile.getPosition().getX()][getMapHeight() -1];
                 }
 
                 Tile previousTile = currentTile;
                 Tile nextTile = currentTile;
-
+                boolean stopMove = false;
                 while(true){
-                    nextTile = moveNorth(nextTile);
 
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
+                    for (int i = 0; i < 3; i++) {
+                        nextTile = moveNorth(nextTile);
+                        if (nextTile == previousTile) {
+                            stopMove = true;
+                            break;
+                        }else{
+                            previousTile = nextTile;
+                            energyPoint -= 1;
+                        }
                     }
 
-                    nextTile = moveNorth(nextTile);
-
-                    if (nextTile == previousTile) {
+                    if (stopMove == true){
                         break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
                     }
 
-                    nextTile = moveNorth(nextTile);
-
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
+                    for (int i = 0; i < 2; i++) {
+                        nextTile = moveEast(nextTile);
+                        if (nextTile == previousTile) {
+                            stopMove = true;
+                            break;
+                        }else{
+                            previousTile = nextTile;
+                            energyPoint -= 1;
+                        }
                     }
 
-                    nextTile = moveEast(nextTile);
-
-                    if (nextTile == previousTile) {
+                    if (stopMove == true){
                         break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
-                    }
-
-                    nextTile = moveEast(nextTile);
-
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
                     }
 
                     if (nextTile == targetTile) {
@@ -136,61 +118,46 @@ public class CavalerMouv extends MouvementType {
                 Tile targetTile = getMapGrid()[currentTile.getPosition().getX() + 3][currentTile.getPosition().getY() + 2];
 
                 if (targetTile.getPosition().getX() > getMapWidth()){
-                    int maxTargetX = targetTile.getPosition().getX() - getMapWidth();
-                    targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                    targetTile = getMapGrid()[getMapWidth() -1][targetTile.getPosition().getY()];
                 }
                 if (targetTile.getPosition().getY() > getMapHeight()){
-                    int maxTargetY = targetTile.getPosition().getY() - getMapHeight();
-                    targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                    targetTile = getMapGrid()[targetTile.getPosition().getX()][getMapHeight() -1];
                 }
 
                 Tile previousTile = currentTile;
                 Tile nextTile = currentTile;
+                boolean stopMove = false;
 
                 while(true){
-                    nextTile = moveEast(nextTile);
 
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
+                    for (int i = 0; i < 3; i++) {
+                        nextTile = moveEast(nextTile);
+                        if (nextTile == previousTile) {
+                            stopMove = true;
+                            break;
+                        }else{
+                            previousTile = nextTile;
+                            energyPoint -= 1;
+                        }
                     }
 
-                    nextTile = moveEast(nextTile);
-
-                    if (nextTile == previousTile) {
+                    if (stopMove == true){
                         break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
                     }
 
-                    nextTile = moveEast(nextTile);
-
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
+                    for (int i = 0; i < 2; i++) {
+                        nextTile = moveNorth(nextTile);
+                        if (nextTile == previousTile) {
+                            stopMove = true;
+                            break;
+                        }else{
+                            previousTile = nextTile;
+                            energyPoint -= 1;
+                        }
                     }
 
-                    nextTile = moveNorth(nextTile);
-
-                    if (nextTile == previousTile) {
+                    if (stopMove == true){
                         break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
-                    }
-
-                    nextTile = moveNorth(nextTile);
-
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
                     }
 
                     if (nextTile == targetTile) {
@@ -205,61 +172,46 @@ public class CavalerMouv extends MouvementType {
                 Tile targetTile = getMapGrid()[currentTile.getPosition().getX() + 3][currentTile.getPosition().getY() - 2];
 
                 if (targetTile.getPosition().getX() > getMapWidth()){
-                    int maxTargetX = targetTile.getPosition().getX() - getMapWidth();
-                    targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                    targetTile = getMapGrid()[getMapWidth() -1][targetTile.getPosition().getY()];
                 }
                 if (targetTile.getPosition().getY() < 0){
-                    int maxTargetY = targetTile.getPosition().getY() + getMapHeight();
-                    targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                    targetTile = getMapGrid()[targetTile.getPosition().getX()][1];
                 }
 
                 Tile previousTile = currentTile;
                 Tile nextTile = currentTile;
+                boolean stopMove = false;
 
                 while(true){
-                    nextTile = moveEast(nextTile);
 
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
+                    for (int i = 0; i < 3; i++) {
+                        nextTile = moveEast(nextTile);
+                        if (nextTile == previousTile) {
+                            stopMove = true;
+                            break;
+                        }else{
+                            previousTile = nextTile;
+                            energyPoint -= 1;
+                        }
                     }
 
-                    nextTile = moveEast(nextTile);
-
-                    if (nextTile == previousTile) {
+                    if (stopMove == true){
                         break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
                     }
 
-                    nextTile = moveEast(nextTile);
-
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
+                    for (int i = 0; i < 2; i++) {
+                        nextTile = moveSouth(nextTile);
+                        if (nextTile == previousTile) {
+                            stopMove = true;
+                            break;
+                        }else{
+                            previousTile = nextTile;
+                            energyPoint -= 1;
+                        }
                     }
 
-                    nextTile = moveSouth(nextTile);
-
-                    if (nextTile == previousTile) {
+                    if (stopMove == true){
                         break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
-                    }
-
-                    nextTile = moveSouth(nextTile);
-
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
                     }
 
                     if (nextTile == targetTile) {
@@ -274,61 +226,46 @@ public class CavalerMouv extends MouvementType {
                 Tile targetTile = getMapGrid()[currentTile.getPosition().getX() + 2][currentTile.getPosition().getY() - 3];
 
                 if (targetTile.getPosition().getX() > getMapWidth()){
-                    int maxTargetX = targetTile.getPosition().getX() - getMapWidth();
-                    targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                    targetTile = getMapGrid()[getMapWidth() -1][targetTile.getPosition().getY()];
                 }
                 if (targetTile.getPosition().getY() < 0){
-                    int maxTargetY = targetTile.getPosition().getY() + getMapHeight();
-                    targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                    targetTile = getMapGrid()[targetTile.getPosition().getX()][1];
                 }
 
                 Tile previousTile = currentTile;
                 Tile nextTile = currentTile;
+                boolean stopMove = false;
 
                 while(true){
-                    nextTile = moveSouth(nextTile);
 
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
+                    for (int i = 0; i < 3; i++) {
+                        nextTile = moveSouth(nextTile);
+                        if (nextTile == previousTile) {
+                            stopMove = true;
+                            break;
+                        }else{
+                            previousTile = nextTile;
+                            energyPoint -= 1;
+                        }
                     }
 
-                    nextTile = moveSouth(nextTile);
-
-                    if (nextTile == previousTile) {
+                    if (stopMove == true){
                         break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
                     }
 
-                    nextTile = moveSouth(nextTile);
-
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
+                    for (int i = 0; i < 2; i++) {
+                        nextTile = moveEast(nextTile);
+                        if (nextTile == previousTile) {
+                            stopMove = true;
+                            break;
+                        }else{
+                            previousTile = nextTile;
+                            energyPoint -= 1;
+                        }
                     }
 
-                    nextTile = moveEast(nextTile);
-
-                    if (nextTile == previousTile) {
+                    if (stopMove == true){
                         break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
-                    }
-
-                    nextTile = moveEast(nextTile);
-
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
                     }
 
                     if (nextTile == targetTile) {
@@ -343,61 +280,46 @@ public class CavalerMouv extends MouvementType {
                 Tile targetTile = getMapGrid()[currentTile.getPosition().getX() - 2][currentTile.getPosition().getY() - 3];
 
                 if (targetTile.getPosition().getX() < 0){
-                    int maxTargetX = targetTile.getPosition().getX() + getMapWidth();
-                    targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                    targetTile = getMapGrid()[1][targetTile.getPosition().getY()];
                 }
-                if (targetTile.getPosition().getY() < 0){
-                    int maxTargetY = targetTile.getPosition().getY() + getMapHeight();
-                    targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                if (targetTile.getPosition().getY() <0){
+                    targetTile = getMapGrid()[targetTile.getPosition().getX()][1];
                 }
 
                 Tile previousTile = currentTile;
                 Tile nextTile = currentTile;
+                boolean stopMove = false;
 
                 while(true){
-                    nextTile = moveSouth(nextTile);
 
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
+                    for (int i = 0; i < 3; i++) {
+                        nextTile = moveSouth(nextTile);
+                        if (nextTile == previousTile) {
+                            stopMove = true;
+                            break;
+                        }else{
+                            previousTile = nextTile;
+                            energyPoint -= 1;
+                        }
                     }
 
-                    nextTile = moveSouth(nextTile);
-
-                    if (nextTile == previousTile) {
+                    if (stopMove == true){
                         break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
                     }
 
-                    nextTile = moveSouth(nextTile);
-
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
+                    for (int i = 0; i < 2; i++) {
+                        nextTile = moveWest(nextTile);
+                        if (nextTile == previousTile) {
+                            stopMove = true;
+                            break;
+                        }else{
+                            previousTile = nextTile;
+                            energyPoint -= 1;
+                        }
                     }
 
-                    nextTile = moveEast(nextTile);
-
-                    if (nextTile == previousTile) {
+                    if (stopMove == true){
                         break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
-                    }
-
-                    nextTile = moveEast(nextTile);
-
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
                     }
 
                     if (nextTile == targetTile) {
@@ -412,61 +334,46 @@ public class CavalerMouv extends MouvementType {
                 Tile targetTile = getMapGrid()[currentTile.getPosition().getX() - 3][currentTile.getPosition().getY() - 2];
 
                 if (targetTile.getPosition().getX() < 0){
-                    int maxTargetX = targetTile.getPosition().getX() + getMapWidth();
-                    targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                    targetTile = getMapGrid()[1][targetTile.getPosition().getY()];
                 }
                 if (targetTile.getPosition().getY() < 0){
-                    int maxTargetY = targetTile.getPosition().getY() + getMapHeight();
-                    targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                    targetTile = getMapGrid()[targetTile.getPosition().getX()][1];
                 }
 
                 Tile previousTile = currentTile;
                 Tile nextTile = currentTile;
+                boolean stopMove = false;
 
                 while(true){
-                    nextTile = moveEast(nextTile);
 
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
+                    for (int i = 0; i < 3; i++) {
+                        nextTile = moveWest(nextTile);
+                        if (nextTile == previousTile) {
+                            stopMove = true;
+                            break;
+                        }else{
+                            previousTile = nextTile;
+                            energyPoint -= 1;
+                        }
                     }
 
-                    nextTile = moveEast(nextTile);
-
-                    if (nextTile == previousTile) {
+                    if (stopMove == true){
                         break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
                     }
 
-                    nextTile = moveEast(nextTile);
-
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
+                    for (int i = 0; i < 2; i++) {
+                        nextTile = moveSouth(nextTile);
+                        if (nextTile == previousTile) {
+                            stopMove = true;
+                            break;
+                        }else{
+                            previousTile = nextTile;
+                            energyPoint -= 1;
+                        }
                     }
 
-                    nextTile = moveSouth(nextTile);
-
-                    if (nextTile == previousTile) {
+                    if (stopMove == true){
                         break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
-                    }
-
-                    nextTile = moveSouth(nextTile);
-
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
                     }
 
                     if (nextTile == targetTile) {
@@ -481,62 +388,46 @@ public class CavalerMouv extends MouvementType {
                 Tile targetTile = getMapGrid()[currentTile.getPosition().getX() - 3][currentTile.getPosition().getY() + 2];
 
                 if (targetTile.getPosition().getX() < 0){
-                    int maxTargetX = targetTile.getPosition().getX() + getMapWidth();
-                    targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                    targetTile = getMapGrid()[1][targetTile.getPosition().getY()];
                 }
                 if (targetTile.getPosition().getY() > getMapHeight()){
-                    int maxTargetY = targetTile.getPosition().getY() - getMapHeight();
-                    targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                    targetTile = getMapGrid()[targetTile.getPosition().getX()][getMapHeight() -1];
                 }
 
                 Tile previousTile = currentTile;
                 Tile nextTile = currentTile;
+                boolean stopMove = false;
 
                 while(true){
 
-                    nextTile = moveWest(nextTile);
-
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
+                    for (int i = 0; i < 3; i++) {
+                        nextTile = moveWest(nextTile);
+                        if (nextTile == previousTile) {
+                            stopMove = true;
+                            break;
+                        }else{
+                            previousTile = nextTile;
+                            energyPoint -= 1;
+                        }
                     }
 
-                    nextTile = moveWest(nextTile);
-
-                    if (nextTile == previousTile) {
+                    if (stopMove == true){
                         break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
                     }
 
-                    nextTile = moveWest(nextTile);
-
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
+                    for (int i = 0; i < 2; i++) {
+                        nextTile = moveNorth(nextTile);
+                        if (nextTile == previousTile) {
+                            stopMove = true;
+                            break;
+                        }else{
+                            previousTile = nextTile;
+                            energyPoint -= 1;
+                        }
                     }
 
-                    nextTile = moveNorth(nextTile);
-
-                    if (nextTile == previousTile) {
+                    if (stopMove == true){
                         break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
-                    }
-
-                    nextTile = moveNorth(nextTile);
-
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
                     }
 
                     if (nextTile == targetTile) {
@@ -551,62 +442,47 @@ public class CavalerMouv extends MouvementType {
 
                 Tile targetTile = getMapGrid()[currentTile.getPosition().getX() - 2][currentTile.getPosition().getY() + 3];
 
-                if (targetTile.getPosition().getX() < getMapWidth()){
-                    int maxTargetX = targetTile.getPosition().getX() + getMapWidth();
-                    targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                if (targetTile.getPosition().getX() < 0){
+                    targetTile = getMapGrid()[1][targetTile.getPosition().getY()];
                 }
                 if (targetTile.getPosition().getY() > getMapHeight()){
-                    int maxTargetY = targetTile.getPosition().getY() - getMapHeight();
-                    targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                    targetTile = getMapGrid()[targetTile.getPosition().getX()][getMapHeight() -1];
                 }
 
                 Tile previousTile = currentTile;
                 Tile nextTile = currentTile;
+                boolean stopMove = false;
 
                 while(true){
-                    nextTile = moveNorth(nextTile);
 
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
+                    for (int i = 0; i < 3; i++) {
+                        nextTile = moveNorth(nextTile);
+                        if (nextTile == previousTile) {
+                            stopMove = true;
+                            break;
+                        }else{
+                            previousTile = nextTile;
+                            energyPoint -= 1;
+                        }
                     }
 
-                    nextTile = moveNorth(nextTile);
-
-                    if (nextTile == previousTile) {
+                    if (stopMove == true){
                         break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
                     }
 
-                    nextTile = moveNorth(nextTile);
-
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
+                    for (int i = 0; i < 2; i++) {
+                        nextTile = moveWest(nextTile);
+                        if (nextTile == previousTile) {
+                            stopMove = true;
+                            break;
+                        }else{
+                            previousTile = nextTile;
+                            energyPoint -= 1;
+                        }
                     }
 
-                    nextTile = moveWest(nextTile);
-
-                    if (nextTile == previousTile) {
+                    if (stopMove == true){
                         break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
-                    }
-
-                    nextTile = moveWest(nextTile);
-
-                    if (nextTile == previousTile) {
-                        break;
-                    }else{
-                        previousTile = nextTile;
-                        energyPoint -= 1;
                     }
 
                     if (nextTile == targetTile) {
@@ -625,61 +501,45 @@ public class CavalerMouv extends MouvementType {
             Tile targetTile = getMapGrid()[currentTile.getPosition().getX() + 2][currentTile.getPosition().getY() + 3];
 
             if (targetTile.getPosition().getX() > getMapWidth()){
-                int maxTargetX = targetTile.getPosition().getX() - getMapWidth();
-                targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                targetTile = getMapGrid()[getMapWidth() -1][targetTile.getPosition().getY()];
             }
             if (targetTile.getPosition().getY() > getMapHeight()){
-                int maxTargetY = targetTile.getPosition().getY() - getMapHeight();
-                targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                targetTile = getMapGrid()[targetTile.getPosition().getX()][getMapHeight() -1];
             }
 
             Tile previousTile = currentTile;
             Tile nextTile = currentTile;
-
+            boolean stopMove = false;
             while(true){
-                nextTile = moveNorth(nextTile);
 
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
+                for (int i = 0; i < 3; i++) {
+                    nextTile = moveNorth(nextTile);
+                    if (nextTile == previousTile) {
+                        stopMove = true;
+                        break;
+                    }else{
+                        previousTile = nextTile;
+                        energyPoint -= 1;
+                    }
                 }
 
-                nextTile = moveNorth(nextTile);
-
-                if (nextTile == previousTile) {
+                if (stopMove == true){
                     break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
                 }
 
-                nextTile = moveNorth(nextTile);
-
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
+                for (int i = 0; i < 2; i++) {
+                    nextTile = moveEast(nextTile);
+                    if (nextTile == previousTile) {
+                        stopMove = true;
+                        break;
+                    }else{
+                        previousTile = nextTile;
+                        energyPoint -= 1;
+                    }
                 }
 
-                nextTile = moveEast(nextTile);
-
-                if (nextTile == previousTile) {
+                if (stopMove == true){
                     break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
-                }
-
-                nextTile = moveEast(nextTile);
-
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
                 }
 
                 if (nextTile == targetTile) {
@@ -695,61 +555,46 @@ public class CavalerMouv extends MouvementType {
             Tile targetTile = getMapGrid()[currentTile.getPosition().getX() + 3][currentTile.getPosition().getY() + 2];
 
             if (targetTile.getPosition().getX() > getMapWidth()){
-                int maxTargetX = targetTile.getPosition().getX() - getMapWidth();
-                targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                targetTile = getMapGrid()[getMapWidth() -1][targetTile.getPosition().getY()];
             }
             if (targetTile.getPosition().getY() > getMapHeight()){
-                int maxTargetY = targetTile.getPosition().getY() - getMapHeight();
-                targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                targetTile = getMapGrid()[targetTile.getPosition().getX()][getMapHeight() -1];
             }
 
             Tile previousTile = currentTile;
             Tile nextTile = currentTile;
+            boolean stopMove = false;
 
             while(true){
-                nextTile = moveEast(nextTile);
 
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
+                for (int i = 0; i < 3; i++) {
+                    nextTile = moveEast(nextTile);
+                    if (nextTile == previousTile) {
+                        stopMove = true;
+                        break;
+                    }else{
+                        previousTile = nextTile;
+                        energyPoint -= 1;
+                    }
                 }
 
-                nextTile = moveEast(nextTile);
-
-                if (nextTile == previousTile) {
+                if (stopMove == true){
                     break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
                 }
 
-                nextTile = moveEast(nextTile);
-
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
+                for (int i = 0; i < 2; i++) {
+                    nextTile = moveNorth(nextTile);
+                    if (nextTile == previousTile) {
+                        stopMove = true;
+                        break;
+                    }else{
+                        previousTile = nextTile;
+                        energyPoint -= 1;
+                    }
                 }
 
-                nextTile = moveNorth(nextTile);
-
-                if (nextTile == previousTile) {
+                if (stopMove == true){
                     break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
-                }
-
-                nextTile = moveNorth(nextTile);
-
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
                 }
 
                 if (nextTile == targetTile) {
@@ -764,61 +609,46 @@ public class CavalerMouv extends MouvementType {
             Tile targetTile = getMapGrid()[currentTile.getPosition().getX() + 3][currentTile.getPosition().getY() - 2];
 
             if (targetTile.getPosition().getX() > getMapWidth()){
-                int maxTargetX = targetTile.getPosition().getX() - getMapWidth();
-                targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                targetTile = getMapGrid()[getMapWidth() -1][targetTile.getPosition().getY()];
             }
             if (targetTile.getPosition().getY() < 0){
-                int maxTargetY = targetTile.getPosition().getY() + getMapHeight();
-                targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                targetTile = getMapGrid()[targetTile.getPosition().getX()][1];
             }
 
             Tile previousTile = currentTile;
             Tile nextTile = currentTile;
+            boolean stopMove = false;
 
             while(true){
-                nextTile = moveEast(nextTile);
 
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
+                for (int i = 0; i < 3; i++) {
+                    nextTile = moveEast(nextTile);
+                    if (nextTile == previousTile) {
+                        stopMove = true;
+                        break;
+                    }else{
+                        previousTile = nextTile;
+                        energyPoint -= 1;
+                    }
                 }
 
-                nextTile = moveEast(nextTile);
-
-                if (nextTile == previousTile) {
+                if (stopMove == true){
                     break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
                 }
 
-                nextTile = moveEast(nextTile);
-
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
+                for (int i = 0; i < 2; i++) {
+                    nextTile = moveSouth(nextTile);
+                    if (nextTile == previousTile) {
+                        stopMove = true;
+                        break;
+                    }else{
+                        previousTile = nextTile;
+                        energyPoint -= 1;
+                    }
                 }
 
-                nextTile = moveSouth(nextTile);
-
-                if (nextTile == previousTile) {
+                if (stopMove == true){
                     break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
-                }
-
-                nextTile = moveSouth(nextTile);
-
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
                 }
 
                 if (nextTile == targetTile) {
@@ -833,61 +663,46 @@ public class CavalerMouv extends MouvementType {
             Tile targetTile = getMapGrid()[currentTile.getPosition().getX() + 2][currentTile.getPosition().getY() - 3];
 
             if (targetTile.getPosition().getX() > getMapWidth()){
-                int maxTargetX = targetTile.getPosition().getX() - getMapWidth();
-                targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                targetTile = getMapGrid()[getMapWidth() -1][targetTile.getPosition().getY()];
             }
             if (targetTile.getPosition().getY() < 0){
-                int maxTargetY = targetTile.getPosition().getY() + getMapHeight();
-                targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                targetTile = getMapGrid()[targetTile.getPosition().getX()][1];
             }
 
             Tile previousTile = currentTile;
             Tile nextTile = currentTile;
+            boolean stopMove = false;
 
             while(true){
-                nextTile = moveSouth(nextTile);
 
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
+                for (int i = 0; i < 3; i++) {
+                    nextTile = moveSouth(nextTile);
+                    if (nextTile == previousTile) {
+                        stopMove = true;
+                        break;
+                    }else{
+                        previousTile = nextTile;
+                        energyPoint -= 1;
+                    }
                 }
 
-                nextTile = moveSouth(nextTile);
-
-                if (nextTile == previousTile) {
+                if (stopMove == true){
                     break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
                 }
 
-                nextTile = moveSouth(nextTile);
-
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
+                for (int i = 0; i < 2; i++) {
+                    nextTile = moveEast(nextTile);
+                    if (nextTile == previousTile) {
+                        stopMove = true;
+                        break;
+                    }else{
+                        previousTile = nextTile;
+                        energyPoint -= 1;
+                    }
                 }
 
-                nextTile = moveEast(nextTile);
-
-                if (nextTile == previousTile) {
+                if (stopMove == true){
                     break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
-                }
-
-                nextTile = moveEast(nextTile);
-
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
                 }
 
                 if (nextTile == targetTile) {
@@ -902,61 +717,46 @@ public class CavalerMouv extends MouvementType {
             Tile targetTile = getMapGrid()[currentTile.getPosition().getX() - 2][currentTile.getPosition().getY() - 3];
 
             if (targetTile.getPosition().getX() < 0){
-                int maxTargetX = targetTile.getPosition().getX() + getMapWidth();
-                targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                targetTile = getMapGrid()[1][targetTile.getPosition().getY()];
             }
-            if (targetTile.getPosition().getY() < 0){
-                int maxTargetY = targetTile.getPosition().getY() + getMapHeight();
-                targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+            if (targetTile.getPosition().getY() <0){
+                targetTile = getMapGrid()[targetTile.getPosition().getX()][1];
             }
 
             Tile previousTile = currentTile;
             Tile nextTile = currentTile;
+            boolean stopMove = false;
 
             while(true){
-                nextTile = moveSouth(nextTile);
 
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
+                for (int i = 0; i < 3; i++) {
+                    nextTile = moveSouth(nextTile);
+                    if (nextTile == previousTile) {
+                        stopMove = true;
+                        break;
+                    }else{
+                        previousTile = nextTile;
+                        energyPoint -= 1;
+                    }
                 }
 
-                nextTile = moveSouth(nextTile);
-
-                if (nextTile == previousTile) {
+                if (stopMove == true){
                     break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
                 }
 
-                nextTile = moveSouth(nextTile);
-
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
+                for (int i = 0; i < 2; i++) {
+                    nextTile = moveWest(nextTile);
+                    if (nextTile == previousTile) {
+                        stopMove = true;
+                        break;
+                    }else{
+                        previousTile = nextTile;
+                        energyPoint -= 1;
+                    }
                 }
 
-                nextTile = moveEast(nextTile);
-
-                if (nextTile == previousTile) {
+                if (stopMove == true){
                     break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
-                }
-
-                nextTile = moveEast(nextTile);
-
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
                 }
 
                 if (nextTile == targetTile) {
@@ -971,61 +771,46 @@ public class CavalerMouv extends MouvementType {
             Tile targetTile = getMapGrid()[currentTile.getPosition().getX() - 3][currentTile.getPosition().getY() - 2];
 
             if (targetTile.getPosition().getX() < 0){
-                int maxTargetX = targetTile.getPosition().getX() + getMapWidth();
-                targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                targetTile = getMapGrid()[1][targetTile.getPosition().getY()];
             }
             if (targetTile.getPosition().getY() < 0){
-                int maxTargetY = targetTile.getPosition().getY() + getMapHeight();
-                targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                targetTile = getMapGrid()[targetTile.getPosition().getX()][1];
             }
 
             Tile previousTile = currentTile;
             Tile nextTile = currentTile;
+            boolean stopMove = false;
 
             while(true){
-                nextTile = moveEast(nextTile);
 
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
+                for (int i = 0; i < 3; i++) {
+                    nextTile = moveWest(nextTile);
+                    if (nextTile == previousTile) {
+                        stopMove = true;
+                        break;
+                    }else{
+                        previousTile = nextTile;
+                        energyPoint -= 1;
+                    }
                 }
 
-                nextTile = moveEast(nextTile);
-
-                if (nextTile == previousTile) {
+                if (stopMove == true){
                     break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
                 }
 
-                nextTile = moveEast(nextTile);
-
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
+                for (int i = 0; i < 2; i++) {
+                    nextTile = moveSouth(nextTile);
+                    if (nextTile == previousTile) {
+                        stopMove = true;
+                        break;
+                    }else{
+                        previousTile = nextTile;
+                        energyPoint -= 1;
+                    }
                 }
 
-                nextTile = moveSouth(nextTile);
-
-                if (nextTile == previousTile) {
+                if (stopMove == true){
                     break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
-                }
-
-                nextTile = moveSouth(nextTile);
-
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
                 }
 
                 if (nextTile == targetTile) {
@@ -1040,62 +825,46 @@ public class CavalerMouv extends MouvementType {
             Tile targetTile = getMapGrid()[currentTile.getPosition().getX() - 3][currentTile.getPosition().getY() + 2];
 
             if (targetTile.getPosition().getX() < 0){
-                int maxTargetX = targetTile.getPosition().getX() + getMapWidth();
-                targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+                targetTile = getMapGrid()[1][targetTile.getPosition().getY()];
             }
             if (targetTile.getPosition().getY() > getMapHeight()){
-                int maxTargetY = targetTile.getPosition().getY() - getMapHeight();
-                targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                targetTile = getMapGrid()[targetTile.getPosition().getX()][getMapHeight() -1];
             }
 
             Tile previousTile = currentTile;
             Tile nextTile = currentTile;
+            boolean stopMove = false;
 
             while(true){
 
-                nextTile = moveWest(nextTile);
-
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
+                for (int i = 0; i < 3; i++) {
+                    nextTile = moveWest(nextTile);
+                    if (nextTile == previousTile) {
+                        stopMove = true;
+                        break;
+                    }else{
+                        previousTile = nextTile;
+                        energyPoint -= 1;
+                    }
                 }
 
-                nextTile = moveWest(nextTile);
-
-                if (nextTile == previousTile) {
+                if (stopMove == true){
                     break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
                 }
 
-                nextTile = moveWest(nextTile);
-
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
+                for (int i = 0; i < 2; i++) {
+                    nextTile = moveNorth(nextTile);
+                    if (nextTile == previousTile) {
+                        stopMove = true;
+                        break;
+                    }else{
+                        previousTile = nextTile;
+                        energyPoint -= 1;
+                    }
                 }
 
-                nextTile = moveNorth(nextTile);
-
-                if (nextTile == previousTile) {
+                if (stopMove == true){
                     break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
-                }
-
-                nextTile = moveNorth(nextTile);
-
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
                 }
 
                 if (nextTile == targetTile) {
@@ -1110,62 +879,47 @@ public class CavalerMouv extends MouvementType {
 
             Tile targetTile = getMapGrid()[currentTile.getPosition().getX() - 2][currentTile.getPosition().getY() + 3];
 
-            if (targetTile.getPosition().getX() < getMapWidth()){
-                int maxTargetX = targetTile.getPosition().getX() + getMapWidth();
-                targetTile = getMapGrid()[maxTargetX][targetTile.getPosition().getX()];
+            if (targetTile.getPosition().getX() < 0){
+                targetTile = getMapGrid()[1][targetTile.getPosition().getY()];
             }
             if (targetTile.getPosition().getY() > getMapHeight()){
-                int maxTargetY = targetTile.getPosition().getY() - getMapHeight();
-                targetTile = getMapGrid()[targetTile.getPosition().getY()][maxTargetY];
+                targetTile = getMapGrid()[targetTile.getPosition().getX()][getMapHeight() -1];
             }
 
             Tile previousTile = currentTile;
             Tile nextTile = currentTile;
+            boolean stopMove = false;
 
             while(true){
-                nextTile = moveNorth(nextTile);
 
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
+                for (int i = 0; i < 3; i++) {
+                    nextTile = moveNorth(nextTile);
+                    if (nextTile == previousTile) {
+                        stopMove = true;
+                        break;
+                    }else{
+                        previousTile = nextTile;
+                        energyPoint -= 1;
+                    }
                 }
 
-                nextTile = moveNorth(nextTile);
-
-                if (nextTile == previousTile) {
+                if (stopMove == true){
                     break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
                 }
 
-                nextTile = moveNorth(nextTile);
-
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
+                for (int i = 0; i < 2; i++) {
+                    nextTile = moveWest(nextTile);
+                    if (nextTile == previousTile) {
+                        stopMove = true;
+                        break;
+                    }else{
+                        previousTile = nextTile;
+                        energyPoint -= 1;
+                    }
                 }
 
-                nextTile = moveWest(nextTile);
-
-                if (nextTile == previousTile) {
+                if (stopMove == true){
                     break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
-                }
-
-                nextTile = moveWest(nextTile);
-
-                if (nextTile == previousTile) {
-                    break;
-                }else{
-                    previousTile = nextTile;
-                    energyPoint -= 1;
                 }
 
                 if (nextTile == targetTile) {

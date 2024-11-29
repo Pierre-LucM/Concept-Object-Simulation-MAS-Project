@@ -4,26 +4,26 @@ import org.SAPLA.Map.Tile;
 
 public class Result {
     private Tile _tile;
-    private int energyPoint;
+    private int _energyPoint;
 
     public Result(Tile tile, int energyPoint) {
-        _tile = tile;
-        this.energyPoint = energyPoint;
+        this._tile = tile;
+        this._energyPoint = energyPoint;
     }
 
     public Tile getTile() {
-        return _tile;
+        return this._tile;
     }
 
     public int getEnergyPoint() {
-        return energyPoint;
+        return this._energyPoint;
     }
 
     public void setTile(Tile tile) {
-        _tile = tile;
+        this._tile = tile;
     }
 
     public void setEnergyPoint(int energyPoint) {
-        this.energyPoint = energyPoint;
+        this._energyPoint = energyPoint;
     }
 }
