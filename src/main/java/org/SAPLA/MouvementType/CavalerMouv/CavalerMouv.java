@@ -7,7 +7,6 @@ import org.SAPLA.MouvementType.MouvementType;
 import org.SAPLA.Result.Result;
 
 import static org.SAPLA.Map.Map.*;
-import static org.SAPLA.Map.Map.getMapHeight;
 
 public class CavalerMouv extends MouvementType {
 
@@ -70,139 +69,112 @@ public class CavalerMouv extends MouvementType {
         return result;
     }
 
-    public Result upMove(Tile currentTile,int energyPoint, int numbMove,  Direction nextDirection) {
-        Tile previousTile = currentTile;
-        Tile nextTile = currentTile;
+    public Result upMove(Tile currentTile,int energyPoint, int numbMove, Direction nextDirection) {
 
-        for (int i = 0; i < numbMove; i++) {
-            nextTile = moveNorth(nextTile);
-            if (nextTile == previousTile) {
-                break;
-            }else{
-                previousTile = nextTile;
-                energyPoint -= 1;
-            }
-        }
+         Result result = moveTile(currentTile, energyPoint, Direction.NORTH, numbMove);
 
          if (nextDirection != null){
-
              switch (nextDirection){
                  case EAST:
-                     return rightMove(nextTile, energyPoint, 2, null);
+                     return rightMove(result.getTile(), result.getEnergyPoint(), 2, null);
 
                  case WEST:
-                        return leftMove(nextTile, energyPoint, 2, null);
+                        return leftMove(result.getTile(), result.getEnergyPoint(), 2, null);
              }
          }
-
-        return new Result(nextTile, energyPoint);
+        return new Result(result.getTile(), result.getEnergyPoint());
     }
 
     public Result downMove(Tile currentTile,int energyPoint, int numbMove, Direction nextDirection) {
-        Tile previousTile = currentTile;
-        Tile nextTile = currentTile;
 
-        for (int i = 0; i < numbMove; i++) {
-            nextTile = moveSouth(nextTile);
-            if (nextTile == previousTile) {
-                break;
-            }else{
-                previousTile = nextTile;
-                energyPoint -= 1;
-            }
-        }
+        Result result = moveTile(currentTile, energyPoint, Direction.SOUTH, numbMove);
 
         if (nextDirection != null){
 
             switch (nextDirection){
                 case EAST:
-                    return rightMove(nextTile, energyPoint, 2, null);
+                    return rightMove(result.getTile(), result.getEnergyPoint(), 2, null);
 
                 case WEST:
-                    return leftMove(nextTile, energyPoint, 2, null);
+                    return leftMove(result.getTile(), result.getEnergyPoint(), 2, null);
             }
         }
-
-        return new Result(nextTile, energyPoint);
+        return new Result(result.getTile(), result.getEnergyPoint());
     }
 
     public Result leftMove(Tile currentTile,int energyPoint, int numbMove , Direction nextDirection) {
-        Tile previousTile = currentTile;
-        Tile nextTile = currentTile;
 
-        for (int i = 0; i < numbMove; i++) {
-            nextTile = moveWest(nextTile);
-            if (nextTile == previousTile) {
-                break;
-            }else{
-                previousTile = nextTile;
-                energyPoint -= 1;
-            }
-        }
+        Result result = moveTile(currentTile, energyPoint, Direction.WEST, numbMove);
 
         if (nextDirection != null){
 
             switch (nextDirection){
                 case NORTH:
-                    return upMove(nextTile, energyPoint, 2, null);
+                    return upMove(result.getTile(), result.getEnergyPoint(), 2, null);
 
                 case SOUTH:
-                    return downMove(nextTile, energyPoint, 2, null);
+                    return downMove(result.getTile(), result.getEnergyPoint(), 2, null);
             }
         }
 
-        return new Result(nextTile, energyPoint);
+        return new Result(result.getTile(), result.getEnergyPoint());
     }
 
     public Result rightMove(Tile currentTile,int energyPoint, int numbMove , Direction nextDirection) {
-        Tile previousTile = currentTile;
-        Tile nextTile = currentTile;
 
-        for (int i = 0; i < numbMove; i++) {
-            nextTile = moveEast(nextTile);
-            if (nextTile == previousTile) {
-                break;
-            }else{
-                previousTile = nextTile;
-                energyPoint -= 1;
-            }
-        }
+        Result result = moveTile(currentTile, energyPoint, Direction.EAST, numbMove);
 
         if (nextDirection != null){
 
             switch (nextDirection){
                 case NORTH:
-                    return upMove(nextTile, energyPoint, 2, null);
+                    return upMove(result.getTile(), result.getEnergyPoint(), 2, null);
 
                 case SOUTH:
-                    return downMove(nextTile, energyPoint, 2, null);
+                    return downMove(result.getTile(), result.getEnergyPoint(), 2, null);
             }
         }
 
-        return new Result(nextTile, energyPoint);
+        return new Result(result.getTile(), result.getEnergyPoint());
     }
 
     public Result directionToGo(Tile currentTile, int energyPoint, int maxEnergy, Direction direction) {
 
-        switch (direction) {
-            case NORTH:
-                return upMove(currentTile, energyPoint, 3, Direction.EAST);
-            case NORTHEAST:
-                return rightMove(currentTile, energyPoint, 3, Direction.NORTH);
-            case EAST:
-                return rightMove(currentTile, energyPoint, 3, Direction.SOUTH);
-            case SOUTHEAST:
-                return downMove(currentTile, energyPoint, 3, Direction.EAST);
-            case SOUTH:
-                return downMove(currentTile, energyPoint, 3, Direction.WEST);
-            case SOUTHWEST:
-                return leftMove(currentTile, energyPoint, 3, Direction.SOUTH);
-            case WEST:
-                return leftMove(currentTile, energyPoint, 3, Direction.NORTH);
-            case NORTHWEST:
-                return upMove(currentTile, energyPoint, 3, Direction.WEST);
+        return switch (direction) {
+            case NORTH -> upMove(currentTile, energyPoint, 3, Direction.EAST);
+            case NORTHEAST -> rightMove(currentTile, energyPoint, 3, Direction.NORTH);
+            case EAST -> rightMove(currentTile, energyPoint, 3, Direction.SOUTH);
+            case SOUTHEAST -> downMove(currentTile, energyPoint, 3, Direction.EAST);
+            case SOUTH -> downMove(currentTile, energyPoint, 3, Direction.WEST);
+            case SOUTHWEST -> leftMove(currentTile, energyPoint, 3, Direction.SOUTH);
+            case WEST -> leftMove(currentTile, energyPoint, 3, Direction.NORTH);
+            case NORTHWEST -> upMove(currentTile, energyPoint, 3, Direction.WEST);
+        };
+    }
+
+    public Result moveTile(Tile currentTile, int energyPoint, Direction currentDirection, int numbMove) {
+        Tile previousTile = currentTile;
+        Tile nextTile = currentTile;
+
+        for (int i = 0; i < numbMove; i++) {
+            switch(currentDirection) {
+                case NORTH:
+                    nextTile = moveNorth(nextTile);
+                case EAST:
+                    nextTile = moveEast(nextTile);
+                case SOUTH:
+                    nextTile = moveSouth(nextTile);
+                case WEST:
+                    nextTile = moveWest(nextTile);
+            }
+            if (nextTile == previousTile) {
+                break;
+            }else{
+                previousTile = nextTile;
+                energyPoint -= 1;
+            }
         }
 
-        return new Result(currentTile, energyPoint);
+        return new Result(nextTile, energyPoint);
     }
 }
