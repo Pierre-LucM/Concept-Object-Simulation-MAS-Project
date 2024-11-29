@@ -11,100 +11,51 @@ import static org.SAPLA.Map.Map.*;
 public class CavalerMouv extends MouvementType {
 
     @Override
-    public Tile moveNorth(Tile currentTile) {
-        Tile nextTile = getMapGrid()[currentTile.getPosition().getX()][currentTile.getPosition().getY() + 1];
-        return nextTile.getTileContent() == ' ' ? nextTile : currentTile;
-    }
-
-    @Override
-    public Tile moveEast(Tile currentTile) {
-        Tile nextTile = getMapGrid()[currentTile.getPosition().getX() + 1][currentTile.getPosition().getY()];
-        return nextTile.getTileContent() == ' ' ? nextTile : currentTile;
-    }
-
-    @Override
-    public Tile moveSouth(Tile currentTile) {
-        Tile nextTile = getMapGrid()[currentTile.getPosition().getX()][currentTile.getPosition().getY() - 1];
-        return nextTile.getTileContent() == ' ' ? nextTile : currentTile;
-    }
-
-    @Override
-    public Tile moveWest(Tile currentTile) {
-        Tile nextTile = getMapGrid()[currentTile.getPosition().getX() -1][currentTile.getPosition().getY()];
-        return nextTile.getTileContent() == ' ' ? nextTile : currentTile;
-    }
-
-    @Override
-    public Result upMove(Tile currentTile,int energyPoint, int numbMove, Direction nextDirection) {
-
-         Result result = moveToTile(currentTile, energyPoint, Direction.NORTH, numbMove);
-
-         if (nextDirection != null){
-             switch (nextDirection){
-                 case EAST:
-                     return rightMove(result.getTile(), result.getEnergyPoint(), 2, null);
-
-                 case WEST:
-                     return leftMove(result.getTile(), result.getEnergyPoint(), 2, null);
-             }
-         }
-        return new Result(result.getTile(), result.getEnergyPoint());
-    }
-
-    @Override
-    public Result downMove(Tile currentTile,int energyPoint, int numbMove, Direction nextDirection) {
-
-        Result result = moveToTile(currentTile, energyPoint, Direction.SOUTH, numbMove);
-
-        if (nextDirection != null){
-
-            switch (nextDirection){
-                case EAST:
-                    return rightMove(result.getTile(), result.getEnergyPoint(), 2, null);
-
-                case WEST:
-                    return leftMove(result.getTile(), result.getEnergyPoint(), 2, null);
+    public Result moveNorth(Tile currentTile, Tile targetTile, int energyPoint) {
+            if (currentTile.getPosition().getY() == targetTile.getPosition().getY()) {
+                return moveToTile(currentTile, energyPoint, Direction.NORTH, 2);
             }
-        }
-        return new Result(result.getTile(), result.getEnergyPoint());
+            if(currentTile.getPosition().getX() < targetTile.getPosition().getX()) {
+                Result result = moveToTile(currentTile, energyPoint, Direction.NORTH, 3);
+                return moveEast(result.getTile(), targetTile, result.getEnergyPoint());
+            }
+            return new Result(currentTile, energyPoint);
     }
 
     @Override
-    public Result leftMove(Tile currentTile,int energyPoint, int numbMove , Direction nextDirection) {
-
-        Result result = moveToTile(currentTile, energyPoint, Direction.WEST, numbMove);
-
-        if (nextDirection != null){
-
-            switch (nextDirection){
-                case NORTH:
-                    return upMove(result.getTile(), result.getEnergyPoint(), 2, null);
-
-                case SOUTH:
-                    return downMove(result.getTile(), result.getEnergyPoint(), 2, null);
-            }
+    public Result moveEast(Tile currentTile, Tile targetTile, int energyPoint) {
+        if (currentTile.getPosition().getX() == targetTile.getPosition().getX()) {
+            return moveToTile(currentTile, energyPoint, Direction.EAST, 2);
         }
-
-        return new Result(result.getTile(), result.getEnergyPoint());
+        if(currentTile.getPosition().getX() < targetTile.getPosition().getX()) {
+            Result result = moveToTile(currentTile, energyPoint, Direction.EAST, 3);
+            return moveSouth(result.getTile(), targetTile, result.getEnergyPoint());
+        }
+        return new Result(currentTile, energyPoint);
     }
 
     @Override
-    public Result rightMove(Tile currentTile,int energyPoint, int numbMove , Direction nextDirection) {
-
-        Result result = moveToTile(currentTile, energyPoint, Direction.EAST, numbMove);
-
-        if (nextDirection != null){
-
-            switch (nextDirection){
-                case NORTH:
-                    return upMove(result.getTile(), result.getEnergyPoint(), 2, null);
-
-                case SOUTH:
-                    return downMove(result.getTile(), result.getEnergyPoint(), 2, null);
-            }
+    public Result moveSouth(Tile currentTile, Tile targetTile, int energyPoint) {
+        if (currentTile.getPosition().getY() == targetTile.getPosition().getY()) {
+            return moveToTile(currentTile, energyPoint, Direction.SOUTH, 2);
         }
+        if(currentTile.getPosition().getX() < targetTile.getPosition().getX()) {
+            Result result = moveToTile(currentTile, energyPoint, Direction.SOUTH, 3);
+            return moveWest(result.getTile(), targetTile, result.getEnergyPoint());
+        }
+        return new Result(currentTile, energyPoint);
+    }
 
-        return new Result(result.getTile(), result.getEnergyPoint());
+    @Override
+    public Result moveWest(Tile currentTile, Tile targetTile, int energyPoint) {
+        if (currentTile.getPosition().getX() == 0) {
+            return moveToTile(currentTile, energyPoint, Direction.WEST, 2);
+        }
+        if(currentTile.getPosition().getX() < targetTile.getPosition().getX()) {
+            Result result = moveToTile(currentTile, energyPoint, Direction.WEST, 3);
+            return moveNorth(result.getTile(), targetTile, result.getEnergyPoint());
+        }
+        return new Result(currentTile, energyPoint);
     }
 
     public Result cavalerMov(Tile currentTile, int energyPoint , int maxEnergy) {
@@ -123,16 +74,15 @@ public class CavalerMouv extends MouvementType {
     }
 
     public Result directionToGo(Tile currentTile, int energyPoint, int maxEnergy, Direction direction) {
-
         return switch (direction) {
-            case NORTH -> upMove(currentTile, energyPoint, 3, Direction.EAST);
-            case NORTHEAST -> rightMove(currentTile, energyPoint, 3, Direction.NORTH);
-            case EAST -> rightMove(currentTile, energyPoint, 3, Direction.SOUTH);
-            case SOUTHEAST -> downMove(currentTile, energyPoint, 3, Direction.EAST);
-            case SOUTH -> downMove(currentTile, energyPoint, 3, Direction.WEST);
-            case SOUTHWEST -> leftMove(currentTile, energyPoint, 3, Direction.SOUTH);
-            case WEST -> leftMove(currentTile, energyPoint, 3, Direction.NORTH);
-            case NORTHWEST -> upMove(currentTile, energyPoint, 3, Direction.WEST);
+            case NORTH -> moveNorth(currentTile,getMapGrid()[currentTile.getPosition().getX() + 2][currentTile.getPosition().getY() + 3] , energyPoint);
+            case NORTHEAST -> moveEast(currentTile, getMapGrid()[currentTile.getPosition().getX() + 3][currentTile.getPosition().getY() + 2], energyPoint);
+            case EAST -> moveEast(currentTile, getMapGrid()[currentTile.getPosition().getX() + 3][currentTile.getPosition().getY() -2], energyPoint);
+            case SOUTHEAST -> moveSouth(currentTile, getMapGrid()[currentTile.getPosition().getX() + 2][currentTile.getPosition().getY() - 3], energyPoint);
+            case SOUTH -> moveSouth(currentTile, getMapGrid()[currentTile.getPosition().getX() - 2][currentTile.getPosition().getY() - 3], energyPoint);
+            case SOUTHWEST -> moveWest(currentTile, getMapGrid()[currentTile.getPosition().getX() - 3][currentTile.getPosition().getY() - 2], energyPoint);
+            case WEST -> moveWest(currentTile, getMapGrid()[currentTile.getPosition().getX() - 3][currentTile.getPosition().getY() + 2], energyPoint);
+            case NORTHWEST -> moveNorth(currentTile, getMapGrid()[currentTile.getPosition().getX() - 2][currentTile.getPosition().getY() + 3], energyPoint);
         };
     }
 
@@ -144,15 +94,49 @@ public class CavalerMouv extends MouvementType {
             Tile previousTile = nextTile;
             switch(currentDirection) {
                 case NORTH:
-                    nextTile = moveNorth(nextTile);
+                    Tile bufferNextTileUp = getMapGrid()[currentTile.getPosition().getX()][ currentTile.getPosition().getY() + 1];
+                    char bufferTileContentUp = bufferNextTileUp.getTileContent();
+
+                    if (bufferTileContentUp == ' ') {
+                        nextTile = bufferNextTileUp;
+                    }else{
+                        nextTile = previousTile;
+                    }
+
                 case EAST:
-                    nextTile = moveEast(nextTile);
+                    Tile bufferNextTileRight = getMapGrid()[currentTile.getPosition().getX()][ currentTile.getPosition().getY() + 1];
+                    char bufferTileContentRight = bufferNextTileRight.getTileContent();
+
+                    if (bufferTileContentRight == ' ') {
+                        nextTile = bufferNextTileRight;
+                    }else{
+                        nextTile = previousTile;
+                    }
+
                 case SOUTH:
-                    nextTile = moveSouth(nextTile);
+                    Tile bufferNextTileDown = getMapGrid()[currentTile.getPosition().getX()][ currentTile.getPosition().getY() - 1];
+                    char bufferTileContentDown = bufferNextTileDown.getTileContent();
+
+                    if (bufferTileContentDown == ' ') {
+                        nextTile = bufferNextTileDown;
+                    }else{
+                        nextTile = previousTile;
+                    }
+
                 case WEST:
-                    nextTile = moveWest(nextTile);
+                    Tile bufferNextTileLeft = getMapGrid()[currentTile.getPosition().getX() -1][ currentTile.getPosition().getY()];
+                    char bufferTileContentLeft = bufferNextTileLeft.getTileContent();
+
+                    if (bufferTileContentLeft == ' ') {
+                        nextTile = bufferNextTileLeft;
+                    }else{
+                        nextTile = previousTile;
+                    }
             }
-            if (nextTile == previousTile) {break;}
+            if (nextTile == previousTile) {
+                energyPoint = energyPoint -3;
+                break;
+            }
                 energyPoint --;
             }
         return new Result(nextTile, energyPoint);

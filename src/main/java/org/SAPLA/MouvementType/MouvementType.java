@@ -13,21 +13,13 @@ public abstract class MouvementType {
         _livingBeing = livingBeing;
     }
 
-    public abstract Tile moveNorth(Tile currentTile);
+    public abstract Result moveNorth(Tile currentTile, Tile targetTile ,int energyPoint);
 
-    public abstract Tile moveEast(Tile currentTile);
+    public abstract Result moveEast(Tile currentTile, Tile targetTile ,int energyPoint);
 
-    public abstract Tile moveSouth(Tile currentTile);
+    public abstract Result moveSouth(Tile currentTile, Tile targetTile ,int energyPoint);
 
-    public abstract Tile moveWest(Tile currentTile);
-
-    public abstract Result upMove(Tile currentTile,int energyPoint, int numbMove, Direction nextDirection);
-
-    public abstract Result downMove(Tile currentTile,int energyPoint, int numbMove, Direction nextDirection);
-
-    public abstract Result leftMove(Tile currentTile,int energyPoint, int numbMove, Direction nextDirection);
-
-    public abstract Result rightMove(Tile currentTile,int energyPoint, int numbMove, Direction nextDirection);
+    public abstract Result moveWest(Tile currentTile, Tile targetTile ,int energyPoint);
 
     public abstract Result moveToTile(Tile currentTile, int energyPoint, Direction currentDirection, int numbMove);
 }
