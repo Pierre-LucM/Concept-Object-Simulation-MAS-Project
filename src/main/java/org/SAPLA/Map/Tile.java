@@ -21,4 +21,8 @@ public class Tile {
         return _position;
     }
 
+    public Tile getTile() {
+        return this;
+    }
+
 }
