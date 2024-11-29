@@ -24,90 +24,72 @@ public class CavalerMouv extends MouvementType {
         Tile nextTile;
         return switch (direction) {
             case NORTH :
-                nextTile = move3Step(currentTile, Direction.NORTH);
+                nextTile = moveStepbyStep(currentTile, Direction.NORTH, 3);
                 if (getIsStop()) {
-                    yield move2Step(nextTile, Direction.EAST);
+                    yield nextTile;
                 }
-                yield nextTile;
+                yield moveStepbyStep(nextTile, Direction.EAST,2);
             case NORTHEAST:
-                nextTile = move3Step(currentTile, Direction.EAST);
+                nextTile = moveStepbyStep(currentTile, Direction.EAST, 3);
                 if (getIsStop()) {
                     yield nextTile;
                 }
-                yield move2Step(nextTile, Direction.NORTH);
+                yield moveStepbyStep(nextTile, Direction.NORTH,2);
             case EAST:
-                nextTile = move3Step(currentTile, Direction.EAST);
+                nextTile = moveStepbyStep(currentTile, Direction.EAST, 3);
                 if (getIsStop()) {
-                    yield move2Step(nextTile, Direction.SOUTH);
+                    yield nextTile;
                 }
-                yield nextTile;
+                yield moveStepbyStep(nextTile, Direction.SOUTH,2);
             case SOUTHEAST:
-                nextTile = move3Step(currentTile, Direction.SOUTH);
+                nextTile = moveStepbyStep(currentTile, Direction.SOUTH, 3);
                 if (getIsStop()) {
                     yield nextTile;
                 }
-                yield move2Step(nextTile, Direction.EAST);
+                yield moveStepbyStep(nextTile, Direction.EAST,2);
             case SOUTH :
-                nextTile = move3Step(currentTile, Direction.SOUTH);
+                nextTile = moveStepbyStep(currentTile, Direction.SOUTH, 3);
                 if (getIsStop()) {
-                    yield move2Step(nextTile, Direction.WEST);
+                    yield nextTile;
                 }
-                yield nextTile;
+                yield moveStepbyStep(nextTile, Direction.WEST,2);
             case SOUTHWEST :
-                nextTile = move3Step(currentTile, Direction.WEST);
+                nextTile = moveStepbyStep(currentTile, Direction.WEST, 3);
                 if (getIsStop()) {
                     yield nextTile;
                 }
-                yield move2Step(nextTile, Direction.SOUTH);
+                yield moveStepbyStep(nextTile, Direction.SOUTH,2);
             case WEST :
-                nextTile = move3Step(currentTile, Direction.WEST);
-                if (getIsStop()) {
-                    yield move2Step(nextTile, Direction.NORTH);
-                }
-                yield nextTile;
-            case NORTHWEST :
-                nextTile = move3Step(currentTile, Direction.NORTH);
+                nextTile = moveStepbyStep(currentTile, Direction.WEST, 3);
                 if (getIsStop()) {
                     yield nextTile;
                 }
-                yield move2Step(nextTile, Direction.WEST);
+                yield moveStepbyStep(nextTile, Direction.NORTH,2);
+            case NORTHWEST :
+                nextTile = moveStepbyStep(currentTile, Direction.NORTH, 3);
+                if (getIsStop()) {
+                    yield nextTile;
+                }
+                yield moveStepbyStep(nextTile, Direction.WEST,2);
         };
     }
 
-    public Tile move3Step(Tile currentTile, Direction direction) {
-        Tile buffer = currentTile, previousTile = currentTile;
-        for (int i = 0; i < 3; i++) {
+    public Tile moveStepbyStep(Tile currentTile, Direction direction, int stepNumber) {
+        Tile nextTile = currentTile, previousTile = currentTile;
+        for (int i = 0; i < stepNumber; i++) {
             switch (direction) {
-                case NORTH -> buffer = moveNorth(buffer);
-                case EAST -> buffer = moveEast(buffer);
-                case SOUTH -> buffer = moveSouth(buffer);
-                case WEST -> buffer = moveWest(buffer);
+                case NORTH -> nextTile = moveNorth(nextTile);
+                case EAST -> nextTile = moveEast(nextTile);
+                case SOUTH -> nextTile = moveSouth(nextTile);
+                case WEST -> nextTile = moveWest(nextTile);
             }
-            if (buffer == previousTile) {
+            if (nextTile == previousTile) {
                 setIsStop(true);
                 break;
             }
-            previousTile = buffer;
+            previousTile = nextTile;
         }
-        return buffer;
-    }
-
-    public Tile move2Step(Tile currentTile, Direction direction) {
-        Tile buffer = currentTile, previousTile = currentTile;
-        for (int i = 0; i < 2; i++) {
-            switch (direction) {
-                case NORTH -> buffer = moveNorth(buffer);
-                case EAST -> buffer = moveEast(buffer);
-                case SOUTH -> buffer = moveSouth(buffer);
-                case WEST -> buffer = moveWest(buffer);
-            }
-            if (buffer == previousTile) {
-                setIsStop(true);
-                break;
-            }
-            previousTile = buffer;
-        }
-        return buffer;
+        return nextTile;
     }
 
     @Override
