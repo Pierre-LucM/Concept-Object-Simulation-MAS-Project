@@ -57,8 +57,8 @@ public class TowerMouv extends MouvementType {
         return currentTile;
     }
 
-    public Result towerMov(Tile currentTile, int energyPoint) {
-        if (energyPoint > (100 * 0.2)) {
+    public Result towerMov(Tile currentTile, int energyPoint, int maxEnergy) {
+        if (energyPoint > (maxEnergy * 0.2)) {
             Direction randomDirection = Direction.getRandomDirection();
 
             if (randomDirection == Direction.NORTH && randomDirection == Direction.NORTHEAST) {

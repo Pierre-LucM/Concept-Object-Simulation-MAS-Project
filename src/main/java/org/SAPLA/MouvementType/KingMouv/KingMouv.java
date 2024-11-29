@@ -56,8 +56,8 @@ public class KingMouv extends MouvementType {
         return currentTile;
     }
 
-    public Result kingMov(Tile currentTile, int energyPoint) {
-        if (energyPoint > (100 * 0.2)) {
+    public Result kingMov(Tile currentTile, int energyPoint, int maxEnergy) {
+        if (energyPoint > (maxEnergy * 0.2)) {
             Direction randomDirection = Direction.getRandomDirection();
 
             if (randomDirection == Direction.NORTH) {

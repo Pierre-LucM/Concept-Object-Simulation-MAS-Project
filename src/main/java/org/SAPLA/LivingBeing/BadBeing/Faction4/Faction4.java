@@ -20,7 +20,7 @@ public class Faction4 <T extends CavalerMouv> extends BadBeing {
     @Override
     public void move() {
         if (getEnergyPoint() > 0) {
-            Result result = _mouvementCavaler.cavalerMov(super.getCurrentTile(), super.getEnergyPoint());
+            Result result = _mouvementCavaler.cavalerMov(super.getCurrentTile(), super.getEnergyPoint(), super.getMaxEnergy());
             super.setCurrentTile(result.getTile());
             super.setEnergyPoint(result.getEnergyPoint());
         }

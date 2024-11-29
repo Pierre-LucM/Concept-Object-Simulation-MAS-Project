@@ -56,9 +56,9 @@ public class DiagonalMouv extends MouvementType {
         return currentTile;
     }
 
-    public Result diagMove(Tile currentTile, int energyPoint) {
+    public Result diagMove(Tile currentTile, int energyPoint, int maxEnergy) {
 
-        if (energyPoint > (100 * 0.2)) {
+        if (energyPoint > (maxEnergy * 0.2)) {
             Direction randomDirection = Direction.getRandomDirection();
 
             if (randomDirection == Direction.NORTH && randomDirection == Direction.NORTHEAST) {
