@@ -6,12 +6,6 @@ import org.SAPLA.Map.Tile;
 import org.SAPLA.MouvementType.MouvementType;
 import org.SAPLA.Result.Result;
 
-import java.util.Random;
-
-import static org.SAPLA.Map.Map.*;
-import static org.SAPLA.Map.Map.getMapHeight;
-
-
 public class KingMouv extends MouvementType {
 
     @Override
@@ -31,7 +25,7 @@ public class KingMouv extends MouvementType {
 
     @Override
     public Tile moveStep(Tile currentTile, Direction direction) {
-        Tile bufferTile = null;
+        Tile bufferTile;
         return switch (direction) {
             case NORTH -> moveNorth(currentTile);
             case NORTHEAST -> {
@@ -65,7 +59,6 @@ public class KingMouv extends MouvementType {
                 }
                 yield currentTile;
             }
-            default -> currentTile;
         };
     }
 

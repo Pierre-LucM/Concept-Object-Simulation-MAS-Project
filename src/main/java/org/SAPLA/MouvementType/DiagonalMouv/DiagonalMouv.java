@@ -1,6 +1,5 @@
 package org.SAPLA.MouvementType.DiagonalMouv;
 
-import jdk.jshell.execution.Util;
 import org.SAPLA.Enum.Direction;
 import org.SAPLA.Map.Map;
 import org.SAPLA.Map.Tile;
@@ -8,8 +7,6 @@ import org.SAPLA.MouvementType.MouvementType;
 import org.SAPLA.Result.Result;
 
 import java.util.Random;
-
-import static org.SAPLA.Map.Map.*;
 
 public class DiagonalMouv extends MouvementType {
 
@@ -51,7 +48,7 @@ public class DiagonalMouv extends MouvementType {
 
     @Override
     public Tile moveStep(Tile currentTile, Direction direction) {
-        Tile bufferTile = null;
+        Tile bufferTile;
         return switch (direction) {
             case NORTH, NORTHEAST -> {
                 bufferTile = super.moveNorth(currentTile);
@@ -81,7 +78,6 @@ public class DiagonalMouv extends MouvementType {
                 }
                 yield currentTile;
             }
-            default -> currentTile;
         };
     }
 

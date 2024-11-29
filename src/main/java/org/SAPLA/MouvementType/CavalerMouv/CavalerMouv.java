@@ -5,8 +5,6 @@ import org.SAPLA.Map.Tile;
 import org.SAPLA.MouvementType.MouvementType;
 import org.SAPLA.Result.Result;
 
-import java.util.Random;
-
 import static org.SAPLA.Map.Map.directionToReachSafeZone;
 
 public class CavalerMouv extends MouvementType {
@@ -17,59 +15,59 @@ public class CavalerMouv extends MouvementType {
         _isStop = stop;
     }
 
-    public boolean getisStop() {
+    public boolean getIsStop() {
         return _isStop;
     }
 
     @Override
     public Tile moveStep (Tile currentTile, Direction direction) {
-        Tile nextTile = null;
+        Tile nextTile;
         return switch (direction) {
             case NORTH :
                 nextTile = move3Step(currentTile, Direction.NORTH);
-                if (_isStop) {
+                if (getIsStop()) {
                     yield move2Step(nextTile, Direction.EAST);
                 }
                 yield nextTile;
             case NORTHEAST:
                 nextTile = move3Step(currentTile, Direction.EAST);
-                if (_isStop) {
+                if (getIsStop()) {
                     yield nextTile;
                 }
                 yield move2Step(nextTile, Direction.NORTH);
             case EAST:
                 nextTile = move3Step(currentTile, Direction.EAST);
-                if (_isStop) {
+                if (getIsStop()) {
                     yield move2Step(nextTile, Direction.SOUTH);
                 }
                 yield nextTile;
             case SOUTHEAST:
                 nextTile = move3Step(currentTile, Direction.SOUTH);
-                if (_isStop) {
+                if (getIsStop()) {
                     yield nextTile;
                 }
                 yield move2Step(nextTile, Direction.EAST);
             case SOUTH :
                 nextTile = move3Step(currentTile, Direction.SOUTH);
-                if (_isStop) {
+                if (getIsStop()) {
                     yield move2Step(nextTile, Direction.WEST);
                 }
                 yield nextTile;
             case SOUTHWEST :
                 nextTile = move3Step(currentTile, Direction.WEST);
-                if (_isStop) {
+                if (getIsStop()) {
                     yield nextTile;
                 }
                 yield move2Step(nextTile, Direction.SOUTH);
             case WEST :
                 nextTile = move3Step(currentTile, Direction.WEST);
-                if (_isStop) {
+                if (getIsStop()) {
                     yield move2Step(nextTile, Direction.NORTH);
                 }
                 yield nextTile;
             case NORTHWEST :
                 nextTile = move3Step(currentTile, Direction.NORTH);
-                if (_isStop) {
+                if (getIsStop()) {
                     yield nextTile;
                 }
                 yield move2Step(nextTile, Direction.WEST);
