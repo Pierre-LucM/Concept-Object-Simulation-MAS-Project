@@ -15,21 +15,31 @@ public abstract class MouvementType {
         _livingBeing = livingBeing;
     }
 
+    //Mouvement vers le Nord
+
     protected Tile moveNorth(Tile currentTile){
         return moveToTile(currentTile, 0, 1);
     }
+
+    //Mouvement vers l'Est
 
     protected Tile moveEast(Tile currentTile){
         return moveToTile(currentTile, 1, 0);
     }
 
+    //Mouvement vers le Sud
+
     protected Tile moveSouth(Tile currentTile){
         return moveToTile(currentTile, 0, -1);
     }
 
+    //Mouvement vers l'Ouest
+
     protected Tile moveWest(Tile currentTile){
         return moveToTile(currentTile, -1, 0);
     }
+
+    //Verifie si le mouvement est possible et effectue le mouvement
 
     private Tile moveToTile(Tile currentTile, int deltaX, int deltaY){
         int newX = currentTile.getPosition().getX() + deltaX;
@@ -44,7 +54,11 @@ public abstract class MouvementType {
         return nextTile.getTileContent() == ' ' ? nextTile : currentTile;
     }
 
+    //Renvoie le Tile final et l'energie restante
+
     public abstract Result nextTile(Tile currentTile, int energyPoint, Direction targetDirection);
+
+    //Choisie le mouvement a effectuer en fonction de la direction
 
     public abstract Tile moveStep(Tile currentTile, Direction direction);
 }
