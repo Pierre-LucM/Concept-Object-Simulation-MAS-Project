@@ -5,11 +5,9 @@ import org.SAPLA.Fight.Fight;
 import org.SAPLA.Map.SafeZone;
 import org.SAPLA.Map.Tile;
 
-import java.lang.management.GarbageCollectorMXBean;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
+import java.util.Random;
 
 public abstract class LivingBeing {
     private List<String> _message;
@@ -43,7 +41,7 @@ public abstract class LivingBeing {
 
         List<String> newMessagesForThis = new java.util.ArrayList<>(other.getMessage().stream().filter(message -> !this.getMessage().contains(message)).toList());
         if(!newMessagesForThis.isEmpty()) {
-            int randomNumber = ThreadLocalRandom.current().nextInt(1, newMessagesForThis.size() + 1);
+            int randomNumber = new Random().nextInt(1, newMessagesForThis.size() + 1);
             Collections.shuffle(newMessagesForThis);
             newMessagesForThis = newMessagesForThis.subList(0, randomNumber);
             this.addMessage(newMessagesForThis);
@@ -51,7 +49,7 @@ public abstract class LivingBeing {
 
         List<String> newMessagesForOther = new java.util.ArrayList<>(this.getMessage().stream().filter(message -> !other.getMessage().contains(message)).toList());
         if(!newMessagesForOther.isEmpty()) {
-            int randomNumber = ThreadLocalRandom.current().nextInt(1, newMessagesForOther.size() + 1);
+            int randomNumber = new Random().nextInt(1, newMessagesForOther.size() + 1);
             Collections.shuffle(newMessagesForOther);
             newMessagesForOther = newMessagesForOther.subList(0, randomNumber);
             other.addMessage(newMessagesForOther);
@@ -65,11 +63,10 @@ public abstract class LivingBeing {
         LivingBeing winner = fightResults[0];
         LivingBeing loser = fightResults[1];
 
-
         List<String> messagesVoles = new java.util.ArrayList<>(loser.getMessage().stream().filter(message -> !winner.getMessage().contains(message)).toList());
         if(!messagesVoles.isEmpty()) {
             Collections.shuffle(messagesVoles);
-            int randomNumber = ThreadLocalRandom.current().nextInt(1, messagesVoles.size() + 1);
+            int randomNumber = new Random().nextInt(1, messagesVoles.size() + 1);
             messagesVoles = messagesVoles.subList(0, randomNumber);
             loser.deleteMessage(messagesVoles);
             winner.addMessage(messagesVoles);
