@@ -15,10 +15,7 @@ import org.SAPLA.MouvementType.MouvementType;
 import org.SAPLA.MouvementType.TowerMouv.TowerMouv;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -153,7 +150,9 @@ public class Game {
 
     public void displayIndividuals() {
         for (LivingBeing individual : this.indivualsList) {
+            System.out.println("=============================");
             System.out.println(individual);
+            System.out.println("=============================");
         }
     }
 
@@ -164,8 +163,8 @@ public class Game {
             Faction4.class
     };
 
-    private Hashtable<Class<? extends LivingBeing>, Class<? extends MouvementType>> createFactionDictionary() {
-        Hashtable<Class<? extends LivingBeing>, Class<? extends MouvementType>> factionTable = new Hashtable<>();
+    private java.util.HashMap<Class<? extends LivingBeing>, Class<? extends MouvementType>> createFactionDictionary() {
+        java.util.HashMap<Class<? extends LivingBeing>, Class<? extends MouvementType>> factionTable = new java.util.HashMap<>();
 
         factionTable.put(Faction1.class, KingMouv.class);
         factionTable.put(Faction2.class, TowerMouv.class);
@@ -177,29 +176,35 @@ public class Game {
 
 
     private void generateFactions() {
-        Hashtable<Class<? extends LivingBeing>, Class<? extends MouvementType>> factionTable = createFactionDictionary();
+        // Change Hashtable to HashMap for modern use
+        java.util.Map<Class<? extends LivingBeing>, Class<? extends MouvementType>> factionTable =
+                (java.util.Map<Class<? extends LivingBeing>, Class<? extends MouvementType>>) createFactionDictionary();
 
-        for (Class<? extends LivingBeing> factionClass : factionTable.keySet()) {
+        for (java.util.Map.Entry<Class<? extends LivingBeing>, Class<? extends MouvementType>> factionClass : factionTable.entrySet()) {
             try {
-                System.out.println(factionClass);
+                // Get the associated MouvementType class
+                Class<? extends MouvementType> mouvementClass = factionClass.getValue();
 
-                // Obtenir la classe de MouvementType associée
-                Class<? extends MouvementType> mouvementClass = factionTable.get(factionClass);
-
-                // Créer une instance de MouvementType
+                // Create an instance of MouvementType
                 MouvementType mouvementInstance = mouvementClass.getConstructor().newInstance();
 
-                // Créer une instance de LivingBeing avec les paramètres spécifiés
-                LivingBeing factionInstance = factionClass
-                        .getConstructor(Tile.class, Direction.class, int.class, MouvementType.class)
-                        .newInstance(Map.getMapGrid()[0][0], Direction.NORTH, 100, mouvementInstance);
-
-                // Ajouter à la liste
-                this.indivualsList.add(factionInstance);
-
+                switch (mouvementInstance.getClass().getSimpleName()) {
+                    case "KingMouv":
+                        this.indivualsList.add(new Faction1<>(Map.getMapGrid()[0][0], Direction.NORTH, 100, (KingMouv)mouvementInstance));
+                        break;
+                    case "TowerMouv":
+                        this.indivualsList.add(new Faction2<>(Map.getMapGrid()[0][0], Direction.NORTH, 100, (TowerMouv)mouvementInstance));
+                        break;
+                    case "DiagonalMouv":
+                        this.indivualsList.add(new Faction3<>(Map.getMapGrid()[0][0], Direction.NORTH, 100, (DiagonalMouv)mouvementInstance));
+                        break;
+                    case "CavalerMouv":
+                        this.indivualsList.add(new Faction4<>(Map.getMapGrid()[0][0], Direction.NORTH, 100, (CavalerMouv)mouvementInstance));
+                        break;
+                }
             } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
                      InvocationTargetException e) {
-                e.printStackTrace(); // Gérer l'erreur de manière appropriée (par exemple, journaliser ou lancer une exception personnalisée)
+                e.printStackTrace(); // Log or handle appropriately
             }
         }
     }
