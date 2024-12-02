@@ -7,9 +7,4 @@ public class Faction2 extends GoodBeing {
     public void move() {
 
     }
-
-    @Override
-    public void interact() {
-
-    }
 }

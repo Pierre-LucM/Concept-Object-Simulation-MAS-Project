@@ -8,8 +8,4 @@ public class Faction1 extends GoodBeing {
         
     }
 
-    @Override
-    public void interact() {
-
-    }
 }
