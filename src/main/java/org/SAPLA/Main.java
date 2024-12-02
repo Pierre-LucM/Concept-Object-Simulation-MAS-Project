@@ -31,16 +31,7 @@ public class Main {
         }
         game.stopAutomatic();
 
-        game.remplirTableauIndviduals();
-        game.afficherTableauIndviduals();
-        game.shuffleOrderIndividuals();
-        game.afficherTableauIndviduals();
-        game.shuffleOrderIndividuals();
-        game.afficherTableauIndviduals();
 
-        game.runManual();
-        Map map = new Map(20, 20);
-        map.generateMap();
-        map.DisplayMap();
+        //game.runManual();
     }
 }
