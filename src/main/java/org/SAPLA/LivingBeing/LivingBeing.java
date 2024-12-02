@@ -17,6 +17,7 @@ public abstract class LivingBeing {
     private Direction _lastDirectionTaken;
     private int _energyPoint;
     private SafeZone _safeZone;
+    private int _maxEnergy;
 
     public abstract void move();
     public void interact(LivingBeing other) {
@@ -97,6 +98,10 @@ public abstract class LivingBeing {
         return this._safeZone;
     }
 
+    protected int getMaxEnergy(){
+        return this._maxEnergy;
+    }
+
     //Setter
     protected void setMessage(List<String> message){
         this._message = message;
@@ -124,5 +129,9 @@ public abstract class LivingBeing {
 
     protected void setSafeZone(SafeZone safeZone){
         this._safeZone = safeZone;
+    }
+
+    protected void setMaxEnergy(int maxEnergy){
+        this._maxEnergy = maxEnergy;
     }
 }
