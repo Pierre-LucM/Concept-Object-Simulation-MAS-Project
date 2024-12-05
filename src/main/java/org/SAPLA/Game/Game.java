@@ -32,7 +32,7 @@ public class Game {
     private int stepCount = 0;
     private boolean isRunningAutomatically = false;
 
-    private ArrayList<LivingBeing> indivualsList = new ArrayList<LivingBeing>();
+    private ArrayList<LivingBeing> individualsList = new ArrayList<LivingBeing>();
 
 
     public Game() {
@@ -105,14 +105,28 @@ public class Game {
     public void gameStep() {
         long startTime = System.currentTimeMillis();
 
-        // Placez ici les actions à exécuter à chaque tour
-        for (int i = 0; i < 3; i++) {
-            System.out.println("Action " + i + " exécutée à " + startTime);
+        //Placer ici les actions à exécuter à chaque tour
+
+        //Randomize the order of individuals
+        shuffleOrderIndividuals();
+        //Display individuals list
+        displayIndividuals();
+        //Play each individual
+        playIndividuals();
+
+
+        //Insert 25ms delay to simulate processing time and prevent same random seed
+        // (because the seed is based on the current time in milliseconds)
+        try {
+            Thread.sleep(25);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        stepCount++;
 
         long endTime = System.currentTimeMillis();
-        System.out.println("Fin de l'étape " + stepCount + " à " + endTime + ", durée : " + (endTime - startTime) + " ms");
+        System.out.println("Fin de l'étape " + (stepCount + 1) + " à " + endTime + ", durée : " + (endTime - startTime) + " ms");
+
+        stepCount++;
     }
 
 
@@ -120,39 +134,28 @@ public class Game {
     public void shuffleOrderIndividuals() {
         Random random = new Random();
 
-        for (int i = this.individuals.size() - 1; i > 0; i--) {
+        for (int i = this.individualsList.size() - 1; i > 0; i--) {
             int j = random.nextInt(i + 1);
 
             // Échanger array[i] et array[j]
-            String temp = this.individuals.get(i);
-            this.individuals.set(i, this.individuals.get(j));
-            this.individuals.set(j, temp);
+            LivingBeing temp = this.individualsList.get(i);
+            this.individualsList.set(i, this.individualsList.get(j));
+            this.individualsList.set(j, temp);
         }
 
-    }
-
-    //TODO DELETE WHEN LivingBeing CLASS IS CREATED
-    public void remplirTableauIndviduals() {
-        this.individuals.add("Individu 1");
-        this.individuals.add("Individu 2");
-        this.individuals.add("Individu 3");
-        this.individuals.add("Individu 4");
-        this.individuals.add("Individu 5");
-    }
-
-    //TODO DELETE WHEN LivingBeing CLASS IS CREATED
-    public void afficherTableauIndviduals() {
-        System.out.println("=============================");
-        for (String individual : this.individuals) {
-            System.out.println(individual);
-        }
     }
 
     public void displayIndividuals() {
-        for (LivingBeing individual : this.indivualsList) {
-            System.out.println("=============================");
-            System.out.println(individual);
-            System.out.println("=============================");
+        System.out.println("=============================");
+        for (LivingBeing individual : this.individualsList) {
+            System.out.println(individual + " : " + individual.getCurrentTile().getPosition().toString());
+        }
+    }
+
+    //Fonction pour faire jouer chaque individu
+    public void playIndividuals() {
+        for (LivingBeing individual : this.individualsList) {
+            individual.move();
         }
     }
 
@@ -176,7 +179,6 @@ public class Game {
 
 
     private void generateFactions() {
-        // Change Hashtable to HashMap for modern use
         java.util.Map<Class<? extends LivingBeing>, Class<? extends MouvementType>> factionTable =
                 (java.util.Map<Class<? extends LivingBeing>, Class<? extends MouvementType>>) createFactionDictionary();
 
@@ -190,16 +192,16 @@ public class Game {
 
                 switch (mouvementInstance.getClass().getSimpleName()) {
                     case "KingMouv":
-                        this.indivualsList.add(new Faction1<>(Map.getMapGrid()[0][0], Direction.NORTH, 100, (KingMouv)mouvementInstance));
+                        this.individualsList.add(new Faction1<>(Map.getMapGrid()[0][0], Direction.NORTH, 100, (KingMouv)mouvementInstance));
                         break;
                     case "TowerMouv":
-                        this.indivualsList.add(new Faction2<>(Map.getMapGrid()[0][0], Direction.NORTH, 100, (TowerMouv)mouvementInstance));
+                        this.individualsList.add(new Faction2<>(Map.getMapGrid()[0][0], Direction.NORTH, 100, (TowerMouv)mouvementInstance));
                         break;
                     case "DiagonalMouv":
-                        this.indivualsList.add(new Faction3<>(Map.getMapGrid()[0][0], Direction.NORTH, 100, (DiagonalMouv)mouvementInstance));
+                        this.individualsList.add(new Faction3<>(Map.getMapGrid()[0][0], Direction.NORTH, 100, (DiagonalMouv)mouvementInstance));
                         break;
                     case "CavalerMouv":
-                        this.indivualsList.add(new Faction4<>(Map.getMapGrid()[0][0], Direction.NORTH, 100, (CavalerMouv)mouvementInstance));
+                        this.individualsList.add(new Faction4<>(Map.getMapGrid()[0][0], Direction.NORTH, 100, (CavalerMouv)mouvementInstance));
                         break;
                 }
             } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |

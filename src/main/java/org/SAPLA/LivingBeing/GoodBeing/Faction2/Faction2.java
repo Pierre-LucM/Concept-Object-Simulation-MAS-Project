@@ -13,6 +13,8 @@ public class Faction2 <T extends TowerMouv> extends GoodBeing {
 
     public Faction2(Tile currentTile, Direction lastDirectionTaken, int energyPoint, T mouvementTower) {
         super();
+        setCurrentTile(currentTile);
+        setEnergyPoint(energyPoint);
         _mouvementTower = mouvementTower;
         _mouvementTower.setLivingBeing(this);
     }

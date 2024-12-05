@@ -11,6 +11,8 @@ public class Faction3 <T extends DiagonalMouv> extends BadBeing{
 
     public Faction3(Tile currentTile, Direction lastDirectionTaken, int energyPoint, T mouvementDiagonal) {
         super();
+        setCurrentTile(currentTile);
+        setEnergyPoint(energyPoint);
         _mouvementDiagonal = mouvementDiagonal;
         _mouvementDiagonal.setLivingBeing(this);
     }

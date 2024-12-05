@@ -11,6 +11,8 @@ public class Faction1 <T extends KingMouv> extends GoodBeing {
 
     public Faction1(Tile currentTile, Direction lastDirectionTaken, int energyPoint, T mouvementKing) {
         super();
+        setCurrentTile(currentTile);
+        setEnergyPoint(energyPoint);
         _mouvementKing = mouvementKing;
         _mouvementKing.setLivingBeing(this);
     }

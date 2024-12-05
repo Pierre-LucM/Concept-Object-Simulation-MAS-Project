@@ -13,6 +13,8 @@ public class Faction4 <T extends CavalerMouv> extends BadBeing {
 
     public Faction4(Tile currentTile, Direction lastDirectionTaken, int energyPoint, T mouvementCavaler) {
         super();
+        setCurrentTile(currentTile);
+        setEnergyPoint(energyPoint);
         _mouvementCavaler = mouvementCavaler;
         _mouvementCavaler.setLivingBeing(this);
     }
