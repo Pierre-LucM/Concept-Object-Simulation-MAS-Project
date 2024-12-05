@@ -13,6 +13,7 @@ import org.SAPLA.MouvementType.DiagonalMouv.DiagonalMouv;
 import org.SAPLA.MouvementType.KingMouv.KingMouv;
 import org.SAPLA.MouvementType.MouvementType;
 import org.SAPLA.MouvementType.TowerMouv.TowerMouv;
+import org.SAPLA.utils.Constants;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -190,19 +191,21 @@ public class Game {
                 // Create an instance of MouvementType
                 MouvementType mouvementInstance = mouvementClass.getConstructor().newInstance();
 
-                switch (mouvementInstance.getClass().getSimpleName()) {
-                    case "KingMouv":
-                        this.individualsList.add(new Faction1<>(Map.getMapGrid()[0][0], Direction.NORTH, 100, (KingMouv)mouvementInstance));
-                        break;
-                    case "TowerMouv":
-                        this.individualsList.add(new Faction2<>(Map.getMapGrid()[0][0], Direction.NORTH, 100, (TowerMouv)mouvementInstance));
-                        break;
-                    case "DiagonalMouv":
-                        this.individualsList.add(new Faction3<>(Map.getMapGrid()[0][0], Direction.NORTH, 100, (DiagonalMouv)mouvementInstance));
-                        break;
-                    case "CavalerMouv":
-                        this.individualsList.add(new Faction4<>(Map.getMapGrid()[0][0], Direction.NORTH, 100, (CavalerMouv)mouvementInstance));
-                        break;
+                for(int i = 0; i <= Constants.NB_INDIVIDUALS; i++){
+                    switch (mouvementInstance.getClass().getSimpleName()) {
+                        case "KingMouv":
+                            this.individualsList.add(new Faction1<>(Map.getMapGrid()[0][0], Direction.NORTH, Constants.STARTING_ENERGY, (KingMouv)mouvementInstance));
+                            break;
+                        case "TowerMouv":
+                            this.individualsList.add(new Faction2<>(Map.getMapGrid()[0][0], Direction.NORTH, Constants.STARTING_ENERGY, (TowerMouv)mouvementInstance));
+                            break;
+                        case "DiagonalMouv":
+                            this.individualsList.add(new Faction3<>(Map.getMapGrid()[0][0], Direction.NORTH, Constants.STARTING_ENERGY, (DiagonalMouv)mouvementInstance));
+                            break;
+                        case "CavalerMouv":
+                            this.individualsList.add(new Faction4<>(Map.getMapGrid()[0][0], Direction.NORTH, Constants.STARTING_ENERGY, (CavalerMouv)mouvementInstance));
+                            break;
+                    }
                 }
             } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
                      InvocationTargetException e) {

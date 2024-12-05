@@ -4,6 +4,7 @@ import org.SAPLA.LivingBeing.BadBeing.BadBeing;
 import org.SAPLA.Map.Tile;
 import org.SAPLA.MouvementType.CavalerMouv.CavalerMouv;
 import org.SAPLA.Result.Result;
+import org.SAPLA.utils.Constants;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class Faction4 <T extends CavalerMouv> extends BadBeing {
         super();
         setCurrentTile(currentTile);
         setEnergyPoint(energyPoint);
+        setMaxEnergy(Constants.MAX_ENERGY);
         _mouvementCavaler = mouvementCavaler;
         _mouvementCavaler.setLivingBeing(this);
     }
