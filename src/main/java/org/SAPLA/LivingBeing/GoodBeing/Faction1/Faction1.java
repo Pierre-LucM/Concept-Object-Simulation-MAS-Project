@@ -28,8 +28,4 @@ public class Faction1 <T extends KingMouv> extends GoodBeing {
         }
     }
 
-    @Override
-    public void interact() {
-
-    }
 }

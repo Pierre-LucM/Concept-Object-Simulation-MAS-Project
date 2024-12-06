@@ -1,10 +1,13 @@
 package org.SAPLA.LivingBeing;
 
 import org.SAPLA.Enum.Direction;
+import org.SAPLA.Fight.Fight;
 import org.SAPLA.Map.SafeZone;
 import org.SAPLA.Map.Tile;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public abstract class LivingBeing {
     private List<String> _message;
@@ -15,7 +18,61 @@ public abstract class LivingBeing {
     private int _maxEnergy;
 
     public abstract void move();
-    public abstract void interact();
+    public void interact(LivingBeing other) {
+        if(this.getClass().equals(other.getClass())) {
+            this.exchangeAllMessages(other);
+        }
+        else if(this.getClass().getSuperclass().equals(other.getClass().getSuperclass())) {
+            this.exchangeSomeMessages(other);
+        }
+        else {
+            this.fight(other);
+        }
+    }
+
+    private void exchangeAllMessages(LivingBeing other) {
+        List<String> newMessagesForThis = other.getMessage().stream().filter(message -> !this.getMessage().contains(message)).toList();
+        List<String> newMessagesForOther = this.getMessage().stream().filter(message -> !other.getMessage().contains(message)).toList();
+        this.addMessage(newMessagesForThis);
+        other.addMessage(newMessagesForOther);
+    }
+
+    private void exchangeSomeMessages(LivingBeing other) {
+
+        List<String> newMessagesForThis = new java.util.ArrayList<>(other.getMessage().stream().filter(message -> !this.getMessage().contains(message)).toList());
+        if(!newMessagesForThis.isEmpty()) {
+            int randomNumber = new Random().nextInt(1, newMessagesForThis.size() + 1);
+            Collections.shuffle(newMessagesForThis);
+            newMessagesForThis = newMessagesForThis.subList(0, randomNumber);
+            this.addMessage(newMessagesForThis);
+        }
+
+        List<String> newMessagesForOther = new java.util.ArrayList<>(this.getMessage().stream().filter(message -> !other.getMessage().contains(message)).toList());
+        if(!newMessagesForOther.isEmpty()) {
+            int randomNumber = new Random().nextInt(1, newMessagesForOther.size() + 1);
+            Collections.shuffle(newMessagesForOther);
+            newMessagesForOther = newMessagesForOther.subList(0, randomNumber);
+            other.addMessage(newMessagesForOther);
+        }
+
+    }
+
+    private void fight(LivingBeing other) {
+        Fight fight = new Fight(this, other);
+        LivingBeing[] fightResults = fight.startFight();
+        LivingBeing winner = fightResults[0];
+        LivingBeing loser = fightResults[1];
+
+        List<String> messagesVoles = new java.util.ArrayList<>(loser.getMessage().stream().filter(message -> !winner.getMessage().contains(message)).toList());
+        if(!messagesVoles.isEmpty()) {
+            Collections.shuffle(messagesVoles);
+            int randomNumber = new Random().nextInt(1, messagesVoles.size() + 1);
+            messagesVoles = messagesVoles.subList(0, randomNumber);
+            loser.deleteMessage(messagesVoles);
+            winner.addMessage(messagesVoles);
+        }
+
+    }
 
     //Getter
     protected List<String> getMessage(){
@@ -45,6 +102,14 @@ public abstract class LivingBeing {
     //Setter
     protected void setMessage(List<String> message){
         this._message = message;
+    }
+
+    protected void addMessage(List<String> messages){
+        this._message.addAll(messages);
+    }
+
+    protected void deleteMessage(List<String> messages) {
+        this._message.removeAll(messages);
     }
 
     protected void setCurrentTile(Tile currentTile){

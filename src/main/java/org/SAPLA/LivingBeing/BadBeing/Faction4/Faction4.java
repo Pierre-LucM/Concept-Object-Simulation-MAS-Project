@@ -6,8 +6,6 @@ import org.SAPLA.MouvementType.CavalerMouv.CavalerMouv;
 import org.SAPLA.Result.Result;
 import org.SAPLA.utils.Constants;
 
-import java.util.List;
-
 public class Faction4 <T extends CavalerMouv> extends BadBeing {
 
     private T _mouvementCavaler ;
@@ -28,10 +26,5 @@ public class Faction4 <T extends CavalerMouv> extends BadBeing {
             super.setCurrentTile(result.getTile());
             super.setEnergyPoint(result.getEnergyPoint());
         }
-    }
-
-    @Override
-    public void interact() {
-
     }
 }

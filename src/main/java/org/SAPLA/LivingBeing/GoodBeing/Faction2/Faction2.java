@@ -29,9 +29,4 @@ public class Faction2 <T extends TowerMouv> extends GoodBeing {
             super.setEnergyPoint(result.getEnergyPoint());
         }
     }
-
-    @Override
-    public void interact() {
-
-    }
 }
