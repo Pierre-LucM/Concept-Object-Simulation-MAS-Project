@@ -18,4 +18,8 @@ public class Position {
         return this;
     }
 
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
+
 }

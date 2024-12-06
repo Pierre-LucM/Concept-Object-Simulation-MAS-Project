@@ -6,6 +6,7 @@ import org.SAPLA.Map.Tile;
 import org.SAPLA.MouvementType.CavalerMouv.CavalerMouv;
 import org.SAPLA.MouvementType.TowerMouv.TowerMouv;
 import org.SAPLA.Result.Result;
+import org.SAPLA.utils.Constants;
 
 public class Faction2 <T extends TowerMouv> extends GoodBeing {
 
@@ -13,6 +14,9 @@ public class Faction2 <T extends TowerMouv> extends GoodBeing {
 
     public Faction2(Tile currentTile, Direction lastDirectionTaken, int energyPoint, T mouvementTower) {
         super();
+        setCurrentTile(currentTile);
+        setEnergyPoint(energyPoint);
+        setMaxEnergy(Constants.MAX_ENERGY);
         _mouvementTower = mouvementTower;
         _mouvementTower.setLivingBeing(this);
     }
