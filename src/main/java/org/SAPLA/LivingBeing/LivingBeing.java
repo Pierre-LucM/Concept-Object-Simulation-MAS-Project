@@ -2,7 +2,6 @@ package org.SAPLA.LivingBeing;
 
 import org.SAPLA.Enum.Direction;
 import org.SAPLA.Fight.Fight;
-import org.SAPLA.Game.Game;
 import org.SAPLA.Map.SafeZone;
 import org.SAPLA.Map.Tile;
 
@@ -18,7 +17,8 @@ public abstract class LivingBeing {
     private SafeZone _safeZone;
     private int _maxEnergy;
 
-    public abstract void move(Game game);
+    public abstract void move();
+
     public void interact(LivingBeing other) {
         if(this.getClass().equals(other.getClass())) {
             this.exchangeAllMessages(other);

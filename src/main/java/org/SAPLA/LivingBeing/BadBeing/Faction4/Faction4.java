@@ -2,7 +2,7 @@ package org.SAPLA.LivingBeing.BadBeing.Faction4;
 import org.SAPLA.Enum.Direction;
 import org.SAPLA.Game.Game;
 import org.SAPLA.LivingBeing.BadBeing.BadBeing;
-import org.SAPLA.LivingBeing.Master;
+import org.SAPLA.LivingBeing.IMaster;
 import org.SAPLA.Map.Tile;
 import org.SAPLA.MouvementType.CavalerMouv.CavalerMouv;
 import org.SAPLA.Result.Result;
@@ -24,15 +24,15 @@ public class Faction4 <T extends CavalerMouv> extends BadBeing {
     }
 
     @Override
-    public void move(Game game) {
+    public void move() {
         if (getEnergyPoint() > 0) {
             Result result = _mouvementCavaler.cavalerMov(super.getCurrentTile(), super.getEnergyPoint(), super.getMaxEnergy());
             super.setCurrentTile(result.getTile());
             super.setEnergyPoint(result.getEnergyPoint());
             // Si l'individu est dans la safe zone, alors on envoie tous nos messages au master
             if(this.getCurrentTile().isSafeZone()) {
-                Master master = game.getMaster(this);
-                master.collectMessages(this.getMessage());
+                IMaster IMaster = Game.getInstance().getMaster(this);
+                IMaster.collectMessages(this.getMessage());
             }
         }
     }

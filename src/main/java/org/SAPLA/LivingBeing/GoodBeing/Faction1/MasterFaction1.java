@@ -1,12 +1,12 @@
 package org.SAPLA.LivingBeing.GoodBeing.Faction1;
 
-import org.SAPLA.Game.Game;
-import org.SAPLA.LivingBeing.Master;
+import org.SAPLA.LivingBeing.IMaster;
 import org.SAPLA.Map.Tile;
+import org.SAPLA.MouvementType.KingMouv.KingMouv;
 
 import java.util.List;
 
-public class MasterFaction1 extends Faction1 implements Master {
+public class MasterFaction1 extends Faction1<KingMouv> implements IMaster {
 
     private static MasterFaction1 _masterFaction1;
 
@@ -32,5 +32,5 @@ public class MasterFaction1 extends Faction1 implements Master {
     }
 
     @Override
-    public void move(Game game) {}
+    public void move() {}
 }

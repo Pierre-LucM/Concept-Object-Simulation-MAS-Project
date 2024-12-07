@@ -16,7 +16,7 @@ public class Main {
 
 
         //Pavé de test Aurélien
-        Game game = new Game();
+        Game game = Game.getInstance();
 
         game.startAutomatic();
 

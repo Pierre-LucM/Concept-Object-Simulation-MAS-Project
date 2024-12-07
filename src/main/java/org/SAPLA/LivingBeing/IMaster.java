@@ -4,7 +4,7 @@ import org.SAPLA.Map.Tile;
 
 import java.util.List;
 
-public interface Master {
+public interface IMaster {
     public void collectMessages(List<String> messages);
 
     public void setFixedTile(Tile tile);
