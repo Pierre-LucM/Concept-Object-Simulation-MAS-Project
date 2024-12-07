@@ -1,8 +1,6 @@
 package org.SAPLA;
+
 import org.SAPLA.Game.Game;
-
-
-import org.SAPLA.Map.Map;
 
 public class Main {
 
@@ -13,10 +11,8 @@ public class Main {
 
 
 
-
-
         //Pavé de test Aurélien
-        Game game = new Game();
+        Game game = Game.getInstance();
 
         game.startAutomatic();
 

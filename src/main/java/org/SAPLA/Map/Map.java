@@ -126,6 +126,11 @@ public class Map {
         return _mapGrid[position.getX()][position.getY()];
     }
 
+    public Tile setTileContentAtPosition(Position position, char content) {
+        this._mapGrid[position.getX()][position.getY()].setTileContent(content);
+        return this._mapGrid[position.getX()][position.getY()];
+    }
+
     public static Tile[][] getMapGrid() {
         return s_mapGrid;
     }

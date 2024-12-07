@@ -5,12 +5,13 @@ import org.SAPLA.Fight.Fight;
 import org.SAPLA.Map.SafeZone;
 import org.SAPLA.Map.Tile;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 public abstract class LivingBeing {
-    private List<String> _message;
+    private List<String> _message = new ArrayList<>();
     private Tile _currentTile;
     private Direction _lastDirectionTaken;
     private int _energyPoint;
@@ -18,6 +19,7 @@ public abstract class LivingBeing {
     private int _maxEnergy;
 
     public abstract void move();
+
     public void interact(LivingBeing other) {
         if(this.getClass().equals(other.getClass())) {
             this.exchangeAllMessages(other);
@@ -100,12 +102,10 @@ public abstract class LivingBeing {
     }
 
     //Setter
-    protected void setMessage(List<String> message){
-        this._message = message;
-    }
-
     protected void addMessage(List<String> messages){
-        this._message.addAll(messages);
+        if(messages != null) {
+            this._message.addAll(messages);
+        }
     }
 
     protected void deleteMessage(List<String> messages) {
