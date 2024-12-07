@@ -2,7 +2,7 @@ package org.SAPLA.Map;
 
 public class Tile {
 
-    private final char _tileContent;
+    private char _tileContent;
     private final boolean _isSafeZone;
     private final Position _position;
 
@@ -13,6 +13,9 @@ public class Tile {
     }
     public char getTileContent() {
         return _tileContent;
+    }
+    public void setTileContent(char tileContent) {
+        this._tileContent = tileContent;
     }
     public boolean isSafeZone() {
         return _isSafeZone;

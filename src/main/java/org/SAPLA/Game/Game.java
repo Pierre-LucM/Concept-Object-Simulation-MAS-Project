@@ -1,11 +1,16 @@
 package org.SAPLA.Game;
 
 import org.SAPLA.Enum.Direction;
-import org.SAPLA.LivingBeing.LivingBeing;
-import org.SAPLA.LivingBeing.GoodBeing.Faction1.Faction1;
-import org.SAPLA.LivingBeing.GoodBeing.Faction2.Faction2;
-import org.SAPLA.LivingBeing.BadBeing.Faction4.Faction4;
 import org.SAPLA.LivingBeing.BadBeing.Faction3.Faction3;
+import org.SAPLA.LivingBeing.BadBeing.Faction3.MasterFaction3;
+import org.SAPLA.LivingBeing.BadBeing.Faction4.Faction4;
+import org.SAPLA.LivingBeing.BadBeing.Faction4.MasterFaction4;
+import org.SAPLA.LivingBeing.GoodBeing.Faction1.Faction1;
+import org.SAPLA.LivingBeing.GoodBeing.Faction1.MasterFaction1;
+import org.SAPLA.LivingBeing.GoodBeing.Faction2.Faction2;
+import org.SAPLA.LivingBeing.GoodBeing.Faction2.MasterFaction2;
+import org.SAPLA.LivingBeing.LivingBeing;
+import org.SAPLA.LivingBeing.Master;
 import org.SAPLA.Map.Map;
 import org.SAPLA.Map.Tile;
 import org.SAPLA.MouvementType.CavalerMouv.CavalerMouv;
@@ -16,7 +21,9 @@ import org.SAPLA.MouvementType.TowerMouv.TowerMouv;
 import org.SAPLA.utils.Constants;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -35,16 +42,19 @@ public class Game {
 
     private ArrayList<LivingBeing> individualsList = new ArrayList<LivingBeing>();
 
+    private ArrayList<LivingBeing> masters = new ArrayList<>();
 
     public Game() {
 
         this.individuals = new ArrayList<String>();
 
-        this.map = new Map(20, 20);
+        this.map = new Map(Constants.MAP_WIDTH, Constants.MAP_HEIGHT);
         map.generateMap();
-        map.DisplayMap();
 
+        generateMasters();
         generateFactions();
+
+        map.DisplayMap();
         displayIndividuals();
 
         executor = Executors.newScheduledThreadPool(1);
@@ -156,7 +166,7 @@ public class Game {
     //Fonction pour faire jouer chaque individu
     public void playIndividuals() {
         for (LivingBeing individual : this.individualsList) {
-            individual.move();
+            individual.move(this);
         }
     }
 
@@ -212,6 +222,29 @@ public class Game {
                 e.printStackTrace(); // Log or handle appropriately
             }
         }
+    }
+
+    private void generateMasters() {
+        Tile tileMasterFaction1 = this.map.setTileContentAtPosition(Constants.MASTER_FACTION_1_POSITION, 'M');
+        Tile tileMasterFaction2 = this.map.setTileContentAtPosition(Constants.MASTER_FACTION_2_POSITION, 'M');
+        Tile tileMasterFaction3 = this.map.setTileContentAtPosition(Constants.MASTER_FACTION_3_POSITION, 'M');
+        Tile tileMasterFaction4 = this.map.setTileContentAtPosition(Constants.MASTER_FACTION_4_POSITION, 'M');
+        MasterFaction1 masterFaction1 = MasterFaction1.getInstance();
+        masterFaction1.setFixedTile(tileMasterFaction1);
+        this.masters.add(masterFaction1);
+        MasterFaction2 masterFaction2 = MasterFaction2.getInstance();
+        masterFaction2.setFixedTile(tileMasterFaction2);
+        this.masters.add(masterFaction2);
+        MasterFaction3 masterFaction3 = MasterFaction3.getInstance();
+        masterFaction3.setFixedTile(tileMasterFaction3);
+        this.masters.add(masterFaction3);
+        MasterFaction4 masterFaction4 = MasterFaction4.getInstance();
+        masterFaction4.setFixedTile(tileMasterFaction4);
+        this.masters.add(masterFaction4);
+    }
+
+    public Master getMaster(LivingBeing individu) {
+        return (Master) this.masters.stream().filter(master -> master.getClass().getSuperclass() == individu.getClass()).findFirst().orElse(null);
     }
 }
 
