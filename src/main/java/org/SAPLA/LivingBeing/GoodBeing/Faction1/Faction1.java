@@ -9,10 +9,12 @@ import org.SAPLA.MouvementType.KingMouv.KingMouv;
 import org.SAPLA.Result.Result;
 import org.SAPLA.utils.Constants;
 
+import java.util.List;
+
 public class Faction1 <T extends KingMouv> extends GoodBeing {
     private T _mouvementKing ;
 
-    public Faction1(Tile currentTile, Direction lastDirectionTaken, int energyPoint, T mouvementKing) {
+    public Faction1(Tile currentTile, Direction lastDirectionTaken, int energyPoint, T mouvementKing, List<String> messages) {
         super();
         setCurrentTile(currentTile);
         setEnergyPoint(energyPoint);
@@ -21,6 +23,7 @@ public class Faction1 <T extends KingMouv> extends GoodBeing {
         if (_mouvementKing != null) {
             _mouvementKing.setLivingBeing(this);
         }
+        addMessage(messages);
     }
 
     @Override

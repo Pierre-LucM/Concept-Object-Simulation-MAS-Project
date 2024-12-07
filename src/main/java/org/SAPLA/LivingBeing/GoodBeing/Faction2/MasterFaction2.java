@@ -11,7 +11,7 @@ public class MasterFaction2 extends Faction2<TowerMouv> implements IMaster {
     private static MasterFaction2 _masterFaction2;
 
     private MasterFaction2() {
-        super(null, null, 0, null);
+        super(null, null, 0, null, null);
     }
 
     public static MasterFaction2 getInstance() {
@@ -28,6 +28,16 @@ public class MasterFaction2 extends Faction2<TowerMouv> implements IMaster {
     @Override
     public void setFixedTile(Tile fixedTile){
         this.setCurrentTile(fixedTile);
+    }
+
+    @Override
+    public boolean didIWin(List<String> allMessages) {
+        return this.getMessage().containsAll(allMessages);
+    }
+
+    @Override
+    public int getNbMessages() {
+        return this.getMessage().size();
     }
 
     @Override

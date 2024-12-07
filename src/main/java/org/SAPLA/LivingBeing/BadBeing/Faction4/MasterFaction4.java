@@ -11,7 +11,7 @@ public class MasterFaction4 extends Faction4<CavalerMouv> implements IMaster {
     private static MasterFaction4 _masterFaction4;
 
     private MasterFaction4() {
-        super(null, null, 0, null);
+        super(null, null, 0, null, null);
     }
 
     public static MasterFaction4 getInstance() {
@@ -28,6 +28,17 @@ public class MasterFaction4 extends Faction4<CavalerMouv> implements IMaster {
     @Override
     public void setFixedTile(Tile fixedTile){
         this.setCurrentTile(fixedTile);
+    }
+
+    @Override
+
+    public boolean didIWin(List<String> allMessages) {
+        return this.getMessage().containsAll(allMessages);
+    }
+
+    @Override
+    public int getNbMessages() {
+        return this.getMessage().size();
     }
 
     @Override

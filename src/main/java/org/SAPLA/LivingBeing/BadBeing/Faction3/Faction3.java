@@ -9,11 +9,13 @@ import org.SAPLA.MouvementType.DiagonalMouv.DiagonalMouv;
 import org.SAPLA.Result.Result;
 import org.SAPLA.utils.Constants;
 
+import java.util.List;
+
 
 public class Faction3 <T extends DiagonalMouv> extends BadBeing{
     private T _mouvementDiagonal ;
 
-    public Faction3(Tile currentTile, Direction lastDirectionTaken, int energyPoint, T mouvementDiagonal) {
+    public Faction3(Tile currentTile, Direction lastDirectionTaken, int energyPoint, T mouvementDiagonal, List<String> messages) {
         super();
         setCurrentTile(currentTile);
         setEnergyPoint(energyPoint);
@@ -22,6 +24,7 @@ public class Faction3 <T extends DiagonalMouv> extends BadBeing{
         if (_mouvementDiagonal != null) {
             _mouvementDiagonal.setLivingBeing(this);
         }
+        addMessage(messages);
     }
 
     @Override

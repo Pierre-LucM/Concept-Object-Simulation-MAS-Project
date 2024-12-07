@@ -9,8 +9,8 @@ import org.SAPLA.LivingBeing.GoodBeing.Faction1.Faction1;
 import org.SAPLA.LivingBeing.GoodBeing.Faction1.MasterFaction1;
 import org.SAPLA.LivingBeing.GoodBeing.Faction2.Faction2;
 import org.SAPLA.LivingBeing.GoodBeing.Faction2.MasterFaction2;
-import org.SAPLA.LivingBeing.LivingBeing;
 import org.SAPLA.LivingBeing.IMaster;
+import org.SAPLA.LivingBeing.LivingBeing;
 import org.SAPLA.Map.Map;
 import org.SAPLA.Map.Position;
 import org.SAPLA.MouvementType.CavalerMouv.CavalerMouv;
@@ -18,10 +18,12 @@ import org.SAPLA.MouvementType.DiagonalMouv.DiagonalMouv;
 import org.SAPLA.MouvementType.KingMouv.KingMouv;
 import org.SAPLA.MouvementType.MouvementType;
 import org.SAPLA.MouvementType.TowerMouv.TowerMouv;
+import org.SAPLA.RandomGeneration.RandomGeneration;
 import org.SAPLA.utils.Constants;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
@@ -35,16 +37,18 @@ public class Game {
     private final ScheduledExecutorService executor;
     private final Runnable task;
 
-    private Map map;
-    //private LivingBeing winner;
-    private final ArrayList<String> individuals;//TODO: à changer par tableau de LivingBeing
+    private final Map map;
 
     private int stepCount = 0;
     private boolean isRunningAutomatically = false;
 
-    private ArrayList<LivingBeing> individualsList = new ArrayList<LivingBeing>();
+    private final List<LivingBeing> individualsList = new ArrayList<>();
 
-    private ArrayList<LivingBeing> masters = new ArrayList<>();
+    private final List<LivingBeing> masters = new ArrayList<>();
+
+    private List<LivingBeing> winners = new ArrayList<>();
+
+    private List<String> allMessages = new ArrayList<>();
 
     public static Game getInstance() {
         if(_game == null) {
@@ -55,11 +59,10 @@ public class Game {
 
     private Game() {
 
-        this.individuals = new ArrayList<String>();
-
         this.map = new Map(Constants.MAP_WIDTH, Constants.MAP_HEIGHT);
         map.generateMap();
 
+        generateAllMessages();
         generateMasters();
         generateFactions();
 
@@ -85,9 +88,11 @@ public class Game {
                 System.out.println("Simulation terminée.");
                 break;
             }
-            gameStep();
+            if(!gameStep()) {
+                break;
+            }
         }
-
+        this.displayFinalResults();
         scanner.close();
     }
 
@@ -112,6 +117,7 @@ public class Game {
                     executor.shutdownNow();
                 }
                 System.out.println("Simulation automatique arrêtée.");
+                this.displayFinalResults();
             } catch (InterruptedException e) {
                 executor.shutdownNow();
             }
@@ -122,7 +128,7 @@ public class Game {
 
 
     //Fonction contenant tout ce qui est exécuté à chaque tour
-    public void gameStep() {
+    public boolean gameStep() {
         long startTime = System.currentTimeMillis();
 
         //Placer ici les actions à exécuter à chaque tour
@@ -146,7 +152,16 @@ public class Game {
         long endTime = System.currentTimeMillis();
         System.out.println("Fin de l'étape " + (stepCount + 1) + " à " + endTime + ", durée : " + (endTime - startTime) + " ms");
 
-        stepCount++;
+        checkIfThereIsAWinner();
+        if(!winners.isEmpty()) {
+            if(isRunningAutomatically) {
+                this.stopAutomatic();
+            }
+            return false;
+        } else {
+            stepCount++;
+            return true;
+        }
     }
 
 
@@ -179,6 +194,43 @@ public class Game {
         }
     }
 
+    private void checkIfThereIsAWinner() {
+        winners = new ArrayList<>(masters.stream().filter(master -> ((IMaster) master).didIWin(allMessages)).toList());
+    }
+
+    private void displayFinalResults() {
+         if(winners.isEmpty()) { //si on a arrêté la simulation avant qu'un des masters est récupéré tous les messages
+            //Le gagnant sera donc le master qui a récupéré le plus de messages
+            int nbMessagesMax = 0;
+            for (LivingBeing master : masters) {
+                int masterNbMessage = ((IMaster) master).getNbMessages();
+                if(masterNbMessage > nbMessagesMax) {
+                    nbMessagesMax = masterNbMessage;
+                    winners.clear();
+                    winners.add(master);
+                } else if(masterNbMessage == nbMessagesMax) {
+                    winners.add(master);
+                }
+            }
+        }
+
+        if(winners.size() == 1) {
+            System.out.println("La faction gagnante est la faction " + winners.getFirst().getClass().getSuperclass().getSimpleName() + ".");
+        } else if(winners.size() > 1) {
+            StringBuilder result = new StringBuilder();
+            result.append("Les factions gagnantes sont les factions ");
+            for (int i = 0; i < winners.size(); i++) {
+                result.append(winners.get(i).getClass().getSuperclass().getSimpleName());
+                if (i < winners.size() - 1) {
+                    result.append(", ");
+                } else {
+                    result.append(".");
+                }
+            }
+            System.out.println(result);
+        }
+    }
+
     private final Class<?>[] factionClasses = {
             Faction1.class,
             Faction2.class,
@@ -202,6 +254,7 @@ public class Game {
         java.util.Map<Class<? extends LivingBeing>, Class<? extends MouvementType>> factionTable =
                 (java.util.Map<Class<? extends LivingBeing>, Class<? extends MouvementType>>) createFactionDictionary();
 
+        int messageIndex = 0;
         for (java.util.Map.Entry<Class<? extends LivingBeing>, Class<? extends MouvementType>> factionClass : factionTable.entrySet()) {
             try {
                 // Get the associated MouvementType class
@@ -210,21 +263,22 @@ public class Game {
                 // Create an instance of MouvementType
                 MouvementType mouvementInstance = mouvementClass.getConstructor().newInstance();
 
-                for(int i = 0; i <= Constants.NB_INDIVIDUALS; i++){
+                for(int i = 0; i < Constants.NB_INDIVIDUALS; i++){
                     switch (mouvementInstance.getClass().getSimpleName()) {
                         case "KingMouv":
-                            this.individualsList.add(new Faction1<>(Map.getMapGrid()[0][0], Direction.NORTH, Constants.STARTING_ENERGY, (KingMouv)mouvementInstance));
+                            this.individualsList.add(new Faction1<>(Map.getMapGrid()[0][0], Direction.NORTH, Constants.STARTING_ENERGY, (KingMouv)mouvementInstance, allMessages.subList(messageIndex, messageIndex + Constants.NB_MESSAGES_PER_INDIVIDUAL_AT_START)));
                             break;
                         case "TowerMouv":
-                            this.individualsList.add(new Faction2<>(Map.getMapGrid()[0][0], Direction.NORTH, Constants.STARTING_ENERGY, (TowerMouv)mouvementInstance));
+                            this.individualsList.add(new Faction2<>(Map.getMapGrid()[0][0], Direction.NORTH, Constants.STARTING_ENERGY, (TowerMouv)mouvementInstance, allMessages.subList(messageIndex, messageIndex + Constants.NB_MESSAGES_PER_INDIVIDUAL_AT_START)));
                             break;
                         case "DiagonalMouv":
-                            this.individualsList.add(new Faction3<>(Map.getMapGrid()[0][0], Direction.NORTH, Constants.STARTING_ENERGY, (DiagonalMouv)mouvementInstance));
+                            this.individualsList.add(new Faction3<>(Map.getMapGrid()[0][0], Direction.NORTH, Constants.STARTING_ENERGY, (DiagonalMouv)mouvementInstance, allMessages.subList(messageIndex, messageIndex + Constants.NB_MESSAGES_PER_INDIVIDUAL_AT_START)));
                             break;
                         case "CavalerMouv":
-                            this.individualsList.add(new Faction4<>(Map.getMapGrid()[0][0], Direction.NORTH, Constants.STARTING_ENERGY, (CavalerMouv)mouvementInstance));
+                            this.individualsList.add(new Faction4<>(Map.getMapGrid()[0][0], Direction.NORTH, Constants.STARTING_ENERGY, (CavalerMouv)mouvementInstance, allMessages.subList(messageIndex, messageIndex + Constants.NB_MESSAGES_PER_INDIVIDUAL_AT_START)));
                             break;
                     }
+                    messageIndex += Constants.NB_MESSAGES_PER_INDIVIDUAL_AT_START;
                 }
             } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
                      InvocationTargetException e) {
@@ -246,6 +300,10 @@ public class Game {
         MasterFaction4 masterFaction4 = MasterFaction4.getInstance();
         masterFaction4.setFixedTile(this.map.setTileContentAtPosition(new Position(Constants.MAP_WIDTH - 1, Constants.MAP_HEIGHT - 1), 'M'));
         this.masters.add(masterFaction4);
+    }
+
+    private void generateAllMessages() {
+        allMessages = RandomGeneration.generateRandomStrings();
     }
 
     public IMaster getMaster(LivingBeing individu) {

@@ -11,7 +11,7 @@ public class MasterFaction3 extends Faction3<DiagonalMouv> implements IMaster {
     private static MasterFaction3 _masterFaction3;
 
     private MasterFaction3() {
-        super(null, null, 0, null);
+        super(null, null, 0, null, null);
     }
 
     public static MasterFaction3 getInstance() {
@@ -28,6 +28,16 @@ public class MasterFaction3 extends Faction3<DiagonalMouv> implements IMaster {
     @Override
     public void setFixedTile(Tile fixedTile){
         this.setCurrentTile(fixedTile);
+    }
+
+    @Override
+    public boolean didIWin(List<String> allMessages) {
+        return this.getMessage().containsAll(allMessages);
+    }
+
+    @Override
+    public int getNbMessages() {
+        return this.getMessage().size();
     }
 
     @Override

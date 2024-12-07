@@ -5,7 +5,11 @@ import org.SAPLA.Map.Tile;
 import java.util.List;
 
 public interface IMaster {
-    public void collectMessages(List<String> messages);
+    void collectMessages(List<String> messages);
 
-    public void setFixedTile(Tile tile);
+    void setFixedTile(Tile tile);
+
+    boolean didIWin(List<String> allMessages);
+
+    int getNbMessages();
 }

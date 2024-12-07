@@ -8,11 +8,13 @@ import org.SAPLA.MouvementType.CavalerMouv.CavalerMouv;
 import org.SAPLA.Result.Result;
 import org.SAPLA.utils.Constants;
 
+import java.util.List;
+
 public class Faction4 <T extends CavalerMouv> extends BadBeing {
 
     private T _mouvementCavaler ;
 
-    public Faction4(Tile currentTile, Direction lastDirectionTaken, int energyPoint, T mouvementCavaler) {
+    public Faction4(Tile currentTile, Direction lastDirectionTaken, int energyPoint, T mouvementCavaler, List<String> messages) {
         super();
         setCurrentTile(currentTile);
         setEnergyPoint(energyPoint);
@@ -21,6 +23,7 @@ public class Faction4 <T extends CavalerMouv> extends BadBeing {
         if (_mouvementCavaler != null) {
             _mouvementCavaler.setLivingBeing(this);
         }
+        addMessage(messages);
     }
 
     @Override
