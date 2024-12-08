@@ -2,6 +2,8 @@ package org.SAPLA.Map;
 
 import org.SAPLA.Enum.Direction;
 import org.SAPLA.LivingBeing.LivingBeing;
+import org.SAPLA.utils.Constants;
+import org.SAPLA.utils.RandomProvider;
 
 import java.util.Dictionary;
 
@@ -47,7 +49,19 @@ public class Map {
         assignSafeZone("Faction2", 0, _mapHeight - safeZoneHeight, safeZoneWidth, safeZoneHeight);     // Top-right
         assignSafeZone("Faction3", _mapWidth - safeZoneWidth, 0, safeZoneWidth, safeZoneHeight);       // Bottom-left
         assignSafeZone("Faction4", _mapWidth - safeZoneWidth, _mapHeight - safeZoneHeight, safeZoneWidth, safeZoneHeight); // Bottom-right
+        this.generateObstacle();
         s_mapGrid = _mapGrid;
+    }
+
+    private void generateObstacle(){
+        RandomProvider randomProvider = RandomProvider.getInstance();
+        for (int i=0; i< Constants.OBSTACLE_COUNT; i++){
+            int x = randomProvider.nextInt(_mapWidth);
+            int y = randomProvider.nextInt(_mapHeight);
+            if (_mapGrid[x][y].getTileContent() == ' ' && !_mapGrid[x][y].isSafeZone()){
+                _mapGrid[x][y].setTileContent('X');
+            }
+        }
     }
 
     private void assignSafeZone(String faction, int startX, int startY, int width, int height) {

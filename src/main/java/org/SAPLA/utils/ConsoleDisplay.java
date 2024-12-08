@@ -47,6 +47,8 @@ public class ConsoleDisplay {
                 if (tile.isSafeZone()) {
                     int safeZoneIndex = (i < mapWidth / 2 ? 0 : 2) + (j < mapHeight / 2 ? 0 : 1);
                     color = SAFE_ZONE_COLORS[safeZoneIndex];
+                } else if (displayChar == 'X') {
+                    color = "\033[1;90m";
                 } else {
                     color = DEFAULT_COLOR;
                 }
