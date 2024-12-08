@@ -8,10 +8,12 @@ import java.util.List;
 
 public class MasterFaction3 extends Faction3<DiagonalMouv> implements IMaster {
 
+    private static int _instancesCount = 0;
     private static MasterFaction3 _masterFaction3;
 
     private MasterFaction3() {
         super(null, null, 0, null, null);
+        _instancesCount++;
     }
 
     public static MasterFaction3 getInstance() {
@@ -42,4 +44,8 @@ public class MasterFaction3 extends Faction3<DiagonalMouv> implements IMaster {
 
     @Override
     public void move() {}
+
+    public static int getInstancesCount() {
+        return _instancesCount;
+    }
 }

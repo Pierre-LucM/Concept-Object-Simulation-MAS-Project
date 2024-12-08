@@ -2,11 +2,13 @@ package org.SAPLA.Map;
 
 public class Tile {
 
+    private static int _instancesCount = 0;
     private char _tileContent;
     private final boolean _isSafeZone;
     private final Position _position;
 
     public Tile(char tileContent, boolean isSafeZone, Position position) {
+        _instancesCount++;
         _tileContent = tileContent;
         _isSafeZone = isSafeZone;
         _position = position;
@@ -28,4 +30,7 @@ public class Tile {
         return this;
     }
 
+    public static int getInstancesCount() {
+        return _instancesCount;
+    }
 }
