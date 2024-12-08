@@ -5,8 +5,7 @@ import org.SAPLA.Map.Map;
 import org.SAPLA.Map.Tile;
 import org.SAPLA.MouvementType.MouvementType;
 import org.SAPLA.Result.Result;
-
-import java.util.Random;
+import org.SAPLA.utils.RandomProvider;
 
 public class DiagonalMouv extends MouvementType {
 
@@ -29,7 +28,7 @@ public class DiagonalMouv extends MouvementType {
             return new Result(currentTile, energyPoint);
         }
 
-        int numberMouv = new Random().nextInt(4);
+        int numberMouv = RandomProvider.getInstance().nextInt(4);
         numberMouv = numberMouv + 1;
         Tile nextTile = currentTile, previousTile = currentTile;
 

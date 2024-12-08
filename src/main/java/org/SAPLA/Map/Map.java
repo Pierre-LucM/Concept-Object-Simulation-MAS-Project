@@ -2,6 +2,8 @@ package org.SAPLA.Map;
 
 import org.SAPLA.Enum.Direction;
 import org.SAPLA.LivingBeing.LivingBeing;
+import org.SAPLA.utils.Constants;
+import org.SAPLA.utils.RandomProvider;
 
 import java.util.Dictionary;
 
@@ -15,7 +17,7 @@ public class Map {
     private static int s_mapWidth;
     private static int s_mapHeight;
 
-    private Dictionary<String, SafeZone> _safeZones;
+    private java.util.Map<String, SafeZone> _safeZones;
 
     public Map(int mapWidth, int mapHeight) {
         _instancesCount++;
@@ -25,7 +27,7 @@ public class Map {
         s_mapHeight = mapHeight;
         _mapGrid = new Tile[_mapWidth][_mapHeight];
         s_mapGrid = new Tile[_mapWidth][_mapHeight];
-        _safeZones = new java.util.Hashtable<>();
+        _safeZones = new java.util.HashMap<>();
     }
 
     private void initializeMapGrid() {
@@ -43,11 +45,23 @@ public class Map {
         // Generate and assign safe zones
         int safeZoneWidth = 4;
         int safeZoneHeight = 4;
-        assignSafeZone("faction1", 0, 0, safeZoneWidth, safeZoneHeight);                               // Top-left
-        assignSafeZone("faction2", 0, _mapHeight - safeZoneHeight, safeZoneWidth, safeZoneHeight);     // Top-right
-        assignSafeZone("faction3", _mapWidth - safeZoneWidth, 0, safeZoneWidth, safeZoneHeight);       // Bottom-left
-        assignSafeZone("faction4", _mapWidth - safeZoneWidth, _mapHeight - safeZoneHeight, safeZoneWidth, safeZoneHeight); // Bottom-right
+        assignSafeZone("Faction1", 0, 0, safeZoneWidth, safeZoneHeight);                               // Top-left
+        assignSafeZone("Faction2", 0, _mapHeight - safeZoneHeight, safeZoneWidth, safeZoneHeight);     // Top-right
+        assignSafeZone("Faction3", _mapWidth - safeZoneWidth, 0, safeZoneWidth, safeZoneHeight);       // Bottom-left
+        assignSafeZone("Faction4", _mapWidth - safeZoneWidth, _mapHeight - safeZoneHeight, safeZoneWidth, safeZoneHeight); // Bottom-right
+        this.generateObstacle();
         s_mapGrid = _mapGrid;
+    }
+
+    private void generateObstacle(){
+        RandomProvider randomProvider = RandomProvider.getInstance();
+        for (int i=0; i< Constants.OBSTACLE_COUNT; i++){
+            int x = randomProvider.nextInt(_mapWidth);
+            int y = randomProvider.nextInt(_mapHeight);
+            if (_mapGrid[x][y].getTileContent() == ' ' && !_mapGrid[x][y].isSafeZone()){
+                _mapGrid[x][y].setTileContent('X');
+            }
+        }
     }
 
     private void assignSafeZone(String faction, int startX, int startY, int width, int height) {
@@ -74,8 +88,47 @@ public class Map {
     }
 
     public int tileAvailableAroundAGivenTile(Tile tile) {
-        return 0;
+        int x = tile.getPosition().getX();
+        int y = tile.getPosition().getY();
+
+        // Les 8 positions possibles autour de la case (haut, bas, gauche, droite et diagonales)
+        int[][] directions = {
+                {1, 0}, {-1, 0}, {0, 1}, {0, -1},
+                {1, 1}, {1, -1}, {-1, 1}, {-1, -1}
+        };
+
+        int maxAvailableTiles;
+        if ((x == 0 && y == 0) || (x == 0 && y == _mapHeight - 1) ||
+                (x == _mapWidth - 1 && y == 0) || (x == _mapWidth - 1 && y == _mapHeight - 1)) {
+            // Coin : maximum 3 cases disponibles
+            maxAvailableTiles = 3;
+        } else if (x == 0 || x == _mapWidth - 1 || y == 0 || y == _mapHeight - 1) {
+            // Bordure : maximum 5 cases disponibles
+            maxAvailableTiles = 5;
+        } else {
+            // Centre : maximum 8 cases disponibles
+            maxAvailableTiles = 8;
+        }
+
+        int availableTiles = 0;
+
+        // Vérifie toutes les directions autour de la case
+        for (int[] dir : directions) {
+            int newX = x + dir[0];
+            int newY = y + dir[1];
+
+            // Vérifie si la nouvelle position est dans les limites de la carte
+            if (newX >= 0 && newX < _mapWidth && newY >= 0 && newY < _mapHeight) {
+                // Vérifie si la case est vide
+                if (_mapGrid[newX][newY].getTileContent() == ' ') {
+                    availableTiles++;
+                }
+            }
+        }
+
+        return Math.min(availableTiles, maxAvailableTiles);
     }
+
 
     public static Direction directionToReachSafeZone(LivingBeing livingBeing) {
         Tile currentTile = livingBeing.getCurrentTile();
@@ -114,10 +167,9 @@ public class Map {
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                char tileContent = ' ';
-                boolean isSafeZone = true;
                 Position position = new Position(startX + i, startY + j);
-                safeZone[i][j] = new Tile(tileContent, isSafeZone, position);
+                this._mapGrid[position.getX()][position.getY()].setSafeZone(true);
+                safeZone[i][j] = this._mapGrid[position.getX()][position.getY()];
             }
         }
 
@@ -137,31 +189,7 @@ public class Map {
         return s_mapGrid;
     }
 
-    public void DisplayMap() {
-        final String[] SAFE_ZONE_COLORS = {"\033[0;101m", "\033[0;102m", "\033[0;103m", "\033[0;104m"};
-        final String RESET_COLOR = "\u001B[0m";
-        final String DEFAULT_COLOR = "\033[0;107m";
-        final int PADDING = (3 - 1) / 2;
-        final String PADDING_SPACES = " ".repeat(PADDING);
 
-        for (int j = 0; j < _mapHeight; j++) {
-            for (int i = 0; i < _mapWidth; i++) {
-                Tile tile = _mapGrid[i][j];
-                char displayChar = tile.getTileContent();
-                String color;
-
-                if (tile.isSafeZone()) {
-                    int safeZoneIndex = (i < _mapWidth / 2 ? 0 : 2) + (j < _mapHeight / 2 ? 0 : 1);
-                    color = SAFE_ZONE_COLORS[safeZoneIndex];
-                } else {
-                    color = DEFAULT_COLOR;
-                }
-
-                System.out.print(color + PADDING_SPACES + displayChar + PADDING_SPACES + RESET_COLOR);
-            }
-            System.out.println();
-        }
-    }
 
     public static int getMapWidth() {
         return s_mapWidth;
@@ -174,4 +202,8 @@ public class Map {
     public static int getInstancesCount() {
         return _instancesCount;
     }
+    public java.util.Map<String, SafeZone> getSafeZones() {
+        return _safeZones;
+    }
+
 }

@@ -4,8 +4,7 @@ import org.SAPLA.Enum.Direction;
 import org.SAPLA.Map.Tile;
 import org.SAPLA.MouvementType.MouvementType;
 import org.SAPLA.Result.Result;
-
-import java.util.Random;
+import org.SAPLA.utils.RandomProvider;
 
 import static org.SAPLA.Map.Map.*;
 
@@ -26,7 +25,7 @@ public class TowerMouv extends MouvementType {
             return new Result(currentTile, energyPoint);
         }
 
-        int numberMouv = new Random().nextInt(4);
+        int numberMouv = RandomProvider.getInstance().nextInt(4);
         numberMouv = numberMouv + 1;
         Tile nextTile = currentTile, previousTile = currentTile;
 

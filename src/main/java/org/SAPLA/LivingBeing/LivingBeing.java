@@ -137,6 +137,15 @@ public abstract class LivingBeing {
         this._maxEnergy = maxEnergy;
     }
 
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName()+ "{"+
+                "currentTile=" + _currentTile.toString()+
+                ", energyPoint=" + _energyPoint +
+                ", safeZone=" + _safeZone +
+                ", maxEnergy=" + _maxEnergy +
+                '}';
+    }
     public static int getInstancesCount() {
         return _instancesCount;
     }

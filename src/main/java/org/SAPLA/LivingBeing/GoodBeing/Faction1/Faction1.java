@@ -33,6 +33,11 @@ public class Faction1 <T extends KingMouv> extends GoodBeing {
     public void move() {
         if (getEnergyPoint() > 0) {
             Result result = _mouvementKing.kingMov(super.getCurrentTile(), super.getEnergyPoint(), super.getMaxEnergy());
+            if(result==null){
+                return;
+            }
+            result.getTile().setTileContent(this.getCurrentTile().getTileContent());
+            this.getCurrentTile().setTileContent(' ');
             super.setCurrentTile(result.getTile());
             super.setEnergyPoint(result.getEnergyPoint());
             // Si l'individu est dans la safe zone, alors on envoie tous nos messages au master
