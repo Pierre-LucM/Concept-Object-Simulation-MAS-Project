@@ -1,6 +1,6 @@
 package org.SAPLA.Enum;
 
-import java.util.Random;
+import org.SAPLA.utils.RandomProvider;
 
 public enum Direction {
     NORTH,
@@ -13,8 +13,8 @@ public enum Direction {
     NORTHWEST;
 
     public static Direction getRandomDirection() {
-        Random random = new Random();
-        int index = random.nextInt(Direction.values().length);
+
+        int index = RandomProvider.getInstance().nextInt(Direction.values().length);
         return Direction.values()[index];
     }
 }
