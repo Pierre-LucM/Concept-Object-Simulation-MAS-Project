@@ -12,11 +12,13 @@ import org.SAPLA.utils.Constants;
 import java.util.List;
 
 public class Faction2 <T extends TowerMouv> extends GoodBeing {
+    private static int _instancesCount = 0;
 
     private T _mouvementTower ;
 
     public Faction2(Tile currentTile, Direction lastDirectionTaken, int energyPoint, T mouvementTower, List<String> messages) {
         super();
+        _instancesCount++;
         setCurrentTile(currentTile);
         setEnergyPoint(energyPoint);
         setMaxEnergy(Constants.MAX_ENERGY);
@@ -39,5 +41,9 @@ public class Faction2 <T extends TowerMouv> extends GoodBeing {
                 IMaster.collectMessages(this.getMessage());
             }
         }
+    }
+
+    public static int getInstancesCount() {
+        return _instancesCount;
     }
 }

@@ -8,10 +8,13 @@ import java.util.List;
 
 public class MasterFaction4 extends Faction4<CavalerMouv> implements IMaster {
 
+    private static int _instancesCount = 0;
+
     private static MasterFaction4 _masterFaction4;
 
     private MasterFaction4() {
         super(null, null, 0, null, null);
+        _instancesCount++;
     }
 
     public static MasterFaction4 getInstance() {
@@ -43,4 +46,9 @@ public class MasterFaction4 extends Faction4<CavalerMouv> implements IMaster {
 
     @Override
     public void move() {}
+
+
+    public static int getInstancesCount() {
+        return _instancesCount;
+    }
 }

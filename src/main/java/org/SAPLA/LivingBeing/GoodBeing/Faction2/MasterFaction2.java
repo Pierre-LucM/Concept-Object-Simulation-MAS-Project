@@ -7,11 +7,13 @@ import org.SAPLA.MouvementType.TowerMouv.TowerMouv;
 import java.util.List;
 
 public class MasterFaction2 extends Faction2<TowerMouv> implements IMaster {
+    private static int _instancesCount = 0;
 
     private static MasterFaction2 _masterFaction2;
 
     private MasterFaction2() {
         super(null, null, 0, null, null);
+        _instancesCount++;
     }
 
     public static MasterFaction2 getInstance() {
@@ -42,4 +44,8 @@ public class MasterFaction2 extends Faction2<TowerMouv> implements IMaster {
 
     @Override
     public void move() {}
+
+    public static int getInstancesCount() {
+        return _instancesCount;
+    }
 }

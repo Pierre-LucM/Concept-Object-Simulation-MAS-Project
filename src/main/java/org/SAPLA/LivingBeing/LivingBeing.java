@@ -11,12 +11,17 @@ import java.util.List;
 import java.util.Random;
 
 public abstract class LivingBeing {
+    private static int _instancesCount = 0;
     private List<String> _message = new ArrayList<>();
     private Tile _currentTile;
     private Direction _lastDirectionTaken;
     private int _energyPoint;
     private SafeZone _safeZone;
     private int _maxEnergy;
+
+    public LivingBeing() {
+        _instancesCount++;
+    }
 
     public abstract void move();
 
@@ -130,5 +135,9 @@ public abstract class LivingBeing {
 
     protected void setMaxEnergy(int maxEnergy){
         this._maxEnergy = maxEnergy;
+    }
+
+    public static int getInstancesCount() {
+        return _instancesCount;
     }
 }
