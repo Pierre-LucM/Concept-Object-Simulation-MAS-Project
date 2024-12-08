@@ -7,6 +7,7 @@ import java.util.Dictionary;
 
 public class Map {
 
+    private static int _instancesCount = 0;
     private Tile[][] _mapGrid;
     private static Tile[][] s_mapGrid;
     private int _mapWidth;
@@ -17,6 +18,7 @@ public class Map {
     private Dictionary<String, SafeZone> _safeZones;
 
     public Map(int mapWidth, int mapHeight) {
+        _instancesCount++;
         _mapWidth = mapWidth;
         _mapHeight = mapHeight;
         s_mapWidth = mapWidth;
@@ -169,4 +171,7 @@ public class Map {
         return s_mapHeight;
     }
 
+    public static int getInstancesCount() {
+        return _instancesCount;
+    }
 }

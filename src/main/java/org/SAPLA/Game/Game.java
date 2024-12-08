@@ -31,6 +31,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class Game {
+    private static int _instancesCount = 0;
 
     private static Game _game;
 
@@ -58,6 +59,7 @@ public class Game {
     }
 
     private Game() {
+        _instancesCount++;
 
         this.map = new Map(Constants.MAP_WIDTH, Constants.MAP_HEIGHT);
         map.generateMap();
@@ -308,6 +310,10 @@ public class Game {
 
     public IMaster getMaster(LivingBeing individu) {
         return (IMaster) this.masters.stream().filter(master -> master.getClass().getSuperclass() == individu.getClass()).findFirst().orElse(null);
+    }
+
+    public static int getInstancesCount() {
+        return _instancesCount;
     }
 }
 

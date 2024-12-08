@@ -13,10 +13,12 @@ import java.util.List;
 
 
 public class Faction3 <T extends DiagonalMouv> extends BadBeing{
+    private static int _instancesCount = 0;
     private T _mouvementDiagonal ;
 
     public Faction3(Tile currentTile, Direction lastDirectionTaken, int energyPoint, T mouvementDiagonal, List<String> messages) {
         super();
+        _instancesCount++;
         setCurrentTile(currentTile);
         setEnergyPoint(energyPoint);
         setMaxEnergy(Constants.MAX_ENERGY);
@@ -39,5 +41,9 @@ public class Faction3 <T extends DiagonalMouv> extends BadBeing{
                 IMaster.collectMessages(this.getMessage());
             }
         }
+    }
+
+    public static int getInstancesCount() {
+        return _instancesCount;
     }
 }
