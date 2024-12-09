@@ -36,8 +36,8 @@ public class Faction2 <T extends TowerMouv> extends GoodBeing {
             if(result==null){
                 return;
             }
-            result.getTile().setTileContent(this.getCurrentTile().getTileContent());
-            this.getCurrentTile().setTileContent(' ');
+            super.getCurrentTile().setTileContent(' ');
+            result.getTile().setTileContent(this.getClass().getSimpleName().charAt(7));
             super.setCurrentTile(result.getTile());
             super.setEnergyPoint(result.getEnergyPoint());
             // Si l'individu est dans la safe zone, alors on envoie tous nos messages au master

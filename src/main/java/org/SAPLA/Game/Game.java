@@ -130,7 +130,6 @@ public final class Game {
         long startTime = System.currentTimeMillis();
 
         shuffleIndividuals();
-        //displayIndividuals();
         playIndividuals();
         consoleDisplay.displaySimulation();
 
