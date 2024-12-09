@@ -46,9 +46,9 @@ public abstract class MouvementType {
         int newY = currentTile.getPosition().getY() + deltaY;
 
         if (newX < 0) newX = 0;
-        if (newX > getMapWidth()) newX = getMapWidth() - 1;
+        if (newX >= getMapWidth()) newX = getMapWidth() - 1;
         if (newY < 0) newY = 0;
-        if (newY > getMapHeight()) newY = getMapHeight() - 1;
+        if (newY >= getMapHeight()) newY = getMapHeight() - 1;
 
         Tile nextTile = getMapGrid()[newX][newY];
         return nextTile.getTileContent() == ' ' ? nextTile : currentTile;

@@ -36,8 +36,8 @@ public class Faction4 <T extends CavalerMouv> extends BadBeing {
             if(result==null){
                 return;
             }
-            result.getTile().setTileContent(this.getCurrentTile().getTileContent());
-            this.getCurrentTile().setTileContent(' ');
+            super.getCurrentTile().setTileContent(' ');
+            result.getTile().setTileContent(this.getClass().getSimpleName().charAt(7));
             super.setCurrentTile(result.getTile());
 
             super.setEnergyPoint(result.getEnergyPoint());
