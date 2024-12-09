@@ -17,7 +17,7 @@ public class Map {
     private static int s_mapWidth;
     private static int s_mapHeight;
 
-    private java.util.Map<String, SafeZone> _safeZones;
+    private static java.util.Map<String, SafeZone> _safeZones;
 
     public Map(int mapWidth, int mapHeight) {
         _instancesCount++;
@@ -202,7 +202,7 @@ public class Map {
     public static int getInstancesCount() {
         return _instancesCount;
     }
-    public java.util.Map<String, SafeZone> getSafeZones() {
+    public static java.util.Map<String, SafeZone> getSafeZones() {
         return _safeZones;
     }
 

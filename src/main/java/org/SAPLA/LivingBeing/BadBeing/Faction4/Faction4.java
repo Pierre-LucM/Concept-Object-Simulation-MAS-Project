@@ -3,6 +3,8 @@ import org.SAPLA.Enum.Direction;
 import org.SAPLA.Game.Game;
 import org.SAPLA.LivingBeing.BadBeing.BadBeing;
 import org.SAPLA.LivingBeing.IMaster;
+import org.SAPLA.Map.Map;
+import org.SAPLA.Map.SafeZone;
 import org.SAPLA.Map.Tile;
 import org.SAPLA.MouvementType.CavalerMouv.CavalerMouv;
 import org.SAPLA.Result.Result;
@@ -36,6 +38,25 @@ public class Faction4 <T extends CavalerMouv> extends BadBeing {
             if(result==null){
                 return;
             }
+
+            java.util.Map<String, SafeZone> safeZones = Map.getSafeZones();
+
+            for (String faction : safeZones.keySet()) {
+                if (!faction.equals("Faction4")) {
+                    Tile[][] safeZoneGrid = safeZones.get(faction).getSafeZoneGrid();
+
+                    for (Tile[] row : safeZoneGrid) {
+                        for (Tile tile : row) {
+                            if (tile.equals(result.getTile())) {
+                                super.setCurrentTile(super.getCurrentTile());
+                                super.setEnergyPoint(result.getEnergyPoint());
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+
             super.getCurrentTile().setTileContent(' ');
             result.getTile().setTileContent(this.getClass().getSimpleName().charAt(7));
             super.setCurrentTile(result.getTile());
