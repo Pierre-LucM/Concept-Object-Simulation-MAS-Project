@@ -47,26 +47,21 @@ public class Faction2 <T extends TowerMouv> extends GoodBeing {
                 int x = super.getCurrentTile().getPosition().getX();
                 int y = super.getCurrentTile().getPosition().getY();
                 switch (result.getLastDirection()) {
-                    case NORTH:
-                    case NORTHEAST:
-                    case NORTHWEST: y++; break;
-                    case SOUTH:
-                    case SOUTHEAST:
-                    case SOUTHWEST: y--; break;
-                    case EAST: x++; break;
-                    case WEST: x--; break;
+                    case NORTH, NORTHWEST -> y--;
+                    case SOUTH, SOUTHEAST -> y++;
+                    case EAST, NORTHEAST -> x++;
+                    case WEST, SOUTHWEST -> x--;
                 }
                 if(x < Map.getMapWidth() && x >= 0 && y < Map.getMapHeight() && y >= 0) {
                     if("1234".indexOf(Map.getMapGrid()[x][y].getTileContent()) != -1) {
                         Game.getInstance().startInteraction(super.getCurrentTile().getPosition(), new Position(x,y));
                     }
                 }
-                super.setLastDirectionTaken(result.getLastDirection());
             }
             // Si l'individu est dans la safe zone, alors on envoie tous nos messages au master
             if(this.getCurrentTile().isSafeZone()) {
                 IMaster IMaster = Game.getInstance().getMaster(this);
-                IMaster.collectMessages(this.getMessage());
+                IMaster.collectMessages(this.getMessage(), this);
             }
         }
     }

@@ -5,7 +5,7 @@ import org.SAPLA.Map.Tile;
 import java.util.List;
 
 public interface IMaster {
-    void collectMessages(List<String> messages);
+    void collectMessages(List<String> messages, LivingBeing individu);
 
     void setFixedTile(Tile tile);
 

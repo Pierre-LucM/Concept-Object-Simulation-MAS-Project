@@ -4,6 +4,7 @@ import org.SAPLA.Enum.Direction;
 import org.SAPLA.Fight.Fight;
 import org.SAPLA.Map.SafeZone;
 import org.SAPLA.Map.Tile;
+import org.SAPLA.utils.ConsoleDisplay;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,27 +43,7 @@ public abstract class LivingBeing {
         List<String> newMessagesForOther = this.getMessage().stream().filter(message -> !other.getMessage().contains(message)).toList();
         this.addMessage(newMessagesForThis);
         other.addMessage(newMessagesForOther);
-
-        System.out.printf("\n Transfert messages between %s and %s.\n", this.getClass().getSimpleName(), other.getClass().getSimpleName());
-        System.out.printf("           | %-15s %-15s%n", this.getClass().getSimpleName(), other.getClass().getSimpleName());
-        System.out.println("-----------------------------------------");
-        int index = 0;
-        while (index < newMessagesForThis.size() || index < newMessagesForOther.size()) {
-            System.out.print("           | ");
-            if(index < newMessagesForThis.size())  {
-                System.out.printf("+%-14s ", newMessagesForThis.get(index));
-            } else {
-                System.out.print("                ");
-            }
-            if(index < newMessagesForOther.size())  {
-                System.out.printf("+%-14s", newMessagesForOther.get(index));
-            } else {
-                System.out.print("               ");
-            }
-            System.out.println("\n");
-            index++;
-        }
-        System.out.println("\n");
+        ConsoleDisplay.displayMessagesTransfertInfo(this, other, newMessagesForThis, newMessagesForOther);
     }
 
     private void exchangeSomeMessages(LivingBeing other) {
@@ -81,27 +62,7 @@ public abstract class LivingBeing {
             newMessagesForOther = newMessagesForOther.subList(0, randomNumber);
             other.addMessage(newMessagesForOther);
         }
-
-        System.out.printf("\n Transfert messages between %s and %s.\n", this.getClass().getSimpleName(), other.getClass().getSimpleName());
-        System.out.printf("           | %-15s %-15s%n", this.getClass().getSimpleName(), other.getClass().getSimpleName());
-        System.out.println("-----------------------------------------");
-        int index = 0;
-        while (index < newMessagesForThis.size() || index < newMessagesForOther.size()) {
-            System.out.print("           | ");
-            if(index < newMessagesForThis.size())  {
-                System.out.printf("+%-14s ", newMessagesForThis.get(index));
-            } else {
-                System.out.print("                ");
-            }
-            if(index < newMessagesForOther.size())  {
-                System.out.printf("+%-14s", newMessagesForOther.get(index));
-            } else {
-                System.out.print("               ");
-            }
-            System.out.println("\n");
-            index++;
-        }
-        System.out.println("\n");
+        ConsoleDisplay.displayMessagesTransfertInfo(this, other, newMessagesForThis, newMessagesForOther);
     }
 
     private void fight(LivingBeing other) {
@@ -118,14 +79,7 @@ public abstract class LivingBeing {
             loser.deleteMessage(messagesVoles);
             winner.addMessage(messagesVoles);
         }
-        System.out.printf("\n Transfert messages from %s to %s.\n", loser.getClass().getSimpleName(), winner.getClass().getSimpleName());
-        System.out.printf("           | %-15s %-15s%n", loser.getClass().getSimpleName(), winner.getClass().getSimpleName());
-        System.out.println("-----------------------------------------");
-        int index = 0;
-        while (index < messagesVoles.size()) {
-            System.out.printf("           | -%-14s +%-14s%n",messagesVoles.get(index), messagesVoles.get(index));
-            index++;
-        }
+        ConsoleDisplay.displayFightMessagesTransfert(winner, loser,messagesVoles);
     }
 
     //Getter

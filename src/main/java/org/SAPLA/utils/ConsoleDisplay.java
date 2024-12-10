@@ -59,6 +59,44 @@ public class ConsoleDisplay {
         }
     }
 
+    public static void displayMessagesTransfertInfo(LivingBeing individu1, LivingBeing individu2, List<String> individu1NewMessages, List<String> individu2NewMessages) {
+        System.out.printf("\n Transfert messages between %s and %s.\n", individu1.getClass().getSimpleName(), individu2.getClass().getSimpleName());
+        System.out.println("_________________________________________________");
+        System.out.printf("|           | %-15s | %-15s |%n", individu1.getClass().getSimpleName(), individu2.getClass().getSimpleName());
+        System.out.println("|-----------|-----------------|-----------------|");
+        int index = 0;
+        while (index < individu1NewMessages.size() || index < individu2NewMessages.size()) {
+            System.out.print("|           | ");
+            if(index < individu1NewMessages.size())  {
+                System.out.printf("+%-14s | ", individu1NewMessages.get(index));
+            } else {
+                System.out.print("                | ");
+            }
+            if(index < individu2NewMessages.size())  {
+                System.out.printf("+%-14s |", individu2NewMessages.get(index));
+            } else {
+                System.out.print("                |");
+            }
+            System.out.print("\n");
+            index++;
+        }
+        System.out.println("_________________________________________________");
+        System.out.println("\n");
+    }
+
+    public static void displayFightMessagesTransfert(LivingBeing winner, LivingBeing loser, List<String> messagesVoles) {
+        System.out.printf("\n Transfert messages from %s to %s.\n", loser.getClass().getSimpleName(), winner.getClass().getSimpleName());
+        System.out.println("_________________________________________________");
+        System.out.printf("|           | %-15s | %-15s |%n", loser.getClass().getSimpleName(), winner.getClass().getSimpleName());
+        System.out.println("|-----------|-----------------|-----------------|");
+        int index = 0;
+        while (index < messagesVoles.size()) {
+            System.out.printf("|           | -%-14s | +%-14s |%n",messagesVoles.get(index), messagesVoles.get(index));
+            index++;
+        }
+        System.out.println("_________________________________________________");
+    }
+
     private void displayIndividualsInfo() {
         System.out.println("Individuals Information:");
         for (LivingBeing individual : individuals) {

@@ -298,6 +298,8 @@ public final class Game {
         LivingBeing individu2 = individualsList.stream().filter(individual -> individual.getCurrentTile().getPosition().getX() == position2.getX() && individual.getCurrentTile().getPosition().getY() == position2.getY()).findFirst().orElse(null);
         if(individu1 != null && individu2 != null) {
             individu1.interact(individu2);
+        } else {
+            throw new IllegalStateException("Failed to find individual to interact with.");
         }
     }
 }

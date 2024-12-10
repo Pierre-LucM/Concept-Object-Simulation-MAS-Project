@@ -6,17 +6,36 @@ import org.SAPLA.MouvementType.MouvementType;
 import org.SAPLA.Result.Result;
 import org.SAPLA.utils.RandomProvider;
 
-import static org.SAPLA.Map.Map.*;
+import static org.SAPLA.Map.Map.directionToReachSafeZone;
 
 public class TowerMouv extends MouvementType {
     @Override
-    public Tile moveStep (Tile currentTile,Direction direction) {
-        return switch (direction) {
-            case NORTH, NORTHWEST -> moveNorth(currentTile);
-            case EAST, NORTHEAST -> moveEast(currentTile);
-            case SOUTH, SOUTHEAST -> moveSouth(currentTile);
-            case WEST, SOUTHWEST -> moveWest(currentTile);
-        };
+    public Result moveStep (Tile currentTile,Direction direction) {
+        Result result = new Result(currentTile, 0, Direction.NORTH, false);
+        Tile nextTile = null;
+        switch (direction) {
+            case NORTH, NORTHWEST -> {
+                direction = Direction.NORTH;
+                nextTile = moveNorth(currentTile);
+            }
+            case EAST, NORTHEAST -> {
+                direction = Direction.EAST;
+                nextTile = moveEast(currentTile);
+            }
+            case SOUTH, SOUTHEAST -> {
+                direction = Direction.SOUTH;
+                nextTile = moveSouth(currentTile);
+            }
+            case WEST, SOUTHWEST -> {
+                direction = Direction.WEST;
+                nextTile = moveWest(currentTile);
+            }
+        }
+        if(nextTile == currentTile) {
+            result.setHasBeenBlocked(true);
+        }
+        result.setLastDirection(direction);
+        return result;
     }
 
     @Override
@@ -27,10 +46,12 @@ public class TowerMouv extends MouvementType {
 
         int numberMouv = RandomProvider.getInstance().nextInt(4);
         numberMouv = numberMouv + 1;
-        Tile nextTile = currentTile, previousTile = currentTile;
+        Tile nextTile, previousTile = currentTile;
+        Result resultNextTile = null;
 
         for (int i = 0; i < numberMouv; i++) {
-            nextTile = moveStep(previousTile, targetDirection);
+            resultNextTile = moveStep(previousTile, targetDirection);
+            nextTile = resultNextTile.getTile();
             if (nextTile == previousTile) {
                 break;
             }
@@ -38,7 +59,8 @@ public class TowerMouv extends MouvementType {
             previousTile = nextTile;
         }
 
-        return new Result(nextTile, energyPoint, targetDirection, nextTile == currentTile);
+        resultNextTile.setEnergyPoint(energyPoint);
+        return resultNextTile;
     }
 
     public Result towerMov(Tile currentTile, int energyPoint, int maxEnergy) {
@@ -50,6 +72,7 @@ public class TowerMouv extends MouvementType {
 
         // Sinon, choisir une direction aléatoire
         Direction randomDirection = Direction.getRandomDirection();
+
         return nextTile(currentTile, energyPoint, randomDirection);
     }
 }

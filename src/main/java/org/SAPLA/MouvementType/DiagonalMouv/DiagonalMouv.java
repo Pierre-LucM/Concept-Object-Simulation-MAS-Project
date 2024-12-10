@@ -30,10 +30,12 @@ public class DiagonalMouv extends MouvementType {
 
         int numberMouv = RandomProvider.getInstance().nextInt(4);
         numberMouv = numberMouv + 1;
-        Tile nextTile = currentTile, previousTile = currentTile;
+        Tile nextTile, previousTile = currentTile;
+        Result resultNextTile = null;
 
         for (int i = 0; i < numberMouv; i++) {
-            nextTile = moveStep(previousTile, targetDirection);
+            resultNextTile = moveStep(previousTile, targetDirection);
+            nextTile = resultNextTile.getTile();
             if (nextTile == previousTile) {
                 break;
             }
@@ -41,40 +43,82 @@ public class DiagonalMouv extends MouvementType {
             previousTile = nextTile;
         }
 
-        return new Result(nextTile, energyPoint, targetDirection, nextTile == currentTile);
+        resultNextTile.setEnergyPoint(energyPoint);
+        return resultNextTile;
     }
 
     @Override
-    public Tile moveStep(Tile currentTile, Direction direction) {
+    public Result moveStep(Tile currentTile, Direction direction) {
+        Result result;
         Tile bufferTile;
         return switch (direction) {
             case NORTH, NORTHEAST -> {
+                result = new Result(currentTile, 0, Direction.NORTH, false);
                 bufferTile = super.moveNorth(currentTile);
                 if (bufferTile != currentTile) {
-                    yield moveEast(bufferTile);
+                    result.setTile(bufferTile);
+                    result.setLastDirection(Direction.EAST);
+                    bufferTile = moveEast(result.getTile());
+                    if(result.getTile() != bufferTile) {
+                        result.setTile(bufferTile);
+                        yield result;
+                    }
+                    result.setHasBeenBlocked(true);
+                    yield result;
                 }
-                yield currentTile;
+                result.setHasBeenBlocked(true);
+                yield result;
             }
             case EAST,SOUTHEAST -> {
+                result = new Result(currentTile, 0, Direction.NORTH, false);
                 bufferTile = super.moveSouth(currentTile);
                 if (bufferTile != currentTile) {
-                    yield moveEast(bufferTile);
+                    result.setTile(bufferTile);
+                    result.setLastDirection(Direction.EAST);
+                    bufferTile = moveEast(result.getTile());
+                    if(result.getTile() != bufferTile) {
+                        result.setTile(bufferTile);
+                        yield result;
+                    }
+                    result.setHasBeenBlocked(true);
+                    yield result;
                 }
-                yield currentTile;
+                result.setHasBeenBlocked(true);
+                yield result;
             }
             case SOUTH, SOUTHWEST -> {
+                result = new Result(currentTile, 0, Direction.NORTH, false);
                 bufferTile = super.moveSouth(currentTile);
                 if (bufferTile != currentTile) {
-                    yield moveWest(bufferTile);
+                    result.setTile(bufferTile);
+                    result.setLastDirection(Direction.EAST);
+                    bufferTile = moveWest(result.getTile());
+                    if(result.getTile() != bufferTile) {
+                        result.setTile(bufferTile);
+                        yield result;
+                    }
+                    result.setHasBeenBlocked(true);
+                    yield result;
                 }
-                yield currentTile;
+                result.setHasBeenBlocked(true);
+                yield result;
             }
             case WEST,NORTHWEST -> {
+                result = new Result(currentTile, 0, Direction.NORTH, false);
                 bufferTile = super.moveNorth(currentTile);
                 if (bufferTile != currentTile) {
-                    yield moveWest(bufferTile);
+                    result.setTile(bufferTile);
+                    result.setLastDirection(Direction.EAST);
+                    bufferTile = moveWest(result.getTile());
+                    if(result.getTile() != bufferTile) {
+                        result.setTile(bufferTile);
+                        yield result;
+                    }
+                    result.setHasBeenBlocked(true);
+                    yield result;
                 }
-                yield currentTile;
+                result.setHasBeenBlocked(true);
+                yield result;
             }
         };
     }

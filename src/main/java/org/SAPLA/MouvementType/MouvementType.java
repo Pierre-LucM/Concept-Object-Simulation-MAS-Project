@@ -60,5 +60,5 @@ public abstract class MouvementType {
 
     //Choisie le mouvement a effectuer en fonction de la direction
 
-    public abstract Tile moveStep(Tile currentTile, Direction direction);
+    public abstract Result moveStep(Tile currentTile, Direction direction);
 }

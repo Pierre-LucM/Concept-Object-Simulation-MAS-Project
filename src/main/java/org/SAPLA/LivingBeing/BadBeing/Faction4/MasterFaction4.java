@@ -1,8 +1,10 @@
 package org.SAPLA.LivingBeing.BadBeing.Faction4;
 
 import org.SAPLA.LivingBeing.IMaster;
+import org.SAPLA.LivingBeing.LivingBeing;
 import org.SAPLA.Map.Tile;
 import org.SAPLA.MouvementType.CavalerMouv.CavalerMouv;
+import org.SAPLA.utils.ConsoleDisplay;
 
 import java.util.List;
 
@@ -24,8 +26,10 @@ public class MasterFaction4 extends Faction4<CavalerMouv> implements IMaster {
         return _masterFaction4;
     }
     @Override
-    public void collectMessages(List<String> messages) {
-        this.addMessage(messages.stream().filter(message -> !this.getMessage().contains(message)).toList());
+    public void collectMessages(List<String> messages, LivingBeing individu) {
+        List<String> messagesCollected = messages.stream().filter(message -> !this.getMessage().contains(message)).toList();
+        this.addMessage(messagesCollected);
+        ConsoleDisplay.displayMessagesTransfertInfo(this, individu, messagesCollected, List.of());
     }
 
     @Override
