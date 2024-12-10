@@ -4,6 +4,7 @@ import org.SAPLA.Enum.Direction;
 import org.SAPLA.Fight.Fight;
 import org.SAPLA.Map.SafeZone;
 import org.SAPLA.Map.Tile;
+import org.SAPLA.utils.ConsoleDisplay;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,10 +43,10 @@ public abstract class LivingBeing {
         List<String> newMessagesForOther = this.getMessage().stream().filter(message -> !other.getMessage().contains(message)).toList();
         this.addMessage(newMessagesForThis);
         other.addMessage(newMessagesForOther);
+        ConsoleDisplay.displayMessagesTransfertInfo(this, other, newMessagesForThis, newMessagesForOther);
     }
 
     private void exchangeSomeMessages(LivingBeing other) {
-
         List<String> newMessagesForThis = new java.util.ArrayList<>(other.getMessage().stream().filter(message -> !this.getMessage().contains(message)).toList());
         if(!newMessagesForThis.isEmpty()) {
             int randomNumber = new Random().nextInt(1, newMessagesForThis.size() + 1);
@@ -61,7 +62,7 @@ public abstract class LivingBeing {
             newMessagesForOther = newMessagesForOther.subList(0, randomNumber);
             other.addMessage(newMessagesForOther);
         }
-
+        ConsoleDisplay.displayMessagesTransfertInfo(this, other, newMessagesForThis, newMessagesForOther);
     }
 
     private void fight(LivingBeing other) {
@@ -78,7 +79,7 @@ public abstract class LivingBeing {
             loser.deleteMessage(messagesVoles);
             winner.addMessage(messagesVoles);
         }
-
+        ConsoleDisplay.displayFightMessagesTransfert(winner, loser,messagesVoles);
     }
 
     //Getter

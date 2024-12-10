@@ -4,9 +4,6 @@ import org.SAPLA.Enum.Direction;
 import org.SAPLA.LivingBeing.LivingBeing;
 import org.SAPLA.utils.Constants;
 import org.SAPLA.utils.RandomProvider;
-
-import java.util.Dictionary;
-
 public class Map {
 
     private static int _instancesCount = 0;

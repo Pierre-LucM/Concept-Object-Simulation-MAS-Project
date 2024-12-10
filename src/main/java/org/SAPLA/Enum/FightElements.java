@@ -1,7 +1,7 @@
 package org.SAPLA.Enum;
 
 public enum FightElements {
-    Rock("Pierre"), Paper("Papier"), Scissors("Ciseaux");
+    Rock("Rock"), Paper("Paper"), Scissors("Scissors");
 
     private final String _name;
 

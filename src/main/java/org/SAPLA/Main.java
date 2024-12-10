@@ -27,6 +27,7 @@ public class Main {
         //Pavé de test Aurélien
         Game game = Game.getInstance();
 
+        displayAllInstancesCount();
         game.startAutomatic();
 
         //Pour le moment, la simulation automatique s'arrête après 5 secondes,
@@ -41,7 +42,6 @@ public class Main {
 
         //game.runManual();
 
-        displayAllInstancesCount();
 
     }
 

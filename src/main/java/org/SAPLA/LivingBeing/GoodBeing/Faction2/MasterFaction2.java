@@ -1,8 +1,10 @@
 package org.SAPLA.LivingBeing.GoodBeing.Faction2;
 
 import org.SAPLA.LivingBeing.IMaster;
+import org.SAPLA.LivingBeing.LivingBeing;
 import org.SAPLA.Map.Tile;
 import org.SAPLA.MouvementType.TowerMouv.TowerMouv;
+import org.SAPLA.utils.ConsoleDisplay;
 
 import java.util.List;
 
@@ -23,8 +25,10 @@ public class MasterFaction2 extends Faction2<TowerMouv> implements IMaster {
         return _masterFaction2;
     }
     @Override
-    public void collectMessages(List<String> messages) {
-        this.addMessage(messages.stream().filter(message -> !this.getMessage().contains(message)).toList());
+    public void collectMessages(List<String> messages, LivingBeing individu) {
+        List<String> messagesCollected = messages.stream().filter(message -> !this.getMessage().contains(message)).toList();
+        this.addMessage(messagesCollected);
+        ConsoleDisplay.displayMessagesTransfertInfo(this, individu, messagesCollected, List.of());
     }
 
     @Override

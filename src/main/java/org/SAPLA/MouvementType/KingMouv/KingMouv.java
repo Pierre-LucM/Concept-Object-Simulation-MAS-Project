@@ -11,53 +11,123 @@ public class KingMouv extends MouvementType {
     @Override
     public Result nextTile(Tile currentTile, int energyPoint, Direction targetDirection) {
         if (energyPoint < 5) { // Pas assez d'énergie pour un mouvement complet
-            return new Result(currentTile, energyPoint);
+            return new Result(currentTile, energyPoint, null, false);
         }
 
-        Tile nextTile = moveStep(currentTile, targetDirection);
+        Result resultNextTile = moveStep(currentTile, targetDirection);
 
-        if (nextTile != currentTile) {
+        if (resultNextTile.getTile() != currentTile) {
             energyPoint--;
         }
+        resultNextTile.setEnergyPoint(energyPoint);
 
-        return new Result(nextTile, energyPoint);
+        return resultNextTile;
     }
 
     @Override
-    public Tile moveStep(Tile currentTile, Direction direction) {
+    public Result moveStep(Tile currentTile, Direction direction) {
+        Result result;
         Tile bufferTile;
         return switch (direction) {
-            case NORTH -> moveNorth(currentTile);
+            case NORTH -> {
+                result = new Result(currentTile, 0, Direction.NORTH, false);
+                bufferTile = moveNorth(currentTile);
+                if (bufferTile != currentTile) {
+                    result.setHasBeenBlocked(true);
+                }
+                yield result;
+            }
             case NORTHEAST -> {
-                bufferTile = moveNorth(currentTile);
+                result = new Result(currentTile, 0, Direction.NORTH, false);
+                bufferTile = super.moveNorth(currentTile);
                 if (bufferTile != currentTile) {
-                    yield moveEast(bufferTile);
+                    result.setTile(bufferTile);
+                    result.setLastDirection(Direction.EAST);
+                    bufferTile = moveEast(result.getTile());
+                    if(result.getTile() != bufferTile) {
+                        result.setTile(bufferTile);
+                        yield result;
+                    }
+                    result.setHasBeenBlocked(true);
+                    yield result;
                 }
-                yield currentTile;
+                result.setHasBeenBlocked(true);
+                yield result;
             }
-            case EAST -> moveEast(currentTile);
+            case EAST -> {
+                result = new Result(currentTile, 0, Direction.EAST, false);
+                bufferTile = moveEast(currentTile);
+                if (bufferTile != currentTile) {
+                    result.setHasBeenBlocked(true);
+                }
+                yield result;
+            }
             case SOUTHEAST -> {
+                result = new Result(currentTile, 0, Direction.SOUTH, false);
+                bufferTile = super.moveSouth(currentTile);
+                if (bufferTile != currentTile) {
+                    result.setTile(bufferTile);
+                    result.setLastDirection(Direction.EAST);
+                    bufferTile = moveEast(result.getTile());
+                    if(result.getTile() != bufferTile) {
+                        result.setTile(bufferTile);
+                        yield result;
+                    }
+                    result.setHasBeenBlocked(true);
+                    yield result;
+                }
+                result.setHasBeenBlocked(true);
+                yield result;
+            }
+            case SOUTH -> {
+                result = new Result(currentTile, 0, Direction.SOUTH, false);
                 bufferTile = moveSouth(currentTile);
                 if (bufferTile != currentTile) {
-                    yield moveEast(bufferTile);
+                    result.setHasBeenBlocked(true);
                 }
-                yield currentTile;
+                yield result;
             }
-            case SOUTH -> moveSouth(currentTile);
             case SOUTHWEST -> {
-                bufferTile = moveSouth(currentTile);
+                result = new Result(currentTile, 0, Direction.SOUTH, false);
+                bufferTile = super.moveSouth(currentTile);
                 if (bufferTile != currentTile) {
-                    yield moveWest(bufferTile);
+                    result.setTile(bufferTile);
+                    result.setLastDirection(Direction.WEST);
+                    bufferTile = moveWest(result.getTile());
+                    if(result.getTile() != bufferTile) {
+                        result.setTile(bufferTile);
+                        yield result;
+                    }
+                    result.setHasBeenBlocked(true);
+                    yield result;
                 }
-                yield currentTile;
+                result.setHasBeenBlocked(true);
+                yield result;
             }
-            case WEST -> moveWest(currentTile);
-            case NORTHWEST -> {
-                bufferTile = moveNorth(currentTile);
+            case WEST -> {
+                result = new Result(currentTile, 0, Direction.WEST, false);
+                bufferTile = moveWest(currentTile);
                 if (bufferTile != currentTile) {
-                    yield moveWest(bufferTile);
+                    result.setHasBeenBlocked(true);
                 }
-                yield currentTile;
+                yield result;
+            }
+            case NORTHWEST -> {
+                result = new Result(currentTile, 0, Direction.NORTH, false);
+                bufferTile = super.moveNorth(currentTile);
+                if (bufferTile != currentTile) {
+                    result.setTile(bufferTile);
+                    result.setLastDirection(Direction.WEST);
+                    bufferTile = moveWest(result.getTile());
+                    if(result.getTile() != bufferTile) {
+                        result.setTile(bufferTile);
+                        yield result;
+                    }
+                    result.setHasBeenBlocked(true);
+                    yield result;
+                }
+                result.setHasBeenBlocked(true);
+                yield result;
             }
         };
     }

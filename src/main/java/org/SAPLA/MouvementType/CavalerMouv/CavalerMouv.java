@@ -20,61 +20,61 @@ public class CavalerMouv extends MouvementType {
     }
 
     @Override
-    public Tile moveStep (Tile currentTile, Direction direction) {
-        Tile nextTile;
+    public Result moveStep (Tile currentTile, Direction direction) {
+        Result result;
         return switch (direction) {
             case NORTH :
-                nextTile = moveStepbyStep(currentTile, Direction.NORTH, 3);
+                result = moveStepbyStep(currentTile, Direction.NORTH, 3);
                 if (getIsStop()) {
-                    yield nextTile;
+                    yield result;
                 }
-                yield moveStepbyStep(nextTile, Direction.EAST,2);
+                yield moveStepbyStep(result.getTile(), Direction.EAST,2);
             case NORTHEAST:
-                nextTile = moveStepbyStep(currentTile, Direction.EAST, 3);
+                result = moveStepbyStep(currentTile, Direction.EAST, 3);
                 if (getIsStop()) {
-                    yield nextTile;
+                    yield result;
                 }
-                yield moveStepbyStep(nextTile, Direction.NORTH,2);
+                yield moveStepbyStep(result.getTile(), Direction.NORTH,2);
             case EAST:
-                nextTile = moveStepbyStep(currentTile, Direction.EAST, 3);
+                result = moveStepbyStep(currentTile, Direction.EAST, 3);
                 if (getIsStop()) {
-                    yield nextTile;
+                    yield result;
                 }
-                yield moveStepbyStep(nextTile, Direction.SOUTH,2);
+                yield moveStepbyStep(result.getTile(), Direction.SOUTH,2);
             case SOUTHEAST:
-                nextTile = moveStepbyStep(currentTile, Direction.SOUTH, 3);
+                result = moveStepbyStep(currentTile, Direction.SOUTH, 3);
                 if (getIsStop()) {
-                    yield nextTile;
+                    yield result;
                 }
-                yield moveStepbyStep(nextTile, Direction.EAST,2);
+                yield moveStepbyStep(result.getTile(), Direction.EAST,2);
             case SOUTH :
-                nextTile = moveStepbyStep(currentTile, Direction.SOUTH, 3);
+                result = moveStepbyStep(currentTile, Direction.SOUTH, 3);
                 if (getIsStop()) {
-                    yield nextTile;
+                    yield result;
                 }
-                yield moveStepbyStep(nextTile, Direction.WEST,2);
+                yield moveStepbyStep(result.getTile(), Direction.WEST,2);
             case SOUTHWEST :
-                nextTile = moveStepbyStep(currentTile, Direction.WEST, 3);
+                result = moveStepbyStep(currentTile, Direction.WEST, 3);
                 if (getIsStop()) {
-                    yield nextTile;
+                    yield result;
                 }
-                yield moveStepbyStep(nextTile, Direction.SOUTH,2);
+                yield moveStepbyStep(result.getTile(), Direction.SOUTH,2);
             case WEST :
-                nextTile = moveStepbyStep(currentTile, Direction.WEST, 3);
+                result = moveStepbyStep(currentTile, Direction.WEST, 3);
                 if (getIsStop()) {
-                    yield nextTile;
+                    yield result;
                 }
-                yield moveStepbyStep(nextTile, Direction.NORTH,2);
+                yield moveStepbyStep(result.getTile(), Direction.NORTH,2);
             case NORTHWEST :
-                nextTile = moveStepbyStep(currentTile, Direction.NORTH, 3);
+                result = moveStepbyStep(currentTile, Direction.NORTH, 3);
                 if (getIsStop()) {
-                    yield nextTile;
+                    yield result;
                 }
-                yield moveStepbyStep(nextTile, Direction.WEST,2);
+                yield moveStepbyStep(result.getTile(), Direction.WEST,2);
         };
     }
 
-    public Tile moveStepbyStep(Tile currentTile, Direction direction, int stepNumber) {
+    public Result moveStepbyStep(Tile currentTile, Direction direction, int stepNumber) {
         Tile nextTile = currentTile, previousTile = currentTile;
         for (int i = 0; i < stepNumber; i++) {
             switch (direction) {
@@ -89,18 +89,19 @@ public class CavalerMouv extends MouvementType {
             }
             previousTile = nextTile;
         }
-        return nextTile;
+        return new Result(nextTile, 0, direction, _isStop);
     }
 
     @Override
     public Result nextTile(Tile currentTile, int energyPoint, Direction targetDirection) {
         if (energyPoint < 5) { // Pas assez d'énergie pour un mouvement complet
-            return new Result(currentTile, energyPoint);
+            return new Result(currentTile, energyPoint, null, false);
         }
 
-        Tile nextTile = moveStep(currentTile, targetDirection);
+        Result resultNextTile = moveStep(currentTile, targetDirection);
+        resultNextTile.setEnergyPoint(energyPoint);
 
-        return new Result(nextTile, energyPoint);
+        return resultNextTile;
     }
 
     public Result cavalerMov(Tile currentTile, int energyPoint, int maxEnergy) {
