@@ -42,10 +42,30 @@ public abstract class LivingBeing {
         List<String> newMessagesForOther = this.getMessage().stream().filter(message -> !other.getMessage().contains(message)).toList();
         this.addMessage(newMessagesForThis);
         other.addMessage(newMessagesForOther);
+
+        System.out.printf("\n Transfert messages between %s and %s.\n", this.getClass().getSimpleName(), other.getClass().getSimpleName());
+        System.out.printf("           | %-15s %-15s%n", this.getClass().getSimpleName(), other.getClass().getSimpleName());
+        System.out.println("-----------------------------------------");
+        int index = 0;
+        while (index < newMessagesForThis.size() || index < newMessagesForOther.size()) {
+            System.out.print("           | ");
+            if(index < newMessagesForThis.size())  {
+                System.out.printf("+%-14s ", newMessagesForThis.get(index));
+            } else {
+                System.out.print("                ");
+            }
+            if(index < newMessagesForOther.size())  {
+                System.out.printf("+%-14s", newMessagesForOther.get(index));
+            } else {
+                System.out.print("               ");
+            }
+            System.out.println("\n");
+            index++;
+        }
+        System.out.println("\n");
     }
 
     private void exchangeSomeMessages(LivingBeing other) {
-
         List<String> newMessagesForThis = new java.util.ArrayList<>(other.getMessage().stream().filter(message -> !this.getMessage().contains(message)).toList());
         if(!newMessagesForThis.isEmpty()) {
             int randomNumber = new Random().nextInt(1, newMessagesForThis.size() + 1);
@@ -62,6 +82,26 @@ public abstract class LivingBeing {
             other.addMessage(newMessagesForOther);
         }
 
+        System.out.printf("\n Transfert messages between %s and %s.\n", this.getClass().getSimpleName(), other.getClass().getSimpleName());
+        System.out.printf("           | %-15s %-15s%n", this.getClass().getSimpleName(), other.getClass().getSimpleName());
+        System.out.println("-----------------------------------------");
+        int index = 0;
+        while (index < newMessagesForThis.size() || index < newMessagesForOther.size()) {
+            System.out.print("           | ");
+            if(index < newMessagesForThis.size())  {
+                System.out.printf("+%-14s ", newMessagesForThis.get(index));
+            } else {
+                System.out.print("                ");
+            }
+            if(index < newMessagesForOther.size())  {
+                System.out.printf("+%-14s", newMessagesForOther.get(index));
+            } else {
+                System.out.print("               ");
+            }
+            System.out.println("\n");
+            index++;
+        }
+        System.out.println("\n");
     }
 
     private void fight(LivingBeing other) {
@@ -78,7 +118,14 @@ public abstract class LivingBeing {
             loser.deleteMessage(messagesVoles);
             winner.addMessage(messagesVoles);
         }
-
+        System.out.printf("\n Transfert messages from %s to %s.\n", loser.getClass().getSimpleName(), winner.getClass().getSimpleName());
+        System.out.printf("           | %-15s %-15s%n", loser.getClass().getSimpleName(), winner.getClass().getSimpleName());
+        System.out.println("-----------------------------------------");
+        int index = 0;
+        while (index < messagesVoles.size()) {
+            System.out.printf("           | -%-14s +%-14s%n",messagesVoles.get(index), messagesVoles.get(index));
+            index++;
+        }
     }
 
     //Getter

@@ -25,7 +25,7 @@ public class DiagonalMouv extends MouvementType {
     @Override
     public Result nextTile(Tile currentTile, int energyPoint, Direction targetDirection) {
         if (energyPoint < 5) { // Pas assez d'énergie pour un mouvement complet
-            return new Result(currentTile, energyPoint);
+            return new Result(currentTile, energyPoint, null, false);
         }
 
         int numberMouv = RandomProvider.getInstance().nextInt(4);
@@ -41,8 +41,7 @@ public class DiagonalMouv extends MouvementType {
             previousTile = nextTile;
         }
 
-
-        return new Result(nextTile, energyPoint);
+        return new Result(nextTile, energyPoint, targetDirection, nextTile == currentTile);
     }
 
     @Override

@@ -287,10 +287,17 @@ public final class Game {
         return tile;
     }
 
-
     public IMaster getMaster(LivingBeing livingBeing) {
       return (IMaster) masters.stream()
                 .filter(master -> master.getClass().getSuperclass().equals(livingBeing.getClass()))
                 .findFirst().orElse(null);
+    }
+
+    public void startInteraction(Position position1, Position position2) {
+        LivingBeing individu1 = individualsList.stream().filter(individual -> individual.getCurrentTile().getPosition().getX() == position1.getX() && individual.getCurrentTile().getPosition().getY() == position1.getY()).findFirst().orElse(null);
+        LivingBeing individu2 = individualsList.stream().filter(individual -> individual.getCurrentTile().getPosition().getX() == position2.getX() && individual.getCurrentTile().getPosition().getY() == position2.getY()).findFirst().orElse(null);
+        if(individu1 != null && individu2 != null) {
+            individu1.interact(individu2);
+        }
     }
 }

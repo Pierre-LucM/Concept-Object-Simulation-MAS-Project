@@ -95,12 +95,12 @@ public class CavalerMouv extends MouvementType {
     @Override
     public Result nextTile(Tile currentTile, int energyPoint, Direction targetDirection) {
         if (energyPoint < 5) { // Pas assez d'énergie pour un mouvement complet
-            return new Result(currentTile, energyPoint);
+            return new Result(currentTile, energyPoint, null, false);
         }
 
         Tile nextTile = moveStep(currentTile, targetDirection);
 
-        return new Result(nextTile, energyPoint);
+        return new Result(nextTile, energyPoint, targetDirection, nextTile == currentTile);
     }
 
     public Result cavalerMov(Tile currentTile, int energyPoint, int maxEnergy) {
