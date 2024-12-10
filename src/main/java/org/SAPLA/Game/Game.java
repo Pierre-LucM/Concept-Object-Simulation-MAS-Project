@@ -261,6 +261,7 @@ public final class Game {
             // Ajouter l'individu à la liste et marquer sa position sur la carte
             individualsList.add(individual);
             safeTile.setTileContent(factionClass.getSimpleName().charAt(7));
+            messageStartIndex += Constants.NB_MESSAGES_PER_INDIVIDUAL_AT_START;
         }
     }
     public static int getInstancesCount() {

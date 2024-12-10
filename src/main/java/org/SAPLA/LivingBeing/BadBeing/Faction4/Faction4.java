@@ -57,7 +57,7 @@ public class Faction4 <T extends CavalerMouv> extends BadBeing {
                     }
                 }
             }
-
+            Tile previousTile = super.getCurrentTile();
             super.getCurrentTile().setTileContent(' ');
             result.getTile().setTileContent(this.getClass().getSimpleName().charAt(7));
             super.setCurrentTile(result.getTile());
@@ -78,8 +78,8 @@ public class Faction4 <T extends CavalerMouv> extends BadBeing {
                     }
                 }
             }
-            // Si l'individu est dans la safe zone, alors on envoie tous nos messages au master
-            if(this.getCurrentTile().isSafeZone()) {
+            // Si l'individu vient d'entrer dans la safe zone, alors on envoie tous nos messages au master
+            if(this.getCurrentTile().isSafeZone()  && !previousTile.isSafeZone()) {
                 IMaster IMaster = Game.getInstance().getMaster(this);
                 IMaster.collectMessages(this.getMessage(), this);
             }
