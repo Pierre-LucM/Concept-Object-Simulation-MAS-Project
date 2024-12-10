@@ -19,12 +19,13 @@ public class Faction2 <T extends TowerMouv> extends GoodBeing {
 
     private T _mouvementTower ;
 
-    public Faction2(Tile currentTile, Direction lastDirectionTaken, int energyPoint, T mouvementTower, List<String> messages) {
+    public Faction2(Tile currentTile, int energyPoint, T mouvementTower, List<String> messages, SafeZone safeZone) {
         super();
         _instancesCount++;
         setCurrentTile(currentTile);
         setEnergyPoint(energyPoint);
         setMaxEnergy(Constants.MAX_ENERGY);
+        setSafeZone(safeZone);
         _mouvementTower = mouvementTower;
         if (_mouvementTower != null) {
             _mouvementTower.setLivingBeing(this);

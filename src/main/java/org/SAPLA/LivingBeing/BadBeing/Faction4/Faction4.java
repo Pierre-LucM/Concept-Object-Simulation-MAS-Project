@@ -19,12 +19,13 @@ public class Faction4 <T extends CavalerMouv> extends BadBeing {
 
     private T _mouvementCavaler ;
 
-    public Faction4(Tile currentTile, Direction lastDirectionTaken, int energyPoint, T mouvementCavaler, List<String> messages) {
+    public Faction4(Tile currentTile, int energyPoint, T mouvementCavaler, List<String> messages, SafeZone safeZone) {
         super();
         _instancesCount++;
         setCurrentTile(currentTile);
         setEnergyPoint(energyPoint);
         setMaxEnergy(Constants.MAX_ENERGY);
+        setSafeZone(safeZone);
         _mouvementCavaler = mouvementCavaler;
         if (_mouvementCavaler != null) {
             _mouvementCavaler.setLivingBeing(this);

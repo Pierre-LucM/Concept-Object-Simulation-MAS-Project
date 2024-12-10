@@ -15,5 +15,5 @@ public class Constants {
     public static final int MAX_ENERGY = 100;     //Énergie maximale des individus
     public static final int MESSAGE_LENGTH = 10; //Taille des messages
     public static final int NB_MESSAGES_PER_INDIVIDUAL_AT_START = 3; //Nombre de messages par individu au début de la simulation
-    public static  final int OBSTACLE_COUNT = 100; //Nombre d'obstacles dans la simulation
+    public static  final int OBSTACLE_COUNT = 20; //Nombre d'obstacles dans la simulation
 }
