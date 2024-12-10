@@ -19,12 +19,13 @@ public class Faction3 <T extends DiagonalMouv> extends BadBeing{
     private static int _instancesCount = 0;
     private T _mouvementDiagonal ;
 
-    public Faction3(Tile currentTile, Direction lastDirectionTaken, int energyPoint, T mouvementDiagonal, List<String> messages) {
+    public Faction3(Tile currentTile, int energyPoint, T mouvementDiagonal, List<String> messages, SafeZone safeZone) {
         super();
         _instancesCount++;
         setCurrentTile(currentTile);
         setEnergyPoint(energyPoint);
         setMaxEnergy(Constants.MAX_ENERGY);
+        setSafeZone(safeZone);
         _mouvementDiagonal = mouvementDiagonal;
         if (_mouvementDiagonal != null) {
             _mouvementDiagonal.setLivingBeing(this);

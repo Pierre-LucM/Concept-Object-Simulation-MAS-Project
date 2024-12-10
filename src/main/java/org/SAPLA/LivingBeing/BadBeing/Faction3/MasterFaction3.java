@@ -14,7 +14,7 @@ public class MasterFaction3 extends Faction3<DiagonalMouv> implements IMaster {
     private static MasterFaction3 _masterFaction3;
 
     private MasterFaction3() {
-        super(null, null, 0, null, null);
+        super(null, 0, null, null, null);
         _instancesCount++;
     }
 

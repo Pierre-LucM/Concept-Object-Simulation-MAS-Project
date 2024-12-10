@@ -14,7 +14,7 @@ public class MasterFaction1 extends Faction1<KingMouv> implements IMaster {
     private static MasterFaction1 _masterFaction1;
 
     private MasterFaction1() {
-        super(null, null, 0, null, null);
+        super(null, 0, null, null, null);
         _instancesCount++;
     }
 

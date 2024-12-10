@@ -14,7 +14,7 @@ public class MasterFaction2 extends Faction2<TowerMouv> implements IMaster {
     private static MasterFaction2 _masterFaction2;
 
     private MasterFaction2() {
-        super(null, null, 0, null, null);
+        super(null, 0, null, null, null);
         _instancesCount++;
     }
 

@@ -24,6 +24,7 @@ import org.SAPLA.utils.ConsoleDisplay;
 import org.SAPLA.utils.Constants;
 import org.SAPLA.utils.RandomProvider;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -75,7 +76,6 @@ public final class Game {
         consoleDisplay.displaySimulation();
         this.executor = Executors.newScheduledThreadPool(1);
         this.task = this::gameStep; // Step task
-        displayIndividuals();
     }
 
     // Run simulation in manual mode
@@ -122,6 +122,8 @@ public final class Game {
             Thread.currentThread().interrupt();
         }
         displayFinalResults();
+
+        ConsoleDisplay.displayInstancesCount();
     }
 
     // Main game logic for a single step
@@ -144,17 +146,10 @@ public final class Game {
 
     private void shuffleIndividuals() {
         Collections.shuffle(individualsList, RandomProvider.getInstance());
-        System.out.println("Individuals shuffled.");
-    }
-
-    private void displayIndividuals() {
-        System.out.println("=============================");
-        individualsList.forEach(ind -> System.out.println(ind + " : " + ind.getCurrentTile().getPosition()));
     }
 
     private void playIndividuals() {
         individualsList.forEach(LivingBeing::move);
-        System.out.println("Individuals moved.");
     }
 
     private boolean checkWinners() {
@@ -249,13 +244,13 @@ public final class Game {
 
             // Créer un nouvel individu de la faction
             LivingBeing individual = factionClass
-                    .getDeclaredConstructor(Tile.class, Direction.class, int.class, movementInstance.getClass(), List.class)
+                    .getDeclaredConstructor(Tile.class, int.class, movementInstance.getClass(), List.class, SafeZone.class)
                     .newInstance(
                             safeTile,
-                            Direction.NORTH,
                             Constants.STARTING_ENERGY,
                             movementInstance,
-                            allMessages.subList(messageStartIndex, messageStartIndex + Constants.NB_MESSAGES_PER_INDIVIDUAL_AT_START)
+                            allMessages.subList(messageStartIndex, messageStartIndex + Constants.NB_MESSAGES_PER_INDIVIDUAL_AT_START),
+                            safeZone
                     );
 
             // Ajouter l'individu à la liste et marquer sa position sur la carte
